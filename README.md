@@ -47,7 +47,7 @@ The chatbot uses FDA medical guidance documents as its primary dataset:
 ## Project Structure
 
 ```
-FDA-RAG-Assistant/
+fda-guidance-rag/
 │
 ├── backend/
 │   ├── app.py                  # Flask API server
