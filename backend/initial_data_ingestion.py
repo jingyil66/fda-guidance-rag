@@ -36,8 +36,6 @@ if __name__ == "__main__":
         if a_tag and a_tag.get('href'):
             pdf_url = "https://www.fda.gov" + a_tag['href']
             url_list.append(pdf_url)
-    
-    url_list = url_list[:10]
 
     procs = []
     for _ in range(min(cpu_count(), len(url_list))):
