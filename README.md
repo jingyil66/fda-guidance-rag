@@ -125,12 +125,12 @@ FDA-RAG-Assistant/
    docker run -p 6333:6333 -v qdrant_storage:/qdrant/storage qdrant/qdrant
    ```
 
-5.Run initial_data_ingestion.py:
+6.Run initial_data_ingestion.py:
    ```
    python initial_data_ingestion.py
    ```
 
-6. Frontend Setup: 
+7. Frontend Setup: 
    ```
    npm install
    npm run dev
