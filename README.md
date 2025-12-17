@@ -99,42 +99,41 @@ FDA-RAG-Assistant/
 
 ### Backend Setup
 1. Clone the repository:
-   ```
-   git clone https://github.com/yourusername/FDA-RAG-Assistant.git
-   cd FDA-RAG-Assistant/backend
-   ```
+```
+git clone https://github.com/yourusername/FDA-RAG-Assistant.git
+cd FDA-RAG-Assistant/backend
+```
 
 2. Create and activate a virtual environment:
-   ```
-   python -m venv venv
-   source venv/bin/activate  # macOS/Linux
-   venv\Scripts\activate     # Windows
-   ```
+```
+python -m venv venv
+source venv/bin/activate  # macOS/Linux
+venv\Scripts\activate     # Windows
+```
    
 3. Install Python dependencies:
-   
-   ```
-   pip install -r requirements.txt
-   ```
+```
+pip install -r requirements.txt
+```
 
-4. Configure environment variables in config.py (e.g., OPENAI_API_KEY, Qdrant URL).
+4. Configure environment variables in `config.py` (e.g., OPENAI_API_KEY, Qdrant URL).
 
 5. Start Qdrant (Docker):
-   ```
-   docker pull qdrant/qdrant
-   docker run -p 6333:6333 -v qdrant_storage:/qdrant/storage qdrant/qdrant
-   ```
+```
+docker pull qdrant/qdrant
+docker run -p 6333:6333 -v qdrant_storage:/qdrant/storage qdrant/qdrant
+```
 
 6.Run `initial_data_ingestion.py`:
-   ```
-   python initial_data_ingestion.py
-   ```
+```
+python initial_data_ingestion.py
+```
 
 7. Frontend Setup: 
-   ```
-   npm install
-   npm run dev
-   ```
+```
+npm install
+npm run dev
+```
    
    The frontend will be available at http://localhost:5173 and will communicate with the Flask backend API.
 
