@@ -116,7 +116,7 @@ venv\Scripts\activate     # Windows
 pip install -r requirements.txt
 ```
 
-4. Configure environment variables in `config.py` (e.g., OPENAI_API_KEY, Qdrant URL).
+4. Configure environment variables in `config.py` (e.g., OPENAI_API_KEY).
 
 5. Start Qdrant (Docker):
 ```
