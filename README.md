@@ -1,6 +1,6 @@
 # FDA Guidance Search & RAG Chatbot
 
-A Retrieval-Augmented Generation (RAG) chatbot that enables multi-turn Q&A over FDA medical guidance documents. The system integrates PDF guidelines, metadata, and hybrid retrieval to provide accurate, grounded answers using OpenAI LLMs.
+FDA-RAG-Assistant is a Retrieval-Augmented Generation (RAG) chatbot designed for interactive question answering over FDA medical guidance documents. The system leverages PDF guidelines and associated metadata to provide accurate, context-aware responses, powered by OpenAI LLMs. It combines document retrieval, semantic search, and vector-based embeddings to ensure answers are grounded in official FDA content.
 
 ## Dataset
 
@@ -57,6 +57,7 @@ FDA-RAG-Assistant/
 │   ├── metadata_fetcher.py     # Fetch metadata from FDA
 │   ├── metadata_pipeline.py    # Async metadata + summary pipeline
 │   └── rag.py                  # RAG pipeline: query retrieval + LLM
+│   └── requirements.txt
 │
 ├── frontend/fda-app/
 │   ├── node_modules/
@@ -104,35 +105,38 @@ FDA-RAG-Assistant/
    ```
 
 2. Create and activate a virtual environment:
-  ```
-  python -m venv venv
-  source venv/bin/activate  # macOS/Linux
-  venv\Scripts\activate     # Windows
-  ```
-  Install Python dependencies:
-  ```pip install -r requirements.txt```
+   ```
+   python -m venv venv
+   source venv/bin/activate  # macOS/Linux
+   venv\Scripts\activate     # Windows
+   ```
+   
+   Install Python dependencies:
+   
+   ```
+   pip install -r requirements.txt
+   ```
 
-3. Configure environment variables in config.py (e.g., OPENAI_API_KEY, Qdrant URL).
+4. Configure environment variables in config.py (e.g., OPENAI_API_KEY, Qdrant URL).
 
-3. Start Qdrant (Docker):
+5. Start Qdrant (Docker):
    ```
    docker pull qdrant/qdrant
    docker run -p 6333:6333 -v qdrant_storage:/qdrant/storage qdrant/qdrant
    ```
 
-4.Run initial_data_ingestion.py:
-  ```
-  python initial_data_ingestion.py
-  ```
+5.Run initial_data_ingestion.py:
+   ```
+   python initial_data_ingestion.py
+   ```
 
-5. Frontend Setup: 
-  ```
-  npm install
-  npm run dev
-  ```
-  The frontend will be available at http://localhost:5173 and will communicate with the Flask backend API.
-
----
+6. Frontend Setup: 
+   ```
+   npm install
+   npm run dev
+   ```
+   
+   The frontend will be available at http://localhost:5173 and will communicate with the Flask backend API.
 
 ## Future Improvements
 
