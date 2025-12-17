@@ -111,7 +111,7 @@ FDA-RAG-Assistant/
    venv\Scripts\activate     # Windows
    ```
    
-   Install Python dependencies:
+3. Install Python dependencies:
    
    ```
    pip install -r requirements.txt
@@ -125,7 +125,7 @@ FDA-RAG-Assistant/
    docker run -p 6333:6333 -v qdrant_storage:/qdrant/storage qdrant/qdrant
    ```
 
-6.Run initial_data_ingestion.py:
+6.Run `initial_data_ingestion.py`:
    ```
    python initial_data_ingestion.py
    ```
