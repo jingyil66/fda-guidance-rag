@@ -5,7 +5,7 @@ from qdrant_client import QdrantClient
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI
-from config import OPENAI_API_KEY
+from app.core.config import OPENAI_API_KEY
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 
 client = QdrantClient(url="http://localhost:6333")
@@ -22,8 +22,9 @@ given question based on the given context only.
 
 Question: {query}
 
-Context:
+Context (each entry shows content, title, and page):
 {context}
+
 Only answer based on the context. Do NOT assume or infer anything not explicitly stated.
 If the answer is not present in the given context, respond as: The answer to this question is not available
 in the provided content.
@@ -34,7 +35,10 @@ str_parser = StrOutputParser()
 
 def get_answer(query: str) -> str:
     results = vector_store.similarity_search(query=query, k=15)
-    context = "\n\n".join([result.page_content for result in results])
+    context = "\n\n".join([
+        f"Content: {doc.page_content}\nTitle: {doc.metadata.get('title','Unknown')}\nPage: {doc.metadata.get('page','?')}"
+        for doc in results
+    ])
 
     manual_rag_chain = rag_prompt | llm | str_parser
 
@@ -42,4 +46,28 @@ def get_answer(query: str) -> str:
         "query": query,
         "context": context
     })
-    return answer
+
+    sources = [
+        {
+            "title": doc.metadata.get("title", "Unknown"),
+            "page": doc.metadata.get("page", "?"),
+            "pdf_id": doc.metadata.get("pdf_id", ""),
+            "url": doc.metadata.get("url", ""),
+            "field_communication_type": doc.metadata.get("field_communication_type", "")
+        }
+        for doc in results
+    ]
+
+    return {
+        "answer": answer,
+        "sources": sources
+    }
+
+if __name__ == "__main__":
+    while True:
+        query = input("User's query: ")
+        if query.lower() in ["exit", "quit"]:
+            break
+        result = get_answer(query)
+        print("LLM answer:", result["answer"])
+        print("Source chunks:", result["sources"])

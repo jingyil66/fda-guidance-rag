@@ -18,8 +18,7 @@ class FDAMetadataClient:
         except requests.RequestException as e:
             print(f"Failed to fetch FDA metadata: {e}")
             return []
-
-
+        
 class FDASummaryScraper:
     def __init__(self, headers, concurrency=5):
         self.headers = headers

@@ -11,9 +11,9 @@ beautifulsoup4==4.12.2
 lxml==4.9.3
 
 # LangChain and OpenAI integration
-langchain==0.1.233
-langchain-openai==0.1.32
-langchain-community==0.0.28
+langchain
+langchain-openai
+langchain-community
 
 # Qdrant vector store
 qdrant-client==1.7.1
