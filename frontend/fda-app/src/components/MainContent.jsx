@@ -3,6 +3,7 @@ import { useState } from "react";
 function Chatbot() {
     const [query, setQuery] = useState("");
     const [answer, setAnswer] = useState("");
+    const [sources, setSources] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const handleSend = async () => {
@@ -16,6 +17,7 @@ function Chatbot() {
             });
             const data = await response.json();
             setAnswer(data.answer);
+            setSources(data.sources || []);
             } catch (err) {
             setAnswer("Error: Unable to get response");
             } finally {
@@ -45,6 +47,30 @@ function Chatbot() {
                     {answer || "AI answer will appear here..."}
                 </div>
             </div>
+
+            {sources.length > 0 && (
+                <div className="card">
+                    <div className="card-header">Sources</div>
+                    <ul className="list-group list-group-flush">
+                        {sources.map((s, idx) => (
+                            <li key={idx} className="list-group-item">
+                                <strong>Title:</strong> {s.title} <br />
+                                <strong>Page:</strong> {s.page} <br />
+                                {s.url && (
+                                    <>
+                                        <strong>URL:</strong>{" "}
+                                        <a href={s.url} target="_blank" rel="noreferrer">
+                                            {s.url}
+                                        </a>
+                                        <br />
+                                    </>
+                                )}
+                                <strong>Type:</strong> {s.field_communication_type}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
         </div>
     )
 
