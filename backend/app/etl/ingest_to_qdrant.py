@@ -1,21 +1,14 @@
 import os
-import requests
 import time
 import tempfile
-from multiprocessing import Process, Queue, cpu_count
+from multiprocessing import Queue
 from langchain_text_splitters  import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader
-from langchain_openai import OpenAIEmbeddings
-from langchain_qdrant import QdrantVectorStore
-from qdrant_client import QdrantClient
-from qdrant_client.models import Distance, VectorParams
 import boto3
-from langchain_openai import OpenAIEmbeddings
-import faiss
-import numpy as np
 from langchain_core.documents import Document
 import re, os, tempfile
 from app.db.qdrant_client import init_qdrant
+import openai
 
 def downloader_from_s3(bucket_name, key_list, process_queue: Queue, aws_region="us-east-1"):
     s3_client = boto3.client("s3", region_name=aws_region)
@@ -23,11 +16,8 @@ def downloader_from_s3(bucket_name, key_list, process_queue: Queue, aws_region="
     for key in key_list:
         while process_queue.full():
             time.sleep(0.1)
-        print(f"Fetching {key} from S3...")
-        response = s3_client.get_object(Bucket=bucket_name, Key=key)
-        pdf_bytes = response['Body'].read()
-        process_queue.put((key, pdf_bytes))
-        print(f"Fetched and queued {key}")
+        print(f"Queueing {key}...")
+        process_queue.put(key)
 
 def pdf_chunk(pdf_text):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=600, chunk_overlap=200)
@@ -35,12 +25,18 @@ def pdf_chunk(pdf_text):
     return chunks
 
 def processor(process_queue: Queue, chunk_queue: Queue, pdf_metadata: dict):
+    import boto3
+    s3_client = boto3.client("s3")
+
     while True:
         item = process_queue.get()
         if item is None:
             break
-        pdf_name, pdf_content = item  # S3 key
+        pdf_name = item  # S3 key
         
+        response = s3_client.get_object(Bucket="04-bucket", Key=pdf_name)
+        pdf_content = response['Body'].read()
+
         match = re.search(r"(\d+)", pdf_name)
         media_id = match.group(1) if match else pdf_name
 
@@ -50,9 +46,7 @@ def processor(process_queue: Queue, chunk_queue: Queue, pdf_metadata: dict):
 
         loader = PyPDFLoader(tmp_path)
         pages = loader.load()
-        chunks = []
 
-        # 查找 JSON metadata
         meta = pdf_metadata.get(media_id, {})
 
         from bs4 import BeautifulSoup
@@ -77,34 +71,51 @@ def processor(process_queue: Queue, chunk_queue: Queue, pdf_metadata: dict):
                 "changed": meta.get("changed", "")
             }
             doc = Document(page_content=page_doc.page_content, metadata=page_meta)
-            chunks.append(doc)
+            while chunk_queue.full():
+                time.sleep(0.1)
 
-        chunk_queue.put(chunks)
+            chunk_queue.put([doc])
+
         os.remove(tmp_path)
         
-def qdrant_writer(chunk_queue: Queue, collection_name="test", qdrant_url="http://localhost:6333", batch_size=50):
+def qdrant_writer(chunk_queue: Queue, collection_name="test", qdrant_url="http://localhost:6333", batch_size=10):
     vector_store = init_qdrant(collection_name, qdrant_url)
-    processed_pdfs = 0
+    processed_chunks = 0
+    processed_pdfs = set()
     buffer = []
+
+    def safe_add_documents(vec_store, docs):
+        safe_docs = []
+        for doc in docs:
+            safe_meta = {k: str(v) if v is not None else "" for k, v in doc.metadata.items()}
+            safe_docs.append(Document(page_content=str(doc.page_content), metadata=safe_meta))
+
+        while True:
+            try:
+                vec_store.add_documents(safe_docs)
+                break
+            except openai.error.RateLimitError as e:
+                print(f"⚠️ Rate limit reached, waiting 1s... ({e})", flush=True)
+                time.sleep(1)
 
     while True:
         chunks = chunk_queue.get()
         if chunks is None:
-            # flush remaining
             if buffer:
-                vector_store.add_documents(buffer)
-                print(f"✅ Processed PDF: {processed_pdfs}, current number of chunks: {len(buffer)} (final batch)")
+                safe_add_documents(vector_store, buffer)
+                print(f"✅ PDFs: {len(processed_pdfs)}, chunks: {processed_chunks}, batch size: {len(buffer)} (final batch)", flush=True)
             break
 
         buffer.extend(chunks)
-        processed_pdfs += 1
+        processed_chunks += len(chunks)
+        for c in chunks:
+            processed_pdfs.add(c.metadata.get("pdf_id"))
 
         if len(buffer) >= batch_size:
-            vector_store.add_documents(buffer)
-            print(f"✅ Processed PDF: {processed_pdfs}, current number of chunks: {len(buffer)}")
+            safe_add_documents(vector_store, buffer)
+            print(f"✅ PDFs: {len(processed_pdfs)}, chunks: {processed_chunks}, batch size: {len(buffer)}")
             buffer = []
 
     if buffer:
-        vector_store.add_documents(buffer)
-        print(f"✅ Processed PDF: {processed_pdfs}, current number of chunks: {len(buffer)} (final batch)")
-
+        safe_add_documents(vector_store, buffer)
+        print(f"✅ PDFs: {len(processed_pdfs)}, chunks: {processed_chunks}, batch size: {len(buffer)} (final batch)")

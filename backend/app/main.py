@@ -1,15 +1,11 @@
-# from flask import Flask
-# from api.routes import register_routes
-# # create an instance of this class
-# app = Flask(__name__)
+from flask import Flask
+from flask_cors import CORS
+from app.api.routes import register_routes
+# create an instance of this class
+app = Flask(__name__)
+CORS(app)
 
-# register_routes(app)
+register_routes(app)
 
-# # use the route() decorator to tell Flask what URL should trigger our function
-# @app.route("/")
-# def index():
-#     return "hello"
-
-# if __name__ == '__main__':
-#     app.run(debug = True)
-...
+if __name__ == '__main__':
+    app.run(port=5000, debug=True)

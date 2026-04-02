@@ -1,20 +1,17 @@
 import os
 import json
-import asyncio
-from app.etl.ingest_to_qdrant_new import downloader_from_s3, processor, qdrant_writer
-from app.core.config import HEADERS, OUTPUT_METADATA_JSON, METADATA_URL, OPENAI_API_KEY
-from multiprocessing import Process, Queue, cpu_count
-from bs4 import BeautifulSoup
+from app.etl.ingest_to_qdrant import downloader_from_s3, processor, qdrant_writer
+from app.core.config import OUTPUT_METADATA_JSON, OPENAI_API_KEY
+from multiprocessing import Process, Queue
 from threading import Thread
 import boto3
-import time
 
 if __name__ == "__main__":
 
     os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 
     process_queue = Queue(maxsize=5)
-    chunk_queue = Queue(maxsize=10)
+    chunk_queue = Queue(maxsize=20)
 
     writer_thread = Thread(target=qdrant_writer, args=(chunk_queue,))
     writer_thread.start()
@@ -60,10 +57,11 @@ if __name__ == "__main__":
     print(f"{len(s3_keys)} PDFs are found.")
 
     # test
-    s3_keys = ["pdfs/91343"]
+    # s3_keys = ["pdfs/91343"]
 
     procs = []
-    for _ in range(min(cpu_count(), len(s3_keys))):
+    num_workers = 3
+    for _ in range(num_workers):
         p = Process(target=processor, args=(process_queue, chunk_queue, pdf_metadata))
         p.start()
         procs.append(p)

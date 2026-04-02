@@ -2,7 +2,6 @@ from multiprocessing import Process, Queue, cpu_count
 import requests
 from bs4 import BeautifulSoup
 import boto3
-import time
 from app.core.config import HEADERS, OUTPUT_METADATA_JSON
 import json
 
