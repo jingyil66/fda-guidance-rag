@@ -1,4 +1,3 @@
-# services/metadata_service.py
 import os
 import json
 from backend.app.fetchers.fda_fetcher import FDAMetadataClient, FDASummaryScraper

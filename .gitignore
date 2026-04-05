@@ -77,6 +77,4 @@ dmypy.json
 # Windows
 Thumbs.db
 
-# Local config
-**/config.py
 opt/

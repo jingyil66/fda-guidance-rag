@@ -1,12 +1,11 @@
-from multiprocessing import Process, Queue, cpu_count
+from multiprocessing import Process, cpu_count
 import requests
 from bs4 import BeautifulSoup
 import boto3
-from backend.app.core.config import HEADERS, OUTPUT_METADATA_JSON
+from backend.app.core.config import HEADERS, OUTPUT_METADATA_JSON, BUCKET_NAME
 import json
 
 s3 = boto3.client("s3")
-BUCKET_NAME = "04-bucket"
 
 def download_and_upload(url_list):
     for url in url_list:
