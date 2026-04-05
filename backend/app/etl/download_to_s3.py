@@ -2,7 +2,7 @@ from multiprocessing import Process, Queue, cpu_count
 import requests
 from bs4 import BeautifulSoup
 import boto3
-from app.core.config import HEADERS, OUTPUT_METADATA_JSON
+from backend.app.core.config import HEADERS, OUTPUT_METADATA_JSON
 import json
 
 s3 = boto3.client("s3")
@@ -14,7 +14,7 @@ def download_and_upload(url_list):
             print(f"Downloading {url}...")
             response = requests.get(url, headers=HEADERS, timeout=10)
             response.raise_for_status()
-            filename = url.split("/")[-2]
+            filename = url.split("/")[-2] + ".pdf"
             s3_key = f"pdfs/{filename}"
 
             s3.put_object(

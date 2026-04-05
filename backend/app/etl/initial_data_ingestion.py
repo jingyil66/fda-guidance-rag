@@ -1,7 +1,7 @@
 import os
 import json
-from app.etl.ingest_to_qdrant import downloader_from_s3, processor, qdrant_writer
-from app.core.config import OUTPUT_METADATA_JSON, OPENAI_API_KEY
+from backend.app.etl.ingest_to_qdrant import downloader_from_s3, processor, qdrant_writer
+from backend.app.core.config import OUTPUT_METADATA_JSON, OPENAI_API_KEY
 from multiprocessing import Process, Queue
 from threading import Thread
 import boto3

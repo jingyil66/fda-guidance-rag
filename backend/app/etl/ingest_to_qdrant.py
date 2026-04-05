@@ -7,7 +7,7 @@ from langchain_community.document_loaders import PyPDFLoader
 import boto3
 from langchain_core.documents import Document
 import re, os, tempfile
-from app.db.qdrant_client import init_qdrant
+from backend.app.db.qdrant_client import init_qdrant
 import openai
 
 def downloader_from_s3(bucket_name, key_list, process_queue: Queue, aws_region="us-east-1"):

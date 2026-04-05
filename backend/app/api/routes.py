@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from app.services.rag_service import get_answer
+from backend.app.services.rag_service import get_answer
 
 def register_routes(app):
     # --- RAG query ---

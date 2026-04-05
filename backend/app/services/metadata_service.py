@@ -1,7 +1,7 @@
 # services/metadata_service.py
 import os
 import json
-from app.fetchers.fda_fetcher import FDAMetadataClient, FDASummaryScraper
+from backend.app.fetchers.fda_fetcher import FDAMetadataClient, FDASummaryScraper
 
 class FDAWorkflow:
     def __init__(self, headers, metadata_url, metadata_path, concurrency=5):

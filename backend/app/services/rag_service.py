@@ -5,39 +5,65 @@ from qdrant_client import QdrantClient
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI
-from app.core.config import OPENAI_API_KEY
+from flashrank import Ranker, RerankRequest
+from backend.app.core.config import OPENAI_API_KEY
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 
 client = QdrantClient(url="http://localhost:6333")
 
 embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
-vector_store = QdrantVectorStore(
-    client=client,
-    collection_name="test",
-    embedding=embeddings,
-)
 
-template = """You are an AI model trained for question answering. You should answer the
-given question based on the given context only.
+template = """
+    ### Role
+    You are a precise and comprehensive Medical/Regulatory Affairs Assistant. Your goal is to answer questions based STRICTLY on the provided FDA guidance context.
 
-Question: {query}
+    ### Context Information
+    Below are relevant segments retrieved from the database. Each segment is formatted as [Index] (Title | Page): Content.
 
-Context (each entry shows content, title, and page):
-{context}
+    {context}
 
-Only answer based on the context. Do NOT assume or infer anything not explicitly stated.
-If the answer is not present in the given context, respond as: The answer to this question is not available
-in the provided content.
+    ### Instructions
+    1. **Analyze all segments**: Some information may be spread across multiple chunks. Synthesize them into a single, cohesive answer.
+    2. **Be Comprehensive**: Include all specific details, dates, names, and requirements mentioned in the context that are relevant to the question. 
+    3. **Accuracy First**: Do not infer or assume information not explicitly stated. If the context is insufficient to provide a full answer, state what is available and note what is missing.
+    4. **Tone**: Professional, direct, and factual.
+
+    ### Response Format
+    - If the answer is found: Provide a clear, structured response.
+    - If the answer is NOT in the context: Respond exactly with: "The answer to this question is not available in the provided content."
+
+    Question: {query}
+    Answer:
 """
 rag_prompt = ChatPromptTemplate.from_template(template)
 llm = ChatOpenAI(model='gpt-4o-mini')
 str_parser = StrOutputParser()
+ranker = Ranker(model_name="ms-marco-MiniLM-L-12-v2", cache_dir="opt/flashrank")
 
-def get_answer(query: str) -> str:
-    results = vector_store.similarity_search(query=query, k=15)
+def get_answer(query: str, collection_name="test") -> dict:
+    vector_store = QdrantVectorStore(
+        client=client,
+        collection_name=collection_name,
+        embedding=embeddings,
+    )
+    initial_results = vector_store.similarity_search(query=query, k=20)
+    passages = [
+            {
+                "id": i,
+                "text": doc.page_content,
+                "metadata": doc.metadata
+            } for i, doc in enumerate(initial_results)
+    ]
+    rerankrequest = RerankRequest(query=query, passages=passages)
+    rerank_results = ranker.rerank(rerankrequest)
+    top_5_results = rerank_results[:5]
+
+
     context = "\n\n".join([
-        f"Content: {doc.page_content}\nTitle: {doc.metadata.get('title','Unknown')}\nPage: {doc.metadata.get('page','?')}"
-        for doc in results
+        f"Content: {res['text']}\n"
+        f"Title: {res['metadata'].get('title', 'Unknown')}\n"
+        f"Page: {res['metadata'].get('page', '?')}"
+        for res in top_5_results
     ])
 
     manual_rag_chain = rag_prompt | llm | str_parser
@@ -49,18 +75,27 @@ def get_answer(query: str) -> str:
 
     sources = [
         {
-            "title": doc.metadata.get("title", "Unknown"),
-            "page": doc.metadata.get("page", "?"),
-            "pdf_id": doc.metadata.get("pdf_id", ""),
-            "url": doc.metadata.get("url", ""),
-            "field_communication_type": doc.metadata.get("field_communication_type", "")
+            "title": res['metadata'].get("title", "Unknown"), # 改为 ['metadata']
+            "page": res['metadata'].get("page", "?"),
+            "pdf_id": res['metadata'].get("pdf_id", ""),
+            "url": res['metadata'].get("url", ""),
+            "field_communication_type": res['metadata'].get("field_communication_type", "")
         }
-        for doc in results
+        for res in top_5_results # 确保遍历的是 Rerank 后的列表
+    ]
+
+    documents = [
+        {
+            "text": res['text'], 
+            "metadata": res['metadata']
+        } 
+        for res in top_5_results
     ]
 
     return {
         "answer": answer,
-        "sources": sources
+        "sources": sources,
+        "documents": documents
     }
 
 if __name__ == "__main__":
