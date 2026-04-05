@@ -32,17 +32,18 @@ The chatbot uses FDA medical guidance documents as its primary dataset:
 
 **3. Metric-Driven Evaluation (MLOps)**
 
-**The Framework:** Built a robust evaluation suite using **LangSmith** to monitor RAG performance in real-time.
+- **The Framework:** Built a robust evaluation suite using **LangSmith** to monitor RAG performance in real-time.
 
-**Automated QA:** Implemented a **GPT-4o-mini** as a Judge suite, benchmarking the system against a curated **50+ Golden Dataset**.
+- **Automated QA:** Implemented a **GPT-4o-mini** as a Judge suite, benchmarking the system against a curated **50+ Golden Dataset**.
 
-**Key Metrics:** Achieved high-tier production scores: 0.84 Correctness, 0.88 Groundedness, and 1.00 Retrieval Relevance.
+- **Key Metrics:** Achieved high-tier production scores: 0.84 Correctness, 0.88 Groundedness, and 1.00 Retrieval Relevance.
 
 **4. Cloud-Native Architecture & Memory Management**
 
-**Persistence:** Engineered a robust uploader using boto3 to stream PDF binaries directly to Amazon S3, creating a scalable Data Lake.
+- **Persistence:** Engineered a robust uploader using boto3 to stream PDF binaries directly to Amazon S3, creating a scalable Data Lake.
 
-**Resilience:** Implemented Memory Backpressure using bounded queues and Exponential Backoff to handle OpenAI API rate limits, ensuring the system remains stable under heavy ingestion loads.
+- **Resilience:** Implemented Memory Backpressure using bounded queues and Exponential Backoff to handle OpenAI API rate limits, ensuring the system remains stable under heavy ingestion loads.
+
 ---
 
 ## Performance Benchmarks
@@ -113,7 +114,8 @@ test/                      # Unit tests & Qdrant maintenance scripts
 - Docker (for running Qdrant)
 
 ### Backend Setup
-1. Environment Setup
+**1. Environment Setup**
+
 Clone the repository and initialize the Python environment.
 It is highly recommended to use a virtual environment to avoid dependency conflicts:
 ```
@@ -123,7 +125,7 @@ venv\Scripts\activate     # Windows
 pip install -r requirements.txt
 ```
 
-2. Secret Management:
+**2. Secret Management:**
 To ensure security and modularity, the system uses environment variables. Do not hardcode your API keys in config.py.
 
 Create a .env file in the backend/ root directory, add the following configuration to your .env file:
@@ -140,14 +142,14 @@ LANGCHAIN_PROJECT=FDA-RAG-Assistant
 QDRANT_URL=http://localhost:6333
 ```
 
-3. Infrastructure (Qdrant Vector Database)
+**3. Infrastructure (Qdrant Vector Database)**
 The system uses Qdrant for high-performance vector storage. The most reliable way to run it is via Docker:
 ```
 docker pull qdrant/qdrant
 docker run -p 6333:6333 -v qdrant_storage:/qdrant/storage qdrant/qdrant
 ```
 
-4. The ETL Pipeline (Data Ingestion)
+**4. The ETL Pipeline (Data Ingestion)**
 This is a three-stage process to move data from the FDA's servers to your Cloud RAG engine.
 
 **Stage A: Metadata Harvesting**
@@ -171,7 +173,7 @@ The core engine: utilizes a Producer-Consumer pattern to pull from S3, perform r
 python -m app.etl.initial_data_ingestion
 ```
 
-5. Application Launch
+**5. Application Launch**
 Backend (Flask API)
 Starts the RAG service, including the FlashRank re-ranker and LangChain orchestration.
 
