@@ -1,0 +1,46 @@
+{
+  "name": "smoke_v1",
+  "description": "8 balanced smoke queries selected from qa_dataset.json",
+  "queries": [
+    {
+      "id": "smoke_01",
+      "question": "How should sponsors integrate feedback from the FDA on HF study protocols into their development timelines, and what specific documentation is required for submission in their NDA, BLA, or ANDA applications?",
+      "source_id": "02cec6a1-97e9-4b5e-92f9-57520c684129"
+    },
+    {
+      "id": "smoke_02",
+      "question": "How can the defined context of use for a biomarker, including its characteristics and rationale, enhance the development and application of drug or biotechnology products compared to existing biomarkers?",
+      "source_id": "00901a29-1241-4d56-926b-54117d270cbe"
+    },
+    {
+      "id": "smoke_03",
+      "question": "How can the characteristics that distinguish user groups, such as limited hand dexterity and cognitive deficits, inform the selection and prioritization of critical user tasks during testing, particularly in conditions that may affect user interaction, like using the product with gloves or in dim lighting?",
+      "source_id": "05c0ce8d-6c8a-49ff-bb34-8efdde7364ff"
+    },
+    {
+      "id": "smoke_04",
+      "question": "How do the eligibility criteria for requesting FDR under sections 505G(b)(2)(A)(iv)(III) and 505G(b)(4)(D)(iii) of the FD&C Act ensure that only appropriate matters are addressed following the issuance of a Final Order by the FDA?",
+      "source_id": "05989522-ccd5-4b19-b1f9-d68626d4a2ac"
+    },
+    {
+      "id": "smoke_05",
+      "question": "How does the FDA's guidance on adulteration with filth, specifically regarding Escherichia coli in crabmeat, inform the alternative approaches that individuals or organizations may take to comply with applicable statutes and regulations?",
+      "source_id": "07ab33db-36d8-4644-9a3f-ee77800ea9df"
+    },
+    {
+      "id": "smoke_06",
+      "question": "How can the process of comparing results and resolving disagreements during the scoping review screening phase be effectively integrated with the two-step study selection process to enhance consistency among reviewers and ensure alignment with the review's objectives?",
+      "source_id": "000a04bc-bf36-49cb-915d-c9deb92bd0e8"
+    },
+    {
+      "id": "smoke_07",
+      "question": "How can sponsors ensure that the concentrations of methionine and cystine in the PER study test and reference casein diets are appropriately matched to avoid potential deficiencies or toxicities, while also adhering to the NRC (1995) guidelines for nutrient adequacy?",
+      "source_id": "05ee8719-775c-43da-a664-9c8d485346f2"
+    },
+    {
+      "id": "smoke_08",
+      "question": "How do the regulations governing color additives in biological products relate to the compliance requirements for drug products that contain color additives, particularly in the context of potential removal from the color additive regulations?",
+      "source_id": "09a22be7-e6a2-4456-902d-9ab5b79b980f"
+    }
+  ]
+}
