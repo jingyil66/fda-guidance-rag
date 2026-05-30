@@ -1,43 +1,30 @@
 import os
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from langchain_openai import OpenAIEmbeddings
 from qdrant_client import QdrantClient
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import StrOutputParser
 from backend.app.core.config import settings
+from backend.app.services.generation_service import (
+    build_documents,
+    build_sources,
+    format_context,
+    generate_answer,
+    get_llm,
+    get_parser,
+    get_prompt,
+)
 from backend.app.services.retrieval_service import retrieve_embedding
 from backend.app.services.rerank_service import get_ranker, rerank_passages
+
 os.environ["OPENAI_API_KEY"] = settings.OPENAI_API_KEY or ""
 
 client = QdrantClient(url="http://localhost:6333")
 
 embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 
-template = """
-    ### Role
-    You are a precise and comprehensive Medical/Regulatory Affairs Assistant. Your goal is to answer questions based STRICTLY on the provided FDA guidance context.
-
-    ### Context Information
-    Below are relevant segments retrieved from the database. Each segment is formatted as [Index] (Title | Page): Content.
-
-    {context}
-
-    ### Instructions
-    1. **Analyze all segments**: Some information may be spread across multiple chunks. Synthesize them into a single, cohesive answer.
-    2. **Be Comprehensive**: Include all specific details, dates, names, and requirements mentioned in the context that are relevant to the question. 
-    3. **Accuracy First**: Do not infer or assume information not explicitly stated. If the context is insufficient to provide a full answer, state what is available and note what is missing.
-    4. **Tone**: Professional, direct, and factual.
-
-    ### Response Format
-    - If the answer is found: Provide a clear, structured response.
-    - If the answer is NOT in the context: Respond exactly with: "The answer to this question is not available in the provided content."
-
-    Question: {query}
-    Answer:
-"""
-rag_prompt = ChatPromptTemplate.from_template(template)
-llm = ChatOpenAI(model='gpt-4o-mini')
-str_parser = StrOutputParser()
+rag_prompt = get_prompt()
+llm = get_llm()
+str_parser = get_parser()
 ranker = get_ranker()
+
 
 def get_answer(query: str, collection_name="test") -> dict:
     passages = retrieve_embedding(
@@ -54,45 +41,17 @@ def get_answer(query: str, collection_name="test") -> dict:
         ranker=ranker,
     )
 
-
-    context = "\n\n".join([
-        f"Content: {res['text']}\n"
-        f"Title: {res['metadata'].get('title', 'Unknown')}\n"
-        f"Page: {res['metadata'].get('page', '?')}"
-        for res in top_5_results
-    ])
-
-    manual_rag_chain = rag_prompt | llm | str_parser
-
-    answer = manual_rag_chain.invoke({
-        "query": query,
-        "context": context
-    })
-
-    sources = [
-        {
-            "title": res['metadata'].get("title", "Unknown"), # 改为 ['metadata']
-            "page": res['metadata'].get("page", "?"),
-            "pdf_id": res['metadata'].get("pdf_id", ""),
-            "url": res['metadata'].get("url", ""),
-            "field_communication_type": res['metadata'].get("field_communication_type", "")
-        }
-        for res in top_5_results # 确保遍历的是 Rerank 后的列表
-    ]
-
-    documents = [
-        {
-            "text": res['text'], 
-            "metadata": res['metadata']
-        } 
-        for res in top_5_results
-    ]
+    context = format_context(top_5_results)
+    answer = generate_answer(query, context, rag_prompt, llm, str_parser)
+    sources = build_sources(top_5_results)
+    documents = build_documents(top_5_results)
 
     return {
         "answer": answer,
         "sources": sources,
-        "documents": documents
+        "documents": documents,
     }
+
 
 if __name__ == "__main__":
     while True:
