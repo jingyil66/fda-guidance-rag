@@ -1,13 +1,12 @@
 import os
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-from langchain_qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-from langchain_openai import ChatOpenAI
 from flashrank import Ranker, RerankRequest
-from backend.app.core.config import OPENAI_API_KEY
-os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+from backend.app.core.config import settings
+from backend.app.services.retrieval_service import retrieve_embedding
+os.environ["OPENAI_API_KEY"] = settings.OPENAI_API_KEY or ""
 
 client = QdrantClient(url="http://localhost:6333")
 
@@ -41,19 +40,13 @@ str_parser = StrOutputParser()
 ranker = Ranker(model_name="ms-marco-MiniLM-L-12-v2", cache_dir="opt/flashrank")
 
 def get_answer(query: str, collection_name="test") -> dict:
-    vector_store = QdrantVectorStore(
+    passages = retrieve_embedding(
+        query,
+        collection_name,
+        top_k=20,
         client=client,
-        collection_name=collection_name,
-        embedding=embeddings,
+        embeddings=embeddings,
     )
-    initial_results = vector_store.similarity_search(query=query, k=20)
-    passages = [
-            {
-                "id": i,
-                "text": doc.page_content,
-                "metadata": doc.metadata
-            } for i, doc in enumerate(initial_results)
-    ]
     rerankrequest = RerankRequest(query=query, passages=passages)
     rerank_results = ranker.rerank(rerankrequest)
     top_5_results = rerank_results[:5]
