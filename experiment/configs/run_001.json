@@ -1,0 +1,62 @@
+{
+  "run_id": "run_001_baseline_fixed600_rerank",
+  "stage": "e2e",
+  "qa_dataset_path": "evaluation/qa_dataset.json",
+  "qa_dataset_fields": {
+    "question_field": "question",
+    "answer_field": "answer",
+    "context_field": "context",
+    "source_id_field": "source_id"
+  },
+  "pdf_subset": {
+    "enabled": true,
+    "subset_name": "subset_200_v1",
+    "subset_file": "experiment/subsets/subset_200_v1.json"
+  },
+  "vector_store": {
+    "provider": "qdrant",
+    "url": "http://localhost:6333",
+    "collection_name": "experiment_chunk600_overlap200"
+  },
+  "chunking": {
+    "strategy": "fixed",
+    "fixed": {
+      "chunk_size": 600,
+      "chunk_overlap": 200
+    },
+    "unstructured_section": {
+      "enabled": false,
+      "max_chars": 1200,
+      "min_chars": 200
+    }
+  },
+  "retrieval": {
+    "mode": "embedding_plus_rerank",
+    "embedding_model": "text-embedding-3-small",
+    "top_k_initial": 20,
+    "top_k_final": 5,
+    "bm25": {
+      "enabled": false
+    },
+    "fusion": {
+      "method": "rrf",
+      "rrf_k": 60
+    },
+    "rerank": {
+      "enabled": true,
+      "model": "ms-marco-MiniLM-L-12-v2"
+    }
+  },
+  "generation": {
+    "model": "gpt-4o-mini",
+    "temperature": 0,
+    "prompt_version": "strict_context_v1"
+  },
+  "evaluation": {
+    "k_list": [5, 10, 20],
+    "answer_metrics": ["correctness", "groundedness", "relevance"],
+    "retrieval_metrics": ["recall_at_k", "mrr", "context_precision"],
+    "e2e_success_rule": "correctness_and_groundedness_pass"
+  },
+  "notes": "Week 2 Day 3 baseline: fixed chunk 600/200 collection + embedding retrieval + FlashRank rerank + gpt-4o-mini."
+}
