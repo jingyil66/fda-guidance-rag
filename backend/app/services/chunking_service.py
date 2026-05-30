@@ -31,6 +31,17 @@ def chunk_fixed(
     return splitter.split_documents(docs)
 
 
+def chunk_unstructured_by_section(
+    docs: list[Document],
+    *,
+    max_chars: int = 1200,
+    min_chars: int = 200,
+) -> list[Document]:
+    raise NotImplementedError(
+        "unstructured section chunking is not implemented yet; use chunk_fixed instead"
+    )
+
+
 def chunks_to_records(chunks: list[Document], start_id: int = 0) -> list[dict]:
     return [
         {
