@@ -5,6 +5,7 @@ Usage (from project root):
     python experiment/run_experiment.py --config experiment/configs/run_001.json
     python experiment/run_experiment.py --config experiment/configs/run_001.json --limit 3
     python experiment/run_experiment.py --config experiment/configs/run_001.json --collection test
+    python experiment/run_experiment.py --score-only
 """
 
 from __future__ import annotations
@@ -50,6 +51,17 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=200,
         help="Characters of answer text to print per row",
+    )
+    parser.add_argument(
+        "--score-only",
+        action="store_true",
+        help="Skip pipeline run and score an existing results.jsonl",
+    )
+    parser.add_argument(
+        "--results",
+        type=Path,
+        default=None,
+        help="Results JSONL to score when using --score-only",
     )
     return parser.parse_args()
 
@@ -107,6 +119,83 @@ def default_output_path(run_config: dict) -> Path:
     return PROJECT_ROOT / "experiment" / "runs" / run_id / "results.jsonl"
 
 
+def write_json(path: Path, payload: dict | list) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as handle:
+        json.dump(payload, handle, ensure_ascii=False, indent=2)
+
+
+def read_jsonl(path: Path) -> list[dict]:
+    records = []
+    with path.open("r", encoding="utf-8") as handle:
+        for line in handle:
+            line = line.strip()
+            if line:
+                records.append(json.loads(line))
+    return records
+
+
+def default_metrics_path(run_config: dict) -> Path:
+    run_id = run_config.get("run_id", "unnamed_run")
+    return PROJECT_ROOT / "experiment" / "runs" / run_id / "metrics.json"
+
+
+def print_metrics(summary: dict) -> None:
+    print("--- retrieval metrics ---")
+    print(f"query_count: {summary.get('query_count', 0)}")
+    print(f"mrr: {summary.get('mrr', 0.0):.4f}")
+    for key in sorted(summary):
+        if key.startswith("recall_at_") or key.startswith("context_precision_at_"):
+            print(f"{key}: {summary[key]:.4f}")
+
+
+def score_results(run_config: dict, results_path: Path) -> int:
+    from experiment.evaluators import evaluate_records
+
+    if not results_path.exists():
+        print(f"Results not found: {results_path}")
+        return 1
+
+    records = read_jsonl(results_path)
+    fields = run_config.get("qa_dataset_fields") or {}
+    context_field = fields.get("context_field", "context")
+    source_id_field = fields.get("source_id_field", "source_id")
+    answer_field = fields.get("answer_field", "answer")
+
+    try:
+        qa_rows = load_qa_dataset(run_config)
+    except FileNotFoundError:
+        qa_rows = []
+
+    for record in records:
+        qa_index = record.get("qa_index")
+        if qa_index is None or qa_index >= len(qa_rows):
+            continue
+        gold_row = qa_rows[qa_index]
+        record.setdefault("gold_context", gold_row.get(context_field, ""))
+        record.setdefault("gold_source_id", gold_row.get(source_id_field, ""))
+        record.setdefault("gold_answer", gold_row.get(answer_field, ""))
+
+    k_list = (run_config.get("evaluation") or {}).get("k_list") or [5, 10, 20]
+    per_query, summary = evaluate_records(records, k_list=k_list)
+
+    metrics_path = default_metrics_path(run_config)
+    write_json(
+        metrics_path,
+        {
+            "run_id": run_config.get("run_id"),
+            "results_path": str(results_path),
+            "match_strategy": "gold_context_overlap_or_source_id",
+            "summary": summary,
+            "per_query": per_query,
+        },
+    )
+
+    print_metrics(summary)
+    print(f"Wrote metrics to {metrics_path}")
+    return 0
+
+
 def write_jsonl(path: Path, records: list[dict]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
@@ -117,12 +206,6 @@ def write_jsonl(path: Path, records: list[dict]) -> None:
 def main() -> int:
     args = parse_args()
 
-    from backend.app.core.config import settings
-    from backend.app.services.pipeline_service import run_rag_pipeline
-
-    os.environ["OPENAI_API_KEY"] = settings.OPENAI_API_KEY or ""
-    settings.validate()
-
     if not args.config.exists():
         print(f"Config not found: {args.config}")
         return 1
@@ -132,9 +215,22 @@ def main() -> int:
         print("Run config must be a JSON object.")
         return 1
 
+    output_path = args.output or default_output_path(run_config)
+
+    if args.score_only:
+        results_path = args.results or output_path
+        return score_results(run_config, results_path)
+
+    from backend.app.core.config import settings
+    from backend.app.services.pipeline_service import run_rag_pipeline
+
+    os.environ["OPENAI_API_KEY"] = settings.OPENAI_API_KEY or ""
+    settings.validate()
+
     fields = run_config.get("qa_dataset_fields") or {}
     question_field = fields.get("question_field", "question")
     answer_field = fields.get("answer_field", "answer")
+    context_field = fields.get("context_field", "context")
     source_id_field = fields.get("source_id_field", "source_id")
 
     qa_rows = load_qa_dataset(run_config)
@@ -142,7 +238,6 @@ def main() -> int:
         qa_rows = qa_rows[: args.limit]
 
     pipeline_config = build_pipeline_config(run_config, args.collection)
-    output_path = args.output or default_output_path(run_config)
 
     print(f"run_id: {run_config.get('run_id', 'unnamed_run')}")
     print(f"stage: {run_config.get('stage', 'unknown')}")
@@ -166,10 +261,12 @@ def main() -> int:
                 "qa_index": index,
                 "question": question,
                 "gold_answer": row.get(answer_field, ""),
+                "gold_context": row.get(context_field, ""),
                 "gold_source_id": row.get(source_id_field, ""),
                 "error": str(exc),
                 "answer": "",
                 "sources": [],
+                "documents": [],
                 "source_count": 0,
             }
             results.append(record)
@@ -177,6 +274,7 @@ def main() -> int:
 
         answer = pipeline_result.get("answer", "")
         sources = pipeline_result.get("sources") or []
+        documents = pipeline_result.get("documents") or []
         preview = answer[: args.preview_chars]
         if len(answer) > args.preview_chars:
             preview += "..."
@@ -188,9 +286,11 @@ def main() -> int:
             "qa_index": index,
             "question": question,
             "gold_answer": row.get(answer_field, ""),
+            "gold_context": row.get(context_field, ""),
             "gold_source_id": row.get(source_id_field, ""),
             "answer": answer,
             "sources": sources,
+            "documents": documents,
             "source_count": len(sources),
         }
         results.append(record)
@@ -198,7 +298,8 @@ def main() -> int:
 
     write_jsonl(output_path, results)
     print(f"Wrote {len(results)} records to {output_path}")
-    return 0
+    print()
+    return score_results(run_config, output_path)
 
 
 if __name__ == "__main__":
