@@ -3,9 +3,9 @@ from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from qdrant_client import QdrantClient
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-from flashrank import Ranker, RerankRequest
 from backend.app.core.config import settings
 from backend.app.services.retrieval_service import retrieve_embedding
+from backend.app.services.rerank_service import get_ranker, rerank_passages
 os.environ["OPENAI_API_KEY"] = settings.OPENAI_API_KEY or ""
 
 client = QdrantClient(url="http://localhost:6333")
@@ -37,7 +37,7 @@ template = """
 rag_prompt = ChatPromptTemplate.from_template(template)
 llm = ChatOpenAI(model='gpt-4o-mini')
 str_parser = StrOutputParser()
-ranker = Ranker(model_name="ms-marco-MiniLM-L-12-v2", cache_dir="opt/flashrank")
+ranker = get_ranker()
 
 def get_answer(query: str, collection_name="test") -> dict:
     passages = retrieve_embedding(
@@ -47,9 +47,12 @@ def get_answer(query: str, collection_name="test") -> dict:
         client=client,
         embeddings=embeddings,
     )
-    rerankrequest = RerankRequest(query=query, passages=passages)
-    rerank_results = ranker.rerank(rerankrequest)
-    top_5_results = rerank_results[:5]
+    top_5_results = rerank_passages(
+        query,
+        passages,
+        top_k=5,
+        ranker=ranker,
+    )
 
 
     context = "\n\n".join([
