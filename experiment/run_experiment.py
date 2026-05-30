@@ -149,8 +149,14 @@ def print_metrics(summary: dict) -> None:
             print(f"{key}: {summary[key]:.4f}")
 
 
-def score_results(run_config: dict, results_path: Path) -> int:
+def score_results(
+    run_config: dict,
+    results_path: Path,
+    *,
+    collection_name: str | None = None,
+) -> int:
     from experiment.evaluators import evaluate_records
+    from experiment.io_utils import persist_run_artifacts
 
     if not results_path.exists():
         print(f"Results not found: {results_path}")
@@ -193,6 +199,17 @@ def score_results(run_config: dict, results_path: Path) -> int:
 
     print_metrics(summary)
     print(f"Wrote metrics to {metrics_path}")
+
+    registry_path, failures_path = persist_run_artifacts(
+        run_config,
+        records,
+        per_query,
+        summary,
+        project_root=PROJECT_ROOT,
+        collection_name=collection_name,
+    )
+    print(f"Appended registry row to {registry_path}")
+    print(f"Wrote failures to {failures_path}")
     return 0
 
 
@@ -219,7 +236,12 @@ def main() -> int:
 
     if args.score_only:
         results_path = args.results or output_path
-        return score_results(run_config, results_path)
+        pipeline_config = build_pipeline_config(run_config, args.collection)
+        return score_results(
+            run_config,
+            results_path,
+            collection_name=pipeline_config["collection_name"],
+        )
 
     from backend.app.core.config import settings
     from backend.app.services.pipeline_service import run_rag_pipeline
@@ -299,7 +321,11 @@ def main() -> int:
     write_jsonl(output_path, results)
     print(f"Wrote {len(results)} records to {output_path}")
     print()
-    return score_results(run_config, output_path)
+    return score_results(
+        run_config,
+        output_path,
+        collection_name=pipeline_config["collection_name"],
+    )
 
 
 if __name__ == "__main__":
