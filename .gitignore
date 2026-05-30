@@ -1,5 +1,8 @@
 .cursor
 data/
+
+# Experiment run artifacts (results, metrics, failures)
+experiment/runs/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
