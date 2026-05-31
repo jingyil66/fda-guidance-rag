@@ -6,6 +6,7 @@ Usage (from project root):
     python experiment/run_experiment.py --config experiment/configs/run_001.json --limit 3
     python experiment/run_experiment.py --config experiment/configs/run_001.json --collection test
     python experiment/run_experiment.py --score-only
+    python experiment/run_experiment.py --score-only --skip-answer-eval
 """
 
 from __future__ import annotations
@@ -62,6 +63,17 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         default=None,
         help="Results JSONL to score when using --score-only",
+    )
+    parser.add_argument(
+        "--skip-answer-eval",
+        action="store_true",
+        help="Skip GPT-as-judge answer metrics (retrieval only)",
+    )
+    parser.add_argument(
+        "--answer-limit",
+        type=int,
+        default=0,
+        help="Max records to judge when scoring answers (0 = all)",
     )
     return parser.parse_args()
 
@@ -140,6 +152,13 @@ def default_metrics_path(run_config: dict) -> Path:
     return PROJECT_ROOT / "experiment" / "runs" / run_id / "metrics.json"
 
 
+def ensure_openai_env() -> None:
+    from backend.app.core.config import settings
+
+    os.environ["OPENAI_API_KEY"] = settings.OPENAI_API_KEY or ""
+    settings.validate()
+
+
 def print_metrics(summary: dict) -> None:
     print("--- retrieval metrics ---")
     print(f"query_count: {summary.get('query_count', 0)}")
@@ -148,13 +167,61 @@ def print_metrics(summary: dict) -> None:
         if key.startswith("recall_at_") or key.startswith("context_precision_at_"):
             print(f"{key}: {summary[key]:.4f}")
 
+    answer_keys = ("correctness", "groundedness", "relevance", "e2e_success_rate")
+    if any(summary.get(key) is not None for key in answer_keys):
+        print("--- answer metrics ---")
+        for key in answer_keys:
+            if summary.get(key) is not None:
+                print(f"{key}: {summary[key]:.4f}")
+
+
+def run_answer_evaluation(
+    run_config: dict,
+    records: list[dict],
+    *,
+    answer_limit: int = 0,
+) -> tuple[list[dict], dict[str, float | None]]:
+    from experiment.answer_evaluators import (
+        AnswerJudge,
+        aggregate_answer_metrics,
+        evaluate_answer_record,
+    )
+
+    ensure_openai_env()
+
+    evaluation = run_config.get("evaluation") or {}
+    generation = run_config.get("generation") or {}
+    metrics = evaluation.get("answer_metrics") or [
+        "correctness",
+        "groundedness",
+        "relevance",
+    ]
+    judge_model = evaluation.get("judge_model") or generation.get("model", "gpt-4o-mini")
+
+    target_records = records
+    if answer_limit > 0:
+        target_records = records[:answer_limit]
+
+    judge = AnswerJudge(model=judge_model)
+    per_query = [
+        evaluate_answer_record(record, judge, metrics=metrics)
+        for record in target_records
+    ]
+    return per_query, aggregate_answer_metrics(per_query, metrics)
+
 
 def score_results(
     run_config: dict,
     results_path: Path,
     *,
     collection_name: str | None = None,
+    skip_answer_eval: bool = False,
+    answer_limit: int = 0,
 ) -> int:
+    from experiment.answer_evaluators import (
+        compute_e2e_success_rate,
+        merge_retrieval_and_answer_metrics,
+    )
     from experiment.evaluators import evaluate_records
     from experiment.io_utils import persist_run_artifacts
 
@@ -185,6 +252,24 @@ def score_results(
     k_list = (run_config.get("evaluation") or {}).get("k_list") or [5, 10, 20]
     per_query, summary = evaluate_records(records, k_list=k_list)
 
+    if not skip_answer_eval:
+        evaluation = run_config.get("evaluation") or {}
+        answer_metrics = evaluation.get("answer_metrics") or []
+        if answer_metrics:
+            print("Running answer evaluation (GPT-as-judge)...")
+            answer_rows, answer_summary = run_answer_evaluation(
+                run_config,
+                records,
+                answer_limit=answer_limit,
+            )
+            per_query = merge_retrieval_and_answer_metrics(per_query, answer_rows)
+            summary.update(answer_summary)
+            rule = evaluation.get("e2e_success_rule", "correctness_and_groundedness_pass")
+            summary["e2e_success_rate"] = compute_e2e_success_rate(
+                per_query,
+                rule=rule,
+            )
+
     metrics_path = default_metrics_path(run_config)
     write_json(
         metrics_path,
@@ -194,6 +279,7 @@ def score_results(
             "match_strategy": "gold_context_overlap_or_source_id",
             "summary": summary,
             "per_query": per_query,
+            "answer_eval_enabled": not skip_answer_eval,
         },
     )
 
@@ -241,13 +327,13 @@ def main() -> int:
             run_config,
             results_path,
             collection_name=pipeline_config["collection_name"],
+            skip_answer_eval=args.skip_answer_eval,
+            answer_limit=args.answer_limit,
         )
 
-    from backend.app.core.config import settings
     from backend.app.services.pipeline_service import run_rag_pipeline
 
-    os.environ["OPENAI_API_KEY"] = settings.OPENAI_API_KEY or ""
-    settings.validate()
+    ensure_openai_env()
 
     fields = run_config.get("qa_dataset_fields") or {}
     question_field = fields.get("question_field", "question")
@@ -325,6 +411,8 @@ def main() -> int:
         run_config,
         output_path,
         collection_name=pipeline_config["collection_name"],
+        skip_answer_eval=args.skip_answer_eval,
+        answer_limit=args.answer_limit,
     )
 
 

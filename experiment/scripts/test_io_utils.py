@@ -26,6 +26,8 @@ def main() -> int:
         write_failures_jsonl,
     )
 
+    from experiment.io_utils import classify_failure
+
     run_config = {
         "run_id": "test_run",
         "stage": "e2e",
@@ -53,10 +55,16 @@ def main() -> int:
         "recall_at_20": 0.5,
         "mrr": 0.75,
         "context_precision_at_5": 0.4,
+        "correctness": 0.5,
+        "groundedness": 0.8,
+        "relevance": 0.9,
+        "e2e_success_rate": 0.4,
     }
     row = build_registry_row(run_config, summary, collection_name="test")
     assert row["run_id"] == "test_run"
     assert row["recall_at_5"] == "0.50"
+    assert row["correctness"] == "0.50"
+    assert row["groundedness"] == "0.80"
 
     records = [
         {
@@ -77,12 +85,14 @@ def main() -> int:
         },
     ]
     per_query = [
-        {"qa_index": 0, "recall_at_5": 1.0, "recall_at_10": 1.0, "mrr": 1.0},
+        {"qa_index": 0, "recall_at_5": 1.0, "recall_at_10": 1.0, "mrr": 1.0, "correctness": 0.0, "groundedness": 1.0, "relevance": 1.0},
         {"qa_index": 1, "recall_at_5": 0.0, "recall_at_10": 0.0, "mrr": 0.0},
     ]
     failures = build_failure_records(run_config, records, per_query)
-    assert len(failures) == 1
-    assert failures[0]["failure_type_primary"] == "R1_not_retrieved"
+    assert len(failures) == 2
+    assert failures[0]["failure_type_primary"] == "G1_low_correctness"
+    assert failures[1]["failure_type_primary"] == "R1_not_retrieved"
+    assert classify_failure(records[0], per_query[0]) == ("G1_low_correctness", None)
 
     with tempfile.TemporaryDirectory() as tmp:
         tmp_path = Path(tmp)
@@ -97,7 +107,8 @@ def main() -> int:
         assert rows[0]["run_id"] == "test_run"
 
         loaded = [json.loads(line) for line in failures_path.read_text(encoding="utf-8").splitlines()]
-        assert loaded[0]["qa_index"] == 1
+        assert loaded[0]["qa_index"] == 0
+        assert loaded[1]["qa_index"] == 1
 
     print("io_utils ok")
     return 0

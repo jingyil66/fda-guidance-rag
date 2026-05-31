@@ -72,9 +72,13 @@ def build_registry_row(
     generation = run_config.get("generation") or {}
     pdf_subset = run_config.get("pdf_subset") or {}
 
+    evaluation = run_config.get("evaluation") or {}
+    judge_model = evaluation.get("judge_model") or generation.get("model", "gpt-4o-mini")
+
     query_count = summary.get("query_count", 0) or 0
-    recall_at_5 = summary.get("recall_at_5", 0.0)
-    e2e_success_rate = recall_at_5 if query_count else 0.0
+    e2e_success_rate = summary.get("e2e_success_rate")
+    if e2e_success_rate is None:
+        e2e_success_rate = summary.get("recall_at_5", 0.0) if query_count else 0.0
 
     return {
         "run_id": str(run_config.get("run_id", "unnamed_run")),
@@ -93,15 +97,15 @@ def build_registry_row(
         "rerank_enabled": str(bool(rerank.get("enabled", True))).lower(),
         "rerank_model": str(rerank.get("model", "")),
         "llm_model": str(generation.get("model", "")),
-        "judge_model": str(generation.get("model", "gpt-4o-mini")),
+        "judge_model": str(judge_model),
         "recall_at_5": _format_metric(summary.get("recall_at_5")),
         "recall_at_10": _format_metric(summary.get("recall_at_10")),
         "recall_at_20": _format_metric(summary.get("recall_at_20")),
         "mrr": _format_metric(summary.get("mrr")),
         "context_precision_at_5": _format_metric(summary.get("context_precision_at_5")),
-        "correctness": "0.00",
-        "groundedness": "0.00",
-        "relevance": "0.00",
+        "correctness": _format_metric(summary.get("correctness")),
+        "groundedness": _format_metric(summary.get("groundedness")),
+        "relevance": _format_metric(summary.get("relevance")),
         "e2e_success_rate": _format_metric(e2e_success_rate),
         "notes": notes or str(run_config.get("notes", "")),
     }
@@ -160,13 +164,33 @@ def _rank_of_gold(record: dict) -> int | None:
     return None
 
 
+def _answer_failure_secondary(per_query: dict) -> str | None:
+    if per_query.get("correctness") == 0.0:
+        return "G1_low_correctness"
+    if per_query.get("groundedness") == 0.0:
+        return "G2_low_groundedness"
+    if per_query.get("relevance") == 0.0:
+        return "G3_low_relevance"
+    return None
+
+
 def classify_failure(record: dict, per_query: dict) -> tuple[str, str | None]:
     if record.get("error"):
         return "E1_runtime_error", None
+
+    answer_secondary = _answer_failure_secondary(per_query)
+
     if per_query.get("recall_at_5", 0.0) == 0.0:
-        return "R1_not_retrieved", None
+        return "R1_not_retrieved", answer_secondary
     if per_query.get("mrr", 0.0) < 1.0:
-        return "R2_suboptimal_rank", None
+        return "R2_suboptimal_rank", answer_secondary
+
+    if per_query.get("correctness") == 0.0:
+        return "G1_low_correctness", None
+    if per_query.get("groundedness") == 0.0:
+        return "G2_low_groundedness", None
+    if per_query.get("relevance") == 0.0:
+        return "G3_low_relevance", None
     return "PASS", None
 
 
@@ -196,9 +220,9 @@ def build_failure_record(
             )),
         },
         "answer_eval": {
-            "correctness": None,
-            "groundedness": None,
-            "relevance": None,
+            "correctness": per_query.get("correctness"),
+            "groundedness": per_query.get("groundedness"),
+            "relevance": per_query.get("relevance"),
         },
         "failure_type_primary": primary,
         "failure_type_secondary": secondary,
