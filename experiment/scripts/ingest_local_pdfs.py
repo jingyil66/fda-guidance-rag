@@ -37,7 +37,21 @@ def parse_args() -> argparse.Namespace:
         default=0,
         help="Max number of PDFs to ingest (0 = all)",
     )
+    parser.add_argument(
+        "--subset-file",
+        type=Path,
+        default=None,
+        help="Optional subset JSON; only ingest listed pdf_ids",
+    )
     return parser.parse_args()
+
+
+def load_subset_pdf_ids(path: Path) -> set[str]:
+    import json
+
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    pdf_ids = payload.get("pdf_ids") or []
+    return {str(pdf_id) for pdf_id in pdf_ids}
 
 
 def main() -> int:
@@ -57,6 +71,9 @@ def main() -> int:
         return 1
 
     pdf_files = sorted(args.data_dir.glob("*.pdf"))
+    if args.subset_file:
+        allowed_ids = load_subset_pdf_ids(args.subset_file)
+        pdf_files = [path for path in pdf_files if path.stem in allowed_ids]
     if args.limit > 0:
         pdf_files = pdf_files[: args.limit]
 
