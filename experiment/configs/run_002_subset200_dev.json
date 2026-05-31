@@ -56,7 +56,8 @@
     "k_list": [5, 10, 20],
     "answer_metrics": ["correctness", "groundedness", "relevance"],
     "retrieval_metrics": ["recall_at_k", "mrr", "context_precision"],
+    "retrieval_match_strategy": "pdf_id_page_with_text_fallback",
     "e2e_success_rule": "correctness_and_groundedness_pass"
   },
-  "notes": "Week 3 Day 2 dev split on subset_200 collection (600/200 fixed chunk + rerank)."
+  "notes": "Week 3 Day 5 dev split on subset_200 with pdf_id+page gold alignment."
 }

@@ -15,6 +15,7 @@ import argparse
 import json
 import os
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -75,6 +76,11 @@ def parse_args() -> argparse.Namespace:
         default=0,
         help="Max records to judge when scoring answers (0 = all)",
     )
+    parser.add_argument(
+        "--skip-registry",
+        action="store_true",
+        help="Do not append a row to registry.csv (useful for repeat-run checks)",
+    )
     return parser.parse_args()
 
 
@@ -124,6 +130,74 @@ def build_pipeline_config(run_config: dict, collection_override: str | None = No
         "llm_model": generation.get("model", "gpt-4o-mini"),
         "rerank_model": rerank.get("model", "ms-marco-MiniLM-L-12-v2"),
     }
+
+
+def default_run_dir(run_config: dict) -> Path:
+    run_id = run_config.get("run_id", "unnamed_run")
+    return PROJECT_ROOT / "experiment" / "runs" / run_id
+
+
+def default_config_snapshot_path(run_config: dict) -> Path:
+    return default_run_dir(run_config) / "config.json"
+
+
+def default_manifest_path(run_config: dict) -> Path:
+    return default_run_dir(run_config) / "run_manifest.json"
+
+
+def enrich_record_gold_fields(record: dict, gold_row: dict, fields: dict) -> None:
+    context_field = fields.get("context_field", "context")
+    source_id_field = fields.get("source_id_field", "source_id")
+    answer_field = fields.get("answer_field", "answer")
+
+    record.setdefault("gold_context", gold_row.get(context_field, ""))
+    record.setdefault("gold_source_id", gold_row.get(source_id_field, ""))
+    record.setdefault("gold_answer", gold_row.get(answer_field, ""))
+    record.setdefault("gold_pdf_id", gold_row.get("gold_pdf_id", ""))
+    if "gold_page" not in record and gold_row.get("gold_page") is not None:
+        record["gold_page"] = gold_row.get("gold_page")
+
+
+def resolve_retrieval_match_strategy(records: list[dict]) -> str:
+    if any(record.get("gold_pdf_id") for record in records):
+        return "pdf_id_page_with_text_fallback"
+    return "gold_context_overlap_or_source_id"
+
+
+def save_run_provenance(
+    run_config: dict,
+    *,
+    config_source: Path,
+    collection_name: str | None = None,
+) -> tuple[Path, Path]:
+    run_dir = default_run_dir(run_config)
+    run_dir.mkdir(parents=True, exist_ok=True)
+
+    snapshot = dict(run_config)
+    snapshot["_provenance"] = {
+        "config_source": str(config_source),
+        "saved_at": datetime.now(timezone.utc).isoformat(),
+        "collection_name": collection_name or "",
+    }
+    config_path = default_config_snapshot_path(run_config)
+    write_json(config_path, snapshot)
+
+    pdf_subset = run_config.get("pdf_subset") or {}
+    split_manifest = PROJECT_ROOT / "experiment" / "subsets" / "qa_split_v1.json"
+    alignment_manifest = PROJECT_ROOT / "experiment" / "subsets" / "qa_alignment_v1.json"
+    manifest = {
+        "run_id": run_config.get("run_id"),
+        "saved_at": snapshot["_provenance"]["saved_at"],
+        "qa_dataset_path": run_config.get("qa_dataset_path"),
+        "pdf_subset": pdf_subset,
+        "collection_name": collection_name or (run_config.get("vector_store") or {}).get("collection_name"),
+        "qa_split_manifest": str(split_manifest) if split_manifest.exists() else "",
+        "qa_alignment_manifest": str(alignment_manifest) if alignment_manifest.exists() else "",
+        "retrieval_match_strategy": resolve_retrieval_match_strategy([]),
+    }
+    manifest_path = default_manifest_path(run_config)
+    write_json(manifest_path, manifest)
+    return config_path, manifest_path
 
 
 def default_output_path(run_config: dict) -> Path:
@@ -217,6 +291,8 @@ def score_results(
     collection_name: str | None = None,
     skip_answer_eval: bool = False,
     answer_limit: int = 0,
+    skip_registry: bool = False,
+    config_source: Path | None = None,
 ) -> int:
     from experiment.answer_evaluators import (
         compute_e2e_success_rate,
@@ -231,9 +307,6 @@ def score_results(
 
     records = read_jsonl(results_path)
     fields = run_config.get("qa_dataset_fields") or {}
-    context_field = fields.get("context_field", "context")
-    source_id_field = fields.get("source_id_field", "source_id")
-    answer_field = fields.get("answer_field", "answer")
 
     try:
         qa_rows = load_qa_dataset(run_config)
@@ -244,10 +317,21 @@ def score_results(
         qa_index = record.get("qa_index")
         if qa_index is None or qa_index >= len(qa_rows):
             continue
-        gold_row = qa_rows[qa_index]
-        record.setdefault("gold_context", gold_row.get(context_field, ""))
-        record.setdefault("gold_source_id", gold_row.get(source_id_field, ""))
-        record.setdefault("gold_answer", gold_row.get(answer_field, ""))
+        enrich_record_gold_fields(record, qa_rows[qa_index], fields)
+
+    match_strategy = resolve_retrieval_match_strategy(records)
+    if config_source is not None:
+        config_path, manifest_path = save_run_provenance(
+            run_config,
+            config_source=config_source,
+            collection_name=collection_name,
+        )
+        manifest = load_json(manifest_path)
+        if isinstance(manifest, dict):
+            manifest["retrieval_match_strategy"] = match_strategy
+            write_json(manifest_path, manifest)
+        print(f"Wrote config snapshot to {config_path}")
+        print(f"Wrote run manifest to {manifest_path}")
 
     k_list = (run_config.get("evaluation") or {}).get("k_list") or [5, 10, 20]
     per_query, summary = evaluate_records(records, k_list=k_list)
@@ -276,7 +360,7 @@ def score_results(
         {
             "run_id": run_config.get("run_id"),
             "results_path": str(results_path),
-            "match_strategy": "gold_context_overlap_or_source_id",
+            "match_strategy": match_strategy,
             "summary": summary,
             "per_query": per_query,
             "answer_eval_enabled": not skip_answer_eval,
@@ -284,6 +368,7 @@ def score_results(
     )
 
     print_metrics(summary)
+    print(f"match_strategy: {match_strategy}")
     print(f"Wrote metrics to {metrics_path}")
 
     registry_path, failures_path = persist_run_artifacts(
@@ -293,8 +378,12 @@ def score_results(
         summary,
         project_root=PROJECT_ROOT,
         collection_name=collection_name,
+        skip_registry=skip_registry,
     )
-    print(f"Appended registry row to {registry_path}")
+    if registry_path:
+        print(f"Appended registry row to {registry_path}")
+    else:
+        print("Skipped registry append")
     print(f"Wrote failures to {failures_path}")
     return 0
 
@@ -329,6 +418,8 @@ def main() -> int:
             collection_name=pipeline_config["collection_name"],
             skip_answer_eval=args.skip_answer_eval,
             answer_limit=args.answer_limit,
+            skip_registry=args.skip_registry,
+            config_source=args.config,
         )
 
     from backend.app.services.pipeline_service import run_rag_pipeline
@@ -346,6 +437,11 @@ def main() -> int:
         qa_rows = qa_rows[: args.limit]
 
     pipeline_config = build_pipeline_config(run_config, args.collection)
+    save_run_provenance(
+        run_config,
+        config_source=args.config,
+        collection_name=pipeline_config["collection_name"],
+    )
 
     print(f"run_id: {run_config.get('run_id', 'unnamed_run')}")
     print(f"stage: {run_config.get('stage', 'unknown')}")
@@ -371,6 +467,8 @@ def main() -> int:
                 "gold_answer": row.get(answer_field, ""),
                 "gold_context": row.get(context_field, ""),
                 "gold_source_id": row.get(source_id_field, ""),
+                "gold_pdf_id": row.get("gold_pdf_id", ""),
+                "gold_page": row.get("gold_page"),
                 "error": str(exc),
                 "answer": "",
                 "sources": [],
@@ -396,6 +494,8 @@ def main() -> int:
             "gold_answer": row.get(answer_field, ""),
             "gold_context": row.get(context_field, ""),
             "gold_source_id": row.get(source_id_field, ""),
+            "gold_pdf_id": row.get("gold_pdf_id", ""),
+            "gold_page": row.get("gold_page"),
             "answer": answer,
             "sources": sources,
             "documents": documents,
@@ -413,6 +513,8 @@ def main() -> int:
         collection_name=pipeline_config["collection_name"],
         skip_answer_eval=args.skip_answer_eval,
         answer_limit=args.answer_limit,
+        skip_registry=args.skip_registry,
+        config_source=args.config,
     )
 
 

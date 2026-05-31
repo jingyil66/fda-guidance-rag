@@ -157,6 +157,8 @@ def _rank_of_gold(record: dict) -> int | None:
         record.get("documents") or [],
         gold_context=record.get("gold_context", ""),
         gold_source_id=record.get("gold_source_id", ""),
+        gold_pdf_id=record.get("gold_pdf_id", ""),
+        gold_page=record.get("gold_page"),
     )
     for rank, hit in enumerate(flags, start=1):
         if hit:
@@ -211,11 +213,13 @@ def build_failure_record(
             "recall_at_5": per_query.get("recall_at_5", 0.0),
             "recall_at_10": per_query.get("recall_at_10", 0.0),
             "rank_of_gold": _rank_of_gold(record),
-            "mrr": per_query.get("mrr", mrr(
+            "            mrr": per_query.get("mrr", mrr(
                 build_relevance_flags(
                     record.get("documents") or [],
                     gold_context=record.get("gold_context", ""),
                     gold_source_id=record.get("gold_source_id", ""),
+                    gold_pdf_id=record.get("gold_pdf_id", ""),
+                    gold_page=record.get("gold_page"),
                 )
             )),
         },
@@ -277,17 +281,20 @@ def persist_run_artifacts(
     registry_path: Path | None = None,
     failures_path: Path | None = None,
     notes: str = "",
-) -> tuple[Path, Path]:
-    registry_row = build_registry_row(
-        run_config,
-        summary,
-        collection_name=collection_name,
-        notes=notes,
-    )
-    registry_file = append_registry_row(
-        registry_row,
-        registry_path=registry_path or (project_root / DEFAULT_REGISTRY_PATH),
-    )
+    skip_registry: bool = False,
+) -> tuple[Path | None, Path]:
+    registry_file = None
+    if not skip_registry:
+        registry_row = build_registry_row(
+            run_config,
+            summary,
+            collection_name=collection_name,
+            notes=notes,
+        )
+        registry_file = append_registry_row(
+            registry_row,
+            registry_path=registry_path or (project_root / DEFAULT_REGISTRY_PATH),
+        )
 
     failures = build_failure_records(run_config, records, per_query_metrics)
     failures_file = write_failures_jsonl(

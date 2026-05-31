@@ -20,6 +20,7 @@ def main() -> int:
         aggregate_metrics,
         context_precision_at_k,
         evaluate_record,
+        is_retrieval_hit,
         mrr,
         recall_at_k,
     )
@@ -47,6 +48,32 @@ def main() -> int:
     summary = aggregate_metrics([metrics], k_list=[1, 2])
     assert summary["query_count"] == 1
     assert summary["recall_at_2"] == 1.0
+
+    assert is_retrieval_hit(
+        "any text",
+        gold_pdf_id="122971",
+        gold_page=3,
+        retrieved_metadata={"pdf_id": "122971", "page": 3},
+    )
+    assert not is_retrieval_hit(
+        "any text",
+        gold_pdf_id="122971",
+        gold_page=3,
+        retrieved_metadata={"pdf_id": "122971", "page": 4},
+    )
+
+    page_record = {
+        "qa_index": 1,
+        "gold_pdf_id": "122971",
+        "gold_page": 2,
+        "documents": [
+            {"text": "other", "metadata": {"pdf_id": "999", "page": 1}},
+            {"text": "hit page", "metadata": {"pdf_id": "122971", "page": 2}},
+        ],
+    }
+    page_metrics = evaluate_record(page_record, k_list=[1, 2])
+    assert page_metrics["recall_at_1"] == 0.0
+    assert page_metrics["recall_at_2"] == 1.0
 
     print("evaluators ok")
     return 0

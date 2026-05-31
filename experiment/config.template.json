@@ -56,6 +56,7 @@
     "k_list": [5, 10, 20],
     "answer_metrics": ["correctness", "groundedness", "relevance"],
     "retrieval_metrics": ["recall_at_k", "mrr", "context_precision"],
+    "retrieval_match_strategy": "pdf_id_page_with_text_fallback",
     "e2e_success_rule": "correctness_and_groundedness_pass"
   },
   "notes": "Template aligned with qa_dataset.json fields: question, answer, context, source_id."

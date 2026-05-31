@@ -4,209 +4,329 @@
     "answer": "- Sponsors should plan development timelines to allow for FDA feedback on HF study protocols before initiating the study.\n- HF study protocols must be submitted within a specific pre-ANDA meeting request.\n- Required documentation for NDA, BLA, or ANDA applications includes:\n  - HF validation study results reports\n  - Comparative use HF study results reports",
     "context": "correspondence or pre-ANDA submission pathways, or both, as appropriate.  Comparative use 402 \nHF study protocols should be submitted within a specific pre-ANDA meeting request. 403 \nIt is recommended that all sponsors plan their development timelines to allow for Agency 404 \nfeedback on protocols prior to initiation and conduct of the appropriate HF study. In addition, 405 \nsponsors should submit HF validation study results reports or comparative use HF study results 406 \nreports in their application for FDA review (i.e., NDA, BLA, or ANDA).  407 \n 408\n\n745A(a) of the FD&C Act (21 U.S.C. 379k-1(a)).  \n43 See FDA’s web page on Investigational New Drug (IND) Application at \nhttps://www.fda.gov/drugs/developmentapprovalprocess/howdrugsaredevelopedandapproved/approvalapplications/investigationa\nlnewdrugindapplication/default.htm.",
     "source_id": "02cec6a1-97e9-4b5e-92f9-57520c684129",
-    "qa_index": 0
+    "qa_index": 0,
+    "gold_pdf_id": "122971",
+    "gold_page": 15,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How do the eligibility criteria for requesting FDR under sections 505G(b)(2)(A)(iv)(III) and 505G(b)(4)(D)(iii) of the FD&C Act ensure that only appropriate matters are addressed following the issuance of a Final Order by the FDA?",
     "answer": "- Eligibility for requesting FDR is defined under:\n  - Section 505G(b)(2)(A)(iv)(I) of the FD&C Act.\n  - Section 505G(b)(4)(D)(i) for sponsors of OTC monograph drugs.\n  \n- CDER will not accept FDR requests from ineligible persons.\n\n- Appropriate matters for FDR involve:\n  - Scientific and/or medical disputes between a sponsor and CDER or the Center for Biologics Evaluation and Research, following the issuance of a Final Order.",
     "context": "accordance with section 505G(b)(2)(A)(iv)(I) of the FD&C Act are eligible to request FDR \nunder section 505G(b)(2)(A)(iv)(III).  \n \nSponsors of OTC monograph drugs that will be subject to a Final Order issued in an expedited \nprocedure in accordance with section 505G(b)(4)(D)(i) of the FD&C Act are eligible to request \nFDR under section 505G(b)(4)(D)(iii).\n  \n \nCDER does not intend to accept a request for FDR from a person who is not eligible to request \nFDR. \n \n2. What Is an Appropriate Matter for FDR?\n\nFDR under section 505G(b)(4)(D)(iii).\n  \n \nCDER does not intend to accept a request for FDR from a person who is not eligible to request \nFDR. \n \n2. What Is an Appropriate Matter for FDR? \n \nAfter FDA issues a Final Order, FDA is required to afford eligible requestors or sponsors the \nopportunity for FDR up to the level of the Director of CDER.\n16,17 As set forth in the 2017 FDR \nguidance, FDA has provided FDR “to address scientific and/or medical disputes between a \nsponsor and CDER or [the Center for Biologics Evaluation and Research] as such disputes relate",
     "source_id": "05989522-ccd5-4b19-b1f9-d68626d4a2ac",
-    "qa_index": 3
+    "qa_index": 3,
+    "gold_pdf_id": "169628",
+    "gold_page": 8,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How does the FDA's guidance on adulteration with filth, specifically regarding Escherichia coli in crabmeat, inform the alternative approaches that individuals or organizations may take to comply with applicable statutes and regulations?",
     "answer": "- The FDA's guidance on adulteration with filth addresses the presence of Escherichia coli in crabmeat.\n- Individuals or organizations can use alternative approaches to comply with applicable statutes and regulations.\n- Alternative approaches must satisfy the requirements of the relevant statutes and regulations.\n- To discuss an alternative approach, individuals should contact the FDA staff responsible for implementing the guidance.\n- If the appropriate FDA staff cannot be identified, individuals can call the telephone number listed on the title page of the guidance.\n- The guidance does not establish legally enforceable responsibilities; it reflects FDA's current thinking and is viewed as recommendations.",
     "context": "any person and does not operate to bind FDA or the public.  You can use an alternative \napproach if the approach satisfies the requirements of the applicable statutes and \nregulations.  If you want to discuss an alternative approach, contact the FDA staff \nresponsible for implementing this guidance.  If you cannot identify the appropriate FDA \nstaff, call the telephone number listed on the title page of this guidance.   \n*I. Introduction: \nThe purpose of this document is to provide guidance for FDA staff on adulteration with\n\nstaff, call the telephone number listed on the title page of this guidance.   \n*I. Introduction: \nThe purpose of this document is to provide guidance for FDA staff on adulteration with \nfilth involving the presence of Escherichia coli in fresh and frozen crabmeat.  In the \nremainder of this guidance, “we” or “our” refers to FDA. \nFDA’s guidance documents, including this guidance, do not establish legally enforceable \nresponsibilities.  Instead, guidances describe FDA’s current thinking on a topic and \nshould be viewed only as recommendations, unless specific regulatory or statutory",
     "source_id": "07ab33db-36d8-4644-9a3f-ee77800ea9df",
-    "qa_index": 4
+    "qa_index": 4,
+    "gold_pdf_id": "90349",
+    "gold_page": 3,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How can the recommendations for distinguishing 'undecided' or 'don't know' response options from 'neutral' responses enhance the representativeness of the sample in a quantitative study, while also ensuring that the questions posed do not lead or bias participants' responses?",
     "answer": "- Distinguishing 'undecided' or 'don't know' from 'neutral' enhances representativeness by clarifying participant uncertainty.\n- Visual separation of response options helps prevent confusion and ensures accurate data collection.\n- Recommendations emphasize the importance of representative sampling based on study aims.\n- Avoiding leading questions prevents bias and ensures participants provide genuine responses.\n- Neutral language in questions reduces systematic error and encourages honest feedback.",
     "context": "options.\n• When providing an ‘undecided’ or ‘don’t know’ response option (as FDA\nrecommends, see Section VII.C.), distinguish these response options from ‘neutral’\nby placing ‘undecided’ or ‘don’t know’ options visually separate from the scale.\nQUANTITATIVE STUDY SAMPLE \nFDA reco\nmmends that you determine each population that you want represented in your study \nbased on your study aims and develop your sampling procedures with the goal of maximizing \nhow well each sample represents those populations.  Using samples that are representative of that\n\naffected me.”\n• Avoid leading questions, which are questions that suggest to the participant that the\nresearcher desires a certain answer.  For example, avoid questions such as “Now that\nyou see how this product can improve your health, how likely are you to start using\nthis product?”\n• Avoid language in the question stem or instructions that could bias responses thereby\nintroducing systematic error.  For example, rather than stating “Please rate how\nstrongly you agree with each statement,” state “Please rate how strongly you agree or\ndisagree with each statement.”",
     "source_id": "04e6f85d-7983-4260-8503-01b3fdbffbb5",
-    "qa_index": 9
+    "qa_index": 9,
+    "gold_pdf_id": "143322",
+    "gold_page": 20,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How does the endorsement and public consultation process for the ICH Q3E guideline relate to the requirements for labeling adaptations or modifications of the document, as outlined in the supporting documentation?",
     "answer": "- The ICH Q3E guideline undergoes endorsement by the ICH Assembly and is released for public consultation.\n- The endorsement and public consultation occur on 01/August/2025.\n- Any adaptation, modification, or translation of the document must be clearly labeled to indicate changes from the original.\n- It must be avoided that any adaptation, modification, or translation gives the impression of being endorsed or sponsored by the ICH.\n- The document is provided \"as is\" without any warranty, and the ICH or authors are not liable for claims or damages arising from its use.",
     "context": "ICH Q3E: Guideline for Extractables and Leachables \nSupporting Documentation: Class 3 Leachable Monographs \nDocument History \nCode History Date \nQ3E Endorsement by the Members of the ICH Assembly \nunder Step 2a/b and release for public consultation. \n01/August/2025 \nQ3E \nSupporting \nDocumentation \nEndorsement by the Members of the ICH Assembly \nunder Step 2 and release for public consultation  \nalongside the Step 2a/b  ICH Q3E: Guideline for \nExtractables and Leachables. \n01/August/2025\n\nany adaption, modification or translation of the document, reasonable steps must be taken to clearly \nlabel, demarcate or otherwise identify that changes were made to or based on the original document.  \nAny impression that the adaption, modification or translation of the original document is endorsed or \nsponsored by the ICH must be avoided. \nThe document is provided \"as is\" without warranty of any kind.  In no event shall the ICH or the authors \nof the original document be liable for any claim, damages or other liability arising from the use of the \ndocument.",
     "source_id": "0c26bbf7-9dad-4887-b254-d8fba518b6d7",
-    "qa_index": 10
+    "qa_index": 10,
+    "gold_pdf_id": "189891",
+    "gold_page": 4,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How do the findings from the USEPA's evaluation of para-tertiary amylphenol and its salts relate to the European Chemical Agency's assessments of endocrine disruptors and the candidate list of substances of very high concern under REACH, particularly in terms of their toxicological profiles and regulatory implications?",
     "answer": "- The USEPA evaluated para-tertiary amylphenol and its salts for reregistration eligibility.\n- The European Chemical Agency (ECHA) has an endocrine disruptor assessment list.\n- The ECHA maintains a candidate list of substances of very high concern under REACH.\n- p-(1,1-dimethylpropyl)phenol is noted for skin sensitisation in its toxicological profile. \n- The findings from USEPA and ECHA relate to regulatory implications regarding the safety and classification of these substances.",
     "context": "USEPA/Office of Pesticide Programs; Evaluation of Database for the Reregistration Eligibility \nDecision Document Disciplinary Chapter - Para-tertiary amylphenol (4-t-amylphenol) and its \nsodium and potassium salts, pp.7- 8 Identification Number: EPA -HQ-OPP-2005-0181-0015 \n(July 12, 2005). \nEuropean Chemical Agency (ECHA) Endocrine disruptor assessment list. \nhttps://echa.europa.eu/it/ed-assessment/-/dislist/details/0b0236e18564ffda. Published: Oct \n2020. Updated: Feb 2021. Accessed: May 2025 \nCandidate List of substances of very high concern for Authorisation (published in accordance\n\nhttps://echa.europa.eu/substance-information/-/substanceinfo/100.001.165   \nRegistration, Evaluation, Authorisation & Restriction of Chemicals (REACH). p- (1,1-\ndimethylpropyl)phenol: Toxicological Information: Sensitisation: Skin sensitisation. \nhttps://echa.europa.eu/registration-dossier/-/registered-dossier/14435/7/5/2   \nUSEPA/Office of Pesticide Programs; Evaluation of Database for the Reregistration Eligibility \nDecision Document Disciplinary Chapter - Para-tertiary amylphenol (4-t-amylphenol) and its",
     "source_id": "0b7289c1-e222-4a05-b8c3-03b0b588d30e",
-    "qa_index": 11
+    "qa_index": 11,
+    "gold_pdf_id": "189891",
+    "gold_page": 18,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How can the use of specific biomarkers, such as the HLA-B*1502 allele in the context of Drug B, inform patient selection and dose optimization strategies for Drug A, particularly in populations with varying allele frequencies and demographic backgrounds?",
     "answer": "- **Specific Biomarker Use**: \n  - Patient selection for clinical trials (inclusion/exclusion criteria, trial enrichment or stratification).\n  - Dose optimization in individual patients.\n  - Predicting adverse reactions and risk minimization.\n\n- **Critical Parameters for Drug A**:\n  - Drug-specific use: Drug A.\n  - Assay specifications: Genotyping.\n  - Species: Homo sapiens.\n  - Demographics: Population-specific allele frequency.\n\n- **Clinical Safety for Drug B**:\n  - HLA-B*1502 allele linked to increased risk of adverse reactions.\n  - Drug-specific use: Drug B.\n  - Assay specifications: Genotyping.\n  - Species: Homo sapiens.\n  - Demographics: Han-Chinese.",
     "context": "• Specific Biomarker Use: patient/clinical trial subject selection \n(inclusion/exclusion criteria, trial enrichment or stratification), dose optimization \nin individual patients and predicting adverse reactions/risk minimization \n• Critical Parameters of Context of Use: \no Drug or biotechnology product-specific use:  Drug A \no Assay specifications:  Genotyping \no Species:  Homo sapiens \no Demographics including ancestry and/or geography:  population-specific \nallele frequency  \n \n(iii) Clinical Safety \nThe HLA-B*1502 allele is associated with an increased risk of the development of\n\nsafety and mechanism of adverse reaction/toxicity \n• Critical Parameters for Context of Use: \no Drug or biotechnology product-specific use:  Drug B \no Assay specifications:  Genotyping  \no Species:  Homo sapiens \no Demographics including ancestry and/or geographic origin:  Han-Chinese \n \n 8",
     "source_id": "0b3df95d-0b62-454a-b7af-0f9c0d3d794b",
-    "qa_index": 12
+    "qa_index": 12,
+    "gold_pdf_id": "81311",
+    "gold_page": 11,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How do the vitamin and mineral compositions of the test diet compare to the NRC nutrient requirements, particularly in terms of the contributions from the infant formula and any additional sources?",
     "answer": "- **Molybdenum**: \n  - Test diet: 16.70 µg\n  - NRC requirement: 15 µg (12-18 µg)\n\n- **Fluoride**: \n  - Not required\n\n- **Vitamin A (retinol)**: \n  - Test diet: 5,000 IU\n  - NRC requirement: 4,500 IU (3,600-5,400 IU)\n  - Contribution from infant formula: 230 IU (0.07 mg)\n\n- **Vitamin D3 (cholecalciferol)**: \n  - Test diet: 680 IU\n  - NRC requirement: 612 IU (490-734 IU)\n  - Contribution from infant formula: 100 IU (0.0025 mg)\n\n- **Vitamin E (RRR-α-tocopherol)**: \n  - Test diet: 40 IU\n  - NRC requirement: 36 IU (29-43 IU)\n  - Contribution from infant formula: 2.7 IU (1.8 mg)\n\n- **Vitamin K (phylloquinone)**: \n  - Test diet: 0.08 mg\n  - NRC requirement: 0.10 mg (0.08-0.12 mg)\n  - Contribution from infant formula: 0.072 mg (0.028 mg)",
     "context": "Molybdenum, \nµg \n16.70 15 none 15 12-18 15 \nFluoride, µg - - - - - Not required \nVitamins \nA (retinol), mg \nor IU; 1 IU = 0.3 \nµg retinol \n5,000 IU 4500 IU none 4500 IU 3600-5400 \nIU \n230 IU (0.07 \nmg) \nΒ-carotene - - - - - - \nD3 \n(cholecalciferol), \nmg or IU; 1 µg \nD3 = 40 IU \n680 IU 612 IU none 612 IU 490-734 IU 100 IU \n(0.0025 mg) \nE (RRR-α-\ntocopherol), mg \nor IU; 1 IU = \n0.667 mg d-α-\ntocopherol \n40 IU 36 IU none 36 IU 29-43 IU 2.7 IU (1.8 \nmg) \nK \n(phylloquinone), \nmg \n0.08 0.072 0.028 0.10 0.08-0.12 0.10\n\n46 \nTable 1. Example of an approach for matching mineral and vitamin compositions of PER study test \nand reference diets. \nColumn 1 \nM\nineral or \nvitamin \nSources and \namounts \nColumn 2 \nCo\nmposition \nof infant \nformula, \nunits/100 g \nColumn 3 \nCo\nntribution \nof infant \nformula to \ntest diet \nRate of use \n(%), 90 \nunits/100 g \nColumn 4 \nAddi\ntions \nto test diet \nunits/100 g \nColumn 5 \nTes\nt diet, \nfinal \nunits/100 g \nColumn 6 \nR\neference \ndiet = test \ndiet \n± 20% \nunits/100 g \nColumn 7 \nNRC (1\n995) \nnutrient \nrequirements \nunits/100 g \nMinerals \nCalcium \n(CaCO3), g",
     "source_id": "0421ef5c-61fd-483c-931b-731989dd8e01",
-    "qa_index": 16
+    "qa_index": 16,
+    "gold_pdf_id": "165173",
+    "gold_page": 46,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How do the preventive controls requirements of the CGMP & PC rule apply to caterers who sell processed seafood directly to consumers, and what implications do radiological hazards have on their hazard analysis and record-keeping under HACCP regulations?",
     "answer": "- Caterers selling processed seafood directly to consumers are considered retail operations and are exempt from part 123 requirements.\n- They must comply with the preventive controls requirements of the CGMP & PC rule for activities not covered by part 123 if not exempt from registration.\n- Radiological hazards are relevant to the hazard analysis as they are classified as a type of chemical hazard.\n- If the business qualifies as a \"qualified facility\" under 21 CFR 117.3, certain operations may be subject to subparts D and E of part 117.\n- Records requirements listed in subpart F apply to the seafood HACCP program.",
     "context": "Contains Nonbinding Recommendations \n \n9  \nCaterers who sell the seafood they process to consumers and not to another business are \nconsidered retail operations under part 123 and therefore are exempt from the \nrequirements of part 123.  However, as explained in Response 11, the caterer is subject \nto the preventive controls requirements of the CGMP & PC rule for activities not subject \nto part 123 if the caterer is not exempt from registration.   \n \n13. Are radiological hazards relevant to my hazard analysis? \n \nYes. Radiological hazards are a type of chemical hazard. Although radiological\n\nHACCP regulations, then that portion of the operations may be subject to subparts D \nand E of part 117 if the business meets the definition of a “qualified facility” as \ndefined in 21 CFR 117.3. \n \nSubpart F - Requirements Applying to Records that must be Established and \nMaintained \n \n15. Do the records requirements listed in subpart F apply to my seafood \nHACCP program?",
     "source_id": "04e0fd05-75ac-45a6-8e17-e23b1f45dda9",
-    "qa_index": 18
+    "qa_index": 18,
+    "gold_pdf_id": "106733",
+    "gold_page": 9,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How does the presence of minimal residual disease (MRD) after surgery or standard systemic therapy influence the decision-making process for adjuvant immunotherapy in early-stage solid tumors, particularly in relation to the clinical validity of ctDNA across different malignancies?",
     "answer": "- Presence of minimal residual disease (MRD) after surgery or standard systemic therapy indicates a poor prognosis.\n- MRD selects a population at high risk of relapse.\n- The clinical validity of ctDNA varies across different solid tumor malignancies and patient populations.",
     "context": "(MRD) after surgery or completion of standard systemic therapy confers a poor prognosis and \nselects a population at high risk of relapse.\n4 However, the evidence to support the clinical \nvalidity or clinical utility of ctDNA varies across solid tumor malignancies, patient populations, \n \n4 Powles, T. et al. ctDNA Guiding Adjuvant Immunotherapy in Urothelial Carcinoma. Nature, 85(2): 114-122; \n2021; Tie J, et al. Circulating Tumor DNA Analysis Detects Minimal Residual Disease and Predicts Recurrence in\n\nbut not required.  \n \n \nII. BACKGROUND \n \nDrug development for solid tumors in the early stage, non-metastatic setting, typically involves \nlarge trials and multiple years of conduct and follow-up with time-to-event endpoints.  Certain \npatients with early-stage solid tumors can be cured with local therapy alone (e.g., surgery, \nradiation or chemoradiation), other patients require (neo)adjuvant systemic therapy, and others \nmay progress to metastatic disease despite definitive local therapy and/or systemic therapy.",
     "source_id": "06cf86b3-f1ef-416f-904a-4776d39461cb",
-    "qa_index": 19
+    "qa_index": 19,
+    "gold_pdf_id": "183874",
+    "gold_page": 5,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How does the nonbinding nature of the FDA's guidance on determining the number of employees for the \"small business\" definition in Parts 117 and 507 impact the regulatory compliance strategies of food industry stakeholders?",
     "answer": "- The FDA's guidance on determining the number of employees for the \"small business\" definition is nonbinding.\n- The guidance is viewed as a recommendation rather than a requirement.\n- The use of \"should\" indicates suggestions, not obligations.\n- Stakeholders can adopt alternative approaches if they meet applicable requirements.\n- This nonbinding nature may lead to varied compliance strategies among food industry stakeholders.",
     "context": "responsibilities.  Instead, guidances describe the Agency’s current thinking on a topic and should \nbe viewed only as recommendations, unless specific regulatory or statutory requirements are \ncited.  The use of the word should in Agency guidances means that something is suggested or \nrecommended, but not required. \nII. Background \nThis guidance concerns two regulations that we have established in Title 21 of the Code of \nFederal Regulations (21 CFR) as part of our implementation of the FDA Food Safety\n\nContains Nonbinding Recommendations \n \n \n3 \n \nDetermining the Number of Employees \nfor Purposes of the “Small Business” \nDefinition in Parts 117 and 507 (CGMP \nand Preventive Controls Regulations for \nHuman and Animal Food): Guidance for \nIndustry1 \n \n \n \nThis guidance represents the current thinking of the Food and Drug Administration (FDA or we) \non this topic. It does not establish any rights for any person and is not binding on FDA or the \npublic. You can use an alternative approach if it satisfies the requirements of the applicable",
     "source_id": "04a27b88-2efa-4d54-879d-3a753083ebc3",
-    "qa_index": 20
+    "qa_index": 20,
+    "gold_pdf_id": "111951",
+    "gold_page": 3,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How does the FDA's stance on allergen cross-contact and the potential for a product to be deemed adulterated under section 402(a)(4) relate to the need for accurate allergen information and the consultation with CFSAN regarding health hazards?",
     "answer": "- The FDA may deem a product adulterated under section 402(a)(4) if allergen cross-contact is shown to potentially injure health.\n- Inadequate allergen cross-contact controls can lead to a product being considered adulterated, even with an allergen advisory statement.\n- Incomplete or inconsistent allergen information may require consultation with CFSAN through the Office of Compliance for health hazard questions.\n- The FDA has not set a threshold for major food allergens but acknowledges emerging data on population threshold dose responses.",
     "context": "Act (21 U.S.C. 342(a)(4)) when case-by-case review of the evidence, including \ninspectional evidence or other information, demonstrates that allergen cross-contact may \nrender the product injurious to health.  \n \nWhen there is evidence of inadequate allergen cross-contact controls, FDA may deem a \nproduct adulterated under section 402(a)(4) of the FD&C Act (21 U.S.C. 342(a)(4)), even \nwhen the product bears an allergen advisory statement.  \n \nC. Incomplete or inconsistent allergen information/misbranding:\n\nshould consult CFSAN through the Office of Compliance, Compliance Policy Staff \n(HFS-605) for questions relating to allergen health hazard.\n9 \n \n \n9 FDA has not established a threshold for any major food allergen.  However, FDA recognizes that \npublished data on population threshold dose responses to various food allergens are becoming available and \nthat these published data are beginning to raise the possibility that some low-level exposures to some major \nfood allergens may not pose a health hazard to the majority of food allergic individuals.",
     "source_id": "0265c8af-e0b1-4a09-a672-8fafe54aee9d",
-    "qa_index": 21
+    "qa_index": 21,
+    "gold_pdf_id": "168000",
+    "gold_page": 9,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "What insights were gained from the root cause analysis regarding the user interface's audible cues and their impact on user behavior, and what specific modifications or risk mitigation strategies were suggested to address the identified errors and improve the overall user experience?",
     "answer": "- **Insights from Root Cause Analysis**:\n  - Audible cues in the user interface do not align with the labeled hold time.\n  - This misalignment contributes to user confusion.\n\n- **Identified Errors**:\n  - User did not hold the green button for the required 10 seconds, only for 5 seconds.\n  - User stopped pressing the button after hearing a second click, mistakenly believing the injection was complete.\n\n- **Suggested Modifications/Risk Mitigation Strategies**:\n  - Improve the alignment of audible cues with the labeled hold time to reduce confusion.\n  - Consider additional product modifications or risk mitigation strategies as necessary.",
     "context": "cause analysis57 \nSponsor’s \nDiscussion of \nMitigation \nstrategies58 \nTask 4: \n \nPress green \nbutton and \nhold for 10 \nseconds \n(C) \n1 use error. \n \nThe user \ndid not \npress the \ngreen \nbutton for \n10 \nseconds, \nhe only \nheld it for \n5 seconds. \n0 close calls or \nuse difficulties \nThe user \nheard a \nsecond \nclick and \nstopped \npressing \nthe button \nbecause \nhe \nthought \nthe \ninjection \nwas \ncomplete \nbased on \nthe click.  \nRoot cause \nanalysis \nshowed that the \nuser interface \nhas audible \ncues that do not \ncoincide with \nthe labeled \nhold time and \ncontribute to \nconfusion. \nProduct was\n\nsay about the errors/failures? Did they say how/why the errors/failures occurred? Did they comment on any aspect of the user \ninterface that may have influenced their behavior/action while they were performing the task? Did they note any suggested user \ninterface improvements? \n58 This should address whether additional product modifications, risk mitigations, or risk mitigation validation should be \nimplemented as necessary.",
     "source_id": "079715af-31fd-402c-bc68-075766112327",
-    "qa_index": 22
+    "qa_index": 22,
+    "gold_pdf_id": "122971",
+    "gold_page": 26,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How does the sensitivity of the screening assay impact the validation process of both the confirmatory and titration assays?",
     "answer": "- The sensitivity of the screening assay is a critical factor in the validation process of both the confirmatory and titration assays. \n- It influences the accuracy and reliability of the results obtained from these subsequent assays.",
     "context": "1. Sensitivity of Screening Assay ........................................................................................................ 24 \n2. Cut-Point of Screening Assay ........................................................................................................ 24 \nC. Validation of Confirmatory Assay ............................................................................................. 24 \nD. Validation of Titration Assay ...................................................................................................... 25\n\nVI. ASSAY VALIDATION .................................................................................................. 22 \nA. General Considerations for Assay Validation ........................................................................... 22 \nB. Validation of Screening Assay .................................................................................................... 24 \n1. Sensitivity of Screening Assay ........................................................................................................ 24",
     "source_id": "039d5c19-ed16-4238-9362-0e335d19bad9",
-    "qa_index": 23
+    "qa_index": 23,
+    "gold_pdf_id": "119788",
+    "gold_page": 4,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How do the preferences for non-tobacco flavors among adult smokers using ENDS products influence their likelihood of successfully transitioning away from combusted cigarettes, and what implications does this have for FDA reviews of product applications aimed at facilitating smoking cessation?",
     "answer": "- Adult smokers using ENDS products prefer non-tobacco flavors to transition away from combusted cigarettes.\n- The benefit of flavored products in aiding this transition depends on the characteristics of the products.\n- FDA will review information on a product's ability to facilitate adult switching from combusted cigarettes. \n- ENDS users attempting to quit are more likely to use menthol/mint flavors exclusively and less likely to use tobacco-flavored ENDS compared to dual users.",
     "context": "supporting sustained smoking abstinence, and reducing cigarette consumption among adults who \nwould otherwise continue smoking. Emerging evidence indicates that many adult smokers who \nuse an ENDS product to transition away from combusted cigarettes report a preference for non-\ntobacco flavors, but whether or how much benefit a flavored product may provide depends, in \npart, on how the characteristics of the particular products affect users.\n6 FDA will review the \ninformation an applicant submits about the product’s ability to facilitate adult switching and\n\n& Tobacco Research 25 (2023): 596-601. Available at https://doi.org/10.1093/ntr/ntac199 (cross-sectional data \nfinding that ENDS users trying to quit by switching to ENDS were more likely to use menthol/mint flavors \nexclusively but less likely to use tobacco-flavored ENDS compared to dual users who tried to quit by switching to \nENDS); Liber AC, Knoll M, Cadham CJ, et al. The role of flavored electronic nicotine delivery systems in smoking \ncessation: A systematic review. Drug Alcohol Depend Rep 7 (2023): 100143. Available at",
     "source_id": "03248711-70e1-470e-b840-0a8a03416d89",
-    "qa_index": 24
+    "qa_index": 24,
+    "gold_pdf_id": "191455",
+    "gold_page": 5,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How does the FDA's draft guidance on \"Modified Risk Tobacco Product Applications\" inform applicants about the necessary scientific studies and analyses required to demonstrate that their product's labeling effectively communicates modified risk information in relation to overall health and tobacco-related diseases?",
     "answer": "- The FDA's draft guidance on \"Modified Risk Tobacco Product Applications\" outlines the types of scientific studies and analyses recommended for applicants.\n- These studies are necessary to support the issuance of an order under section 911(g) of the FD&C Act.\n- The guidance emphasizes the need to demonstrate that the product's labeling or advertising helps the public understand modified risk information.\n- It highlights the importance of conveying the relative significance of this information in the context of overall health and tobacco-related diseases.\n- Applicants are encouraged to request a meeting with the FDA to discuss their research and development plans related to their tobacco products.",
     "context": "article. \n \n \n4 FDA has issued a draft guidance document “Modified Risk Tobacco Product Applications,” which provides \ninformation about the types of scientific studies and analyses FDA recommends that applicants consider conducting \nto provide the evidence needed to support the issuance of an order under section 911(g) of the FD&C Act.  This \ndraft guidance, when finalized, will represent FDA’s current thinking on this topic.  It is available at \nhttps://www.fda.gov/tobacco-products/rules-regulations-and-guidance/guidance. \n5 Section 911(h)(1) of the FD&C Act.\n\ndemonstrate that the product’s labeling or advertising enables the public to understand the \nmodified risk information and the relative significance of the information in the context of total \nhealth and in relation to all of the diseases and health-related conditions associated with the use \nof tobacco products.5  \n \nFDA encoura\nges\n applicants considering development of TPPI studies to request a meeting with \nFDA to discuss their research and development plans related to their tobacco products.6 \n \n DEFINITIONS \n \nFor the\n purposes",
     "source_id": "0444e5da-ca39-4f63-97fd-32e4d4910118",
-    "qa_index": 25
+    "qa_index": 25,
+    "gold_pdf_id": "143322",
+    "gold_page": 5,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How do the AAMI/ANSI/ISO 80369 standards aim to address the issue of misconnections between medical devices, particularly in relation to the use of small-bore Luer connectors and the distinction between enteral and non-enteral systems?",
     "answer": "- AAMI/ANSI/ISO 80369 standards aim to prevent misconnections between medical devices.\n- Misconnections occur when connectors from different devices with distinct functions are attached.\n- Small-bore Luer connectors can connect to various medical devices, increasing the risk of misconnections.\n- The standards distinguish between enteral and non-enteral systems to address this issue.\n- Non-enteral connectors are small-bore connectors on devices not used for enteral feeding.\n- Non-interconnectable connectors are designed to prevent secure and unintended connections.",
     "context": "with the International Organization for Standardization to develop the AAMI/ANSI/ISO \n80369 standards. \n4- 9 Misconnections occur when a connector on a medical device \nperforming a specific function is unintentionally or intentionally attached to a connector from \nanother medical device that performs a completely different function. Small-bore Luer \nconnectors can freely connect to many different medical devices.\n \nOn July 9, 2010, the FDA issued a letter to healthcare professionals, hospital purchasing\n\nContains Nonbinding Recommendations \n3 \nMisconnection: Inappropriate connections occurring between two connectors that attach \ndevices with different intended uses or applications, such as enteral feeding systems and non-\nenteral systems. \n \nNon-enteral connectors: Small-bore connectors on devices that are not involved in enteral \n(through the gastrointestinal system) feeding systems. \n \nNon-interconnectable connectors: Connectors that have geometries and other design \ncharacteristics that prevent secure and unintended connections.",
     "source_id": "004c530e-1eeb-4b8b-a723-e8c7480dbdee",
-    "qa_index": 26
+    "qa_index": 26,
+    "gold_pdf_id": "83412",
+    "gold_page": 6,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How does the concept of use-related risk analysis address the potential for use errors that may arise due to training decay in various use environments?",
     "answer": "- Use-related risk analysis identifies use errors associated with each use step.\n- It evaluates hazards/risks and their clinical significance.\n- It systematically assesses all steps involved in product use.\n- Training decay refers to the time between receiving training and first product use.\n- Use-related risk analysis addresses potential use errors by considering the impact of training decay in various use environments.",
     "context": "Use error: A user action, or lack of action, that was different from that expected by the 669 \nmanufacturer and that caused an outcome that (1) was different from the result expected by the 670 \nuser, (2) was not caused solely by product failure, and (3) did or could result in harm. 671 \n 672 \nUse-related risk analysis: An analytical method to identify use errors associated with each use 673 \nstep, and then the hazards/risks and clinical significance of those hazards/risks. The use-related 674 \nrisk analysis includes a comprehensive and systematic evaluation of all the steps involved in 675\n\nContains Nonbinding Recommendations \nDraft — Not for Implementation \n20 \nTraining decay: The time elapsed between receiving training and first product use.  664 \n 665 \nUse environment: The environment(s) in which the product will be used. This may include a 666 \nvariety of settings, such as clinical settings or home settings.  667 \n 668 \nUse error: A user action, or lack of action, that was different from that expected by the 669 \nmanufacturer and that caused an outcome that (1) was different from the result expected by the 670",
     "source_id": "00b97d77-47c6-40b8-857a-f826a3167574",
-    "qa_index": 28
+    "qa_index": 28,
+    "gold_pdf_id": "122971",
+    "gold_page": 23,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "What specific organizational elements should be included in the meeting package content to facilitate FDA review, and how does the submission format (electronic vs. paper) impact the preparation of these materials?",
     "answer": "- **Organizational Elements for Meeting Package Content**:\n  - Organized according to the proposed agenda.\n  - Sequentially paginated document.\n  - Table of contents.\n  - Appropriate indices.\n  - Appendices.\n  - Cross references.\n  - Tabbed or bookmarked for navigation.\n\n- **Impact of Submission Format**:\n  - Meeting packages must be submitted electronically.\n  - FDA RPM may request paper copies (desk copies) in addition to electronic format.",
     "context": "Contains Nonbinding Recommendations \nDraft — Not for Implementation \n 11 \nB. Where and How Many Copies of Meetings Packages to Send 352 \n 353 \nThe meeting package must be submitted electronically to FDA.22   354 \n 355 \nTo facilitate the meeting process, an FDA regulatory project manager (RPM) may request that 356 \ncopies of meeting packages provided in electronic format also be provided in paper (desk copies) 357 \nand sent to the FDA RPM at the mailing address provided in the letter granting the meeting. 358 \n 359 \nC. Meeting Package Content 360 \n 361\n\ndiscussion.  373 \n  374 \nTo facilitate FDA review, the meeting package content should be organized according to the 375 \nproposed agenda.  The meeting package should be a sequentially paginated document with a 376 \ntable of contents, appropriate indices, appendices, and cross references.  It should be tabbed or 377 \nbookmarked to enhance reviewers’ navigation across different sections within the package, both 378 \nin preparation for and during the meeting.  Meeting packages generally should include the 379 \nfollowing information, preferably in the order listed below:  380 \n 381",
     "source_id": "08bcf63c-860a-4af8-9b66-78d0bee9139e",
-    "qa_index": 29
+    "qa_index": 29,
+    "gold_pdf_id": "155864",
+    "gold_page": 14,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How does the FDA's use of the term \"should\" in its guidance documents impact the enforcement of food allergen labeling and cross-contact regulations, particularly in light of the millions of Americans affected by food allergies?",
     "answer": "- The term \"should\" in FDA guidance documents is viewed as a recommendation, not a requirement.\n- It suggests or recommends actions but does not impose binding obligations on the FDA or the public.\n- The FDA allows for alternative approaches if they meet applicable statutes and regulations.\n- Millions of Americans are affected by food allergies, and the FDA receives reports of adverse reactions from food allergens.",
     "context": "should be viewed only as recommendations, unless specific regulatory or statutory \nrequirements are cited.  The use of the word should in FDA guidances means that \nsomething is suggested or recommended, but not required. \n \nII. Background \n \nA. Food Allergies \n \nF\nood allergies affect millions of Americans and their families.  Each year, FDA receives \nreports about consumers who experienced adverse reactions following exposure to \nhazards posed by food allergens.  A food allergen is the food or component(s) (often a\n\nperson and is not binding on FDA or the public.  You can use an alternative approach if it \nsatisfies the requirements of the applicable statutes and regulations.  To discuss an \nalternative approach, contact the FDA staff responsible for this guidance as listed on the \ntitle page. \n \nI. Introduction \n \nThe purpose of this compliance policy guide (CPG) is to provide guidance for FDA staff \non FDA’s enforcement policy regarding major food allergen labeling and cross-contact.  \nSee section II.B for more information about major food allergens, which are defined in",
     "source_id": "06c0f766-1af5-4d3c-9b8a-d2bde754d01e",
-    "qa_index": 30
+    "qa_index": 30,
+    "gold_pdf_id": "168000",
+    "gold_page": 3,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How can understanding matrix effects and selecting appropriate cell lines enhance the accuracy of neutralization assays for therapeutic protein products, particularly in the context of antibody-dependent activity sensitivity?",
     "answer": "- Understanding matrix effects is crucial as they can enhance or inhibit the activity of therapeutic protein products in bioassays.\n- Selecting an appropriate cell line that is specifically activated by the therapeutic protein product can improve assay accuracy.\n- Interfering factors can be inhibited or depleted using a specific antibody or a responsive cell line.\n- Enriching the ADA from matrix samples may be suitable for ensuring that activity induced by the therapeutic protein product is relatively insensitive to neutralization by NAb.\n- The activity induced by the therapeutic protein product is sensitive to neutralization by antibody within a specific concentration range.",
     "context": "increasing the response to the original stimulatory factor or therapeutic protein product.  \nTherefore, the sponsor should understand matrix effects in these assays and choose a cell line \nthat is specifically activated by the therapeutic protein product.  Alternatively, the interfering \nfactors can be inhibited or depleted by using a specific antibody or a cell line that specifically \nresponds to drug treatment.  Enriching the ADA from matrix samples may be appropriate for\n\nthe activity induced by the therapeutic protein product would be relatively insensitive to \ninhibition by NAb.  The “Yes” arrow represents a range of concentrations on the linear part of \nthe curve where the activity induced by the therapeutic protein product would be sensitive to \nneutralization by antibody. \n \n3. Considerations for Matrix Interference for Neutralization Assay \n \nThe matrix can interfere with neutralization assays, particularly as matrix components may \nenhance or inhibit the activity of a therapeutic protein product in bioassays.  For example, sera",
     "source_id": "0b07de4e-de40-4b75-aedb-92ef5c8ca200",
-    "qa_index": 31
+    "qa_index": 31,
+    "gold_pdf_id": "119788",
+    "gold_page": 24,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How does the evaluation method in the HF validation study address the potential hazards associated with the user interface during the administration of the drug, particularly in relation to the critical task of holding the green button for 10 seconds?",
     "answer": "- The evaluation method in the HF validation study addresses potential hazards by identifying the critical task of holding the green button for 10 seconds.\n- A potential hazard is that if the button is held for less than 10 seconds, a full dose is not injected, which could lead to patient death.\n- The risk mitigation measure proposed is to redesign the product to eliminate the need to hold the button for 10 seconds.",
     "context": "seconds \nEvaluated in HF \nvalidation study \nin use scenario 1: \nAdministration \nof Drug, task 4 \n 743 \n 744 \nAPPENDIX C 745 \n 746 \nEXAMPLE OF DESCRIPTION OF USER INTERFACE 747 \n 748 \nInterface \nItem \nWritten description of the user interface Graphical depiction of the \nuser interface \nInspection \nWindow \nThe user inspects the window to ensure that \nthe drug color is clear and drug solution does \nnot have any particulates \n \n 749 \n  750 \n                                                 \n54 Describe potential hazard/harm and severity for each potential use error.\n\nof potential \nuse errors \nPotential \nhazards/harm \nand severity54  \nCritical \ntask \n(Yes/ \nNo) \nRisk \nmitigation \nmeasure for \neach use \nerror \nEvaluation \nmethod in HF \nvalidation study \n4 Press green \nbutton and \nhold for 10 \nseconds \nButton is \nheld for less \nthan 10 \nseconds \nFull dose is \nnot injected; \nleads to \npatient death  \nYes Redesign \nproduct to \neliminate \nthe need to \nhold for 10 \nseconds \nEvaluated in HF \nvalidation study \nin use scenario 1: \nAdministration \nof Drug, task 4 \n 743 \n 744 \nAPPENDIX C 745 \n 746 \nEXAMPLE OF DESCRIPTION OF USER INTERFACE 747 \n 748 \nInterface \nItem",
     "source_id": "0ae7bb12-2910-46f1-9731-751ce61a9b55",
-    "qa_index": 33
+    "qa_index": 33,
+    "gold_pdf_id": "122971",
+    "gold_page": 25,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How do the appropriateness and technical criteria outlined in the MIDD planning stage inform the model evaluation and conclusions drawn during the MIDD evidence submission stage?",
     "answer": "- **Appropriateness of Proposed MIDD**: Justifies the suitability of the proposed MIDD to address the Question of Interest, including key assumptions and required data.\n- **Technical Criteria**: Summarizes key criteria for Model Evaluation and outcomes to determine model acceptability, potentially using standards like bioequivalence acceptance limits.\n- **Model Evaluation**: Discusses key results and conclusions from the technical evaluation of the model during the MIDD evidence submission stage.",
     "context": "2.2. Additional Considerations for Interaction with Regulators and to Inform 86 \nDecision-Making 87 \nIn addition to the key elements described in Section 2.1, t he following should be included to 88 \ninform decision-making related to  MIDD planning and/or MIDD evidence submission and 89 \nshould be provided to regulators for relevant regulatory interactions. 90 \nMIDD Planning Stage:4,5 \n• Appropriateness of Proposed MIDD: The r ationale for why the proposed MIDD is \nsuitable to answer the Question of Interest and cover the  related key assumptions and \nrequired data.\n\n• Appropriateness of Proposed MIDD: The r ationale for why the proposed MIDD is \nsuitable to answer the Question of Interest and cover the  related key assumptions and \nrequired data. \n• Technical Criteria: A summary and rationale of the key criteria for M odel Evaluation \nand model outcomes to establish the acceptability of the model (e.g., using an acceptance \nstandard such as bioequivalence acceptance limits). \nMIDD Evidence Submission Stage:4,6  \n• Model Evaluation: A brief discussion of the key results and conclusions of the technical \nevaluation7 of the model.",
     "source_id": "07aaa56d-ab21-49f0-8dd8-2ff86e987170",
-    "qa_index": 35
+    "qa_index": 35,
+    "gold_pdf_id": "184747",
+    "gold_page": 11,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How does the testing algorithm for HBsAg and anti-HBc influence the acceptance of a donor's sample, particularly in cases where initial results are reactive or non-reactive?",
     "answer": "- If the sample is non-reactive for anti-HBc and non-reactive for HBsAg, the donor may be accepted and the unit may be used.\n- If the sample is non-reactive for anti-HBc and reactive for HBsAg, the sample must undergo the testing algorithm starting with the specified point.\n- If there is an initially reactive result for HBsAg, the donor may return and re-enter the testing scheme at a later point, with repeated returns allowed until a final decision is made.\n- It is recommended that tests for HBsAg for initial and second donations be performed with the same type of kit from the same manufacturer.",
     "context": "3 \nb. If the sample drawn at this time is non-reactive for anti-HBc and the \ninitial test result is non-reactive for HBsAg, the donor may be \naccepted and the unit may be used. \nc. If the sample drawn at this time is non-reactive for anti-HBc and the \ninitial test result is reactive for HBsAg, the sample should be \nsubjected to the testing algorithm which begins with I.b, above.3 \nV. If, at any point after an initially reactive resul~ for HBsAg but before \ncompletion of the testing on a donation, the quantity of material from\n\nnot be used but the donor may (at his/her own discretion and that of the \nestablishment) return and re-enter the testing scheme at point IV, above. \nSuch returns may be repeated (at the discretion of the donor and the \nestablishffien~) until a final decision (i.e., that equivalent to IV.a or \nIV.b) can be made on the basis of the testing algorithm. (It is \nrecommended that, for the initial and the second donations, the tests for \nHBsAg be performed· with one type of kit--e.g., mouse monoclonal EIA from \nthe same manufacturer. If the results suggest that the samples are",
     "source_id": "01511243-fc92-43d9-8122-31be3950ba0f",
-    "qa_index": 38
+    "qa_index": 38,
+    "gold_pdf_id": "70907",
+    "gold_page": 3,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How does the FDA's encouragement for laboratories to collaborate with original test developers for validation data submission impact the overall process of modifying tests, particularly in relation to maintaining equivalent performance standards?",
     "answer": "- Laboratories must demonstrate that modifications do not adversely affect test performance.\n- Laboratories submit notification of validation to the FDA.\n- If a laboratory modifies a test not developed by them, FDA encourages collaboration with the original developer.\n- The original developer can submit validation data for modifications in a supplemental EUA request.\n- Equivalent performance is defined as the modified test's LoD being within 3x of the original test's LoD using the same validation material.",
     "context": "the validation demonstrates that the modifications do not adversely affect test performance,18 and \nthe laboratory submits notification of validation to FDA, as described in section IV.A.4. \nIf a laboratory modifies a test for which the laboratory is not the developer, FDA encourages the \nlaboratory to collaborate with the original developer so that validation data supporting the \nmodifications can be submitted by the original developer to FDA in a supplemental EUA request\n15 To date, the FDA-cleared CDC Non-variola Orthopoxvirus Real-time PCR Primer and Probe Set (Product Code:\n\n16 For additional information, refer to https://www.fda.gov/emergency-preparedness-and-response/mcm-issues/fda-\nmonkeypox-response. \n17 Other modifications, including to specimen types, test settings (e.g., point-of-care), and new patient populations, \namong others, do not fall under this policy.\n18 FDA generally considers equivalent performance to be where the LoD of the modified test (using the same \nvalidation material used in the LoD study described in the authorized test’s Instructions For Use (IFU)) is within 3x",
     "source_id": "0bb7c0fc-e5cf-4c31-9c8c-8e61f90a8c2e",
-    "qa_index": 39
+    "qa_index": 39,
+    "gold_pdf_id": "161443",
+    "gold_page": 10,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How do the evolving classification methods of epidermolysis bullosa (EB) and the importance of diagnostic techniques impact the development and trial design of investigational products aimed at treating both the symptoms and underlying disease mechanisms?",
     "answer": "- **Evolving Classification**: \n  - Traditional subtypes: \n    - Intraepidermal (EB simplex)\n    - Junctional EB\n    - Dystrophic EB\n    - Mixed pattern (Kindler syndrome)\n  - Recent classification considers:\n    - Mode of inheritance\n    - Phenotype\n    - Immunofluorescence antigen mapping\n\n- **Importance of Diagnostic Techniques**:\n  - New diagnostic techniques influence classification.\n  - Documentation of diagnostic methods is essential for trials.\n  - Mutational analysis may be important for some trials but is not a requirement for trial entry if irrelevant.\n  - Patients with prior documented diagnosis typically do not need repeated testing.\n\n- **Impact on Investigational Products**:\n  - Products can target:\n    - Palliative treatment for cutaneous manifestations\n    - Disease-modifying effects\n  - The diagnostic methods used affect trial design and product development.",
     "context": "pain, the latter aggravated during dressing changes.  These complications and symptoms \nrepresent a major disease burden for patients. \n \nThe classification of EB is evolving as new diagnostic techniques are developed.7  EB has been \ntraditionally divided into major subtypes based on the level within which blisters develop:  \nintraepidermal (EB simplex), within (junctional EB) or beneath (dystrophic EB) the skin \nbasement membrane zone, and mixed pattern (Kindler syndrome).  More recent classification \ntakes into account the mode of inheritance, phenotype, immunofluorescence antigen mapping\n\nperformed, should also be documented.  For some trials, mutational analysis may be \nimportant, and such data will need to be collected; however, it should not be a \nrequirement for trial entry if this testing is not relevant to the desired claim.  In general, \npatients with adequate prior documented diagnosis do not need to have testing repeated. \n \n— As investigational products for cutaneous manifestations of EB can be directed at \npalliative treatment or be disease-modifying, the diagnostic method(s) used by a",
     "source_id": "0c3ea11a-965d-4187-9e01-905a7dbef9e8",
-    "qa_index": 41
+    "qa_index": 41,
+    "gold_pdf_id": "128419",
+    "gold_page": 6,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How does the definition of \"sponsor\" in the context of nonprescription drugs relate to the guidance provided by the Office of Nonprescription Drugs regarding the development of new OTC monograph drugs?",
     "answer": "- **Sponsor Definition**: Defined in section 505G(q)(2) of the FD&C Act as any person marketing, manufacturing, or processing a drug listed under FD&C Act 510(j) and subject to an administrative order under section 505G.\n- **Guidance Purpose**: Prepared by the Office of Nonprescription Drugs to provide advice on the regulation and development of new OTC monograph drugs.\n- **Different Definitions**: If a different definition of sponsor is used in the guidance, an explanatory footnote is provided.\n- **Requestor Definition**: Defined in section 505G(q)(3) of the FD&C Act as any person or group involved in marketing, manufacturing, processing, or developing a drug.\n- **OTC Monograph Drug Definition**: Consistent with the definition at section 744L(5) for user fee purposes.",
     "context": "obtain advice on other matters relevant to the regulation of nonprescription drugs, and to obtain 26 \nadvice on the development of new OTC monograph drugs.7  This guidance also specifies 27 \n \n1 This guidance has been prepared by the Office of Nonprescription Drugs in the Center for Drug Evaluation and \nResearch at the Food and Drug Administration. \n \n2 Sponsor is defined in section 505G(q)(2) of the FD&C Act as any person marketing, manufacturing, or processing \na drug that is listed pursuant to FD&C Act 510(j) and is or will be subject to an administrative order under section\n\na drug that is listed pursuant to FD&C Act 510(j) and is or will be subject to an administrative order under section \n505G of the FD& Act.  When this guidance uses a different definition of sponsor, an explanatory footnote is \nprovided. \n \n3 Requestor is defined in section 505G(q)(3) of the FD&C Act as any person or group of persons marketing, \nmanufacturing, processing, or developing a drug. \n \n4 For purposes of this guidance, the term OTC monograph drug is consistent with the definition at section 744L(5) \nestablished for user fee purposes.",
     "source_id": "0c7987ba-3756-40a9-9634-bb2d345ae11a",
-    "qa_index": 42
+    "qa_index": 42,
+    "gold_pdf_id": "155864",
+    "gold_page": 4,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How can the training of relevant staff on the enrollment process and safe use conditions be effectively integrated to ensure compliance with the REMS requirements across different pharmacy settings?",
     "answer": "- Train all relevant staff on the enrollment process and safe use conditions.\n- Use applicable enrollment forms for different pharmacy settings (e.g., inpatient vs. outpatient, chain vs. independent).\n- Establish processes and procedures to notify and provide safe use conditions.\n- Verify that safe use conditions have been met before dispensing.",
     "context": "the [Enrollment Form] to the REMS. \nOR \nHave the authorized representative enroll by completing and submitting \nthe applicable enrollment form(s) to the REMS: [List all Enrollment \nForms]. \nUse this version of the requirement if there are different enrollment forms \nfor different types of settings (e.g., inpatient vs. outpatient pharmacy, \nchain vs. independent pharmacy). \n8. Train all relevant staff involved in [activity] on [training topic(s)]. \nOR \nTrain all relevant staff involved in [activity] using [REMS Material(s)]. \nOR\n\nown system to verify that safe use conditions have been met. If \nrequirement #9 is included, also include requirement #13 to verify that \nsafe use conditions have been met before dispensing. \n10.Establish processes and procedures to [e.g., notify, provide] [safe use \nconditions to be met]. \nInclude this requirement if the dispenser is responsible for setting up \ntheir own system to carry out safe use conditions beyond verification. If \nrequirement #10 is included, also include a corresponding requirement \nto carry out the safe use conditions. \n57",
     "source_id": "04ac86d1-23d3-4f96-a83a-c505a79180ac",
-    "qa_index": 43
+    "qa_index": 43,
+    "gold_pdf_id": "164344",
+    "gold_page": 22,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How has the FDA's role as a Founding Regulatory Member of ICH influenced the harmonization of clinical study practices and the overall quality of drug development and manufacturing globally?",
     "answer": "- The FDA, as a Founding Regulatory Member of ICH, influences the development of ICH guidelines.\n- ICH guidelines have reduced duplicative clinical studies.\n- They have prevented unnecessary animal studies.\n- The guidelines standardized safety reporting and marketing application submissions.\n- ICH has contributed to improvements in the quality of global drug development and manufacturing.\n- The process involves technical experts from regulatory authorities and industry for harmonization.\n- The outcome is the availability of safe, effective, and high-quality medicines for patients and industry.",
     "context": "expectations in regions around the world, ICH guidelines have substantially reduced \nduplicative clinical studies, prevented unnecessary animal studies, standardized safety \nreporting and marketing application submissions, and contributed to many other \nimprovements in the quality of global drug development and manufacturing and the products \navailable to patients.  \n \nICH is a consensus-driven process that involves technical experts from regulatory authorities \nand industry parties in detailed technical and science-based harmonization work that results in\n\nof safe, effective, and high-quality medicines for patients as well as for industry.  As a \nFounding Regulatory Member of ICH, the Food and Drug Administration (FDA) plays a \nmajor role in the development of each of the ICH guidelines, which FDA then adopts and \nissues as guidance to industry.",
     "source_id": "060db094-1180-457c-9c60-692caff4f5c0",
-    "qa_index": 45
+    "qa_index": 45,
+    "gold_pdf_id": "184746",
+    "gold_page": 2,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   },
   {
     "question": "How can the recommendations from the guidance on Chronic Cutaneous Ulcer and Burn Wounds be adapted for the development of treatments for Epidermolysis Bullosa (EB), considering the distinctions between acute and chronic wound healing as outlined in the FDA's various guidance documents?",
     "answer": "- Recommendations from the guidance on Chronic Cutaneous Ulcer and Burn Wounds may be useful for developing treatments for Epidermolysis Bullosa (EB).\n- The wound healing guidance is specifically intended for acute burn wounds.",
     "context": "Adverse Events (November 2006) \n \n• Guidance for FDA reviewers and sponsors Content and Review of Chemistry, \nManufacturing, and Control (CMC) Information for Human Somatic Cell Therapy \nInvestigational New Drug Applications (INDs) (April 2008) \n \nSome recommendations in the guidance for industry Chronic Cutaneous Ulcer and Burn Wounds \n—  Developing Products for Treatment (June 2006) might be useful to developers of drugs for \ntreatment of EB.  However, the wound healing guidance is intended for acute burn wounds and\n\nProducts (May 1998) and the draft guidance for industry Adaptive Designs for Clinical Trials of Drugs and \nBiologics (September 2018) (when final, this guidance will represent the FDA’s current thinking on this topic).  For \nthe most recent version of a guidance, check the FDA guidance web page at https://www.fda.gov/regulatory-\ninformation/search-fda-guidance-documents. \n \n5 See the ICH guidances for industry E9 Statistical Principles for Clinical Trials (September 1998) and E10 Choice \nof Control Group and Related Issues in Clinical Trials (May 2001), respectively.",
     "source_id": "09cc7a8a-01a6-4b9f-9a71-7010c33f3cc6",
-    "qa_index": 48
+    "qa_index": 48,
+    "gold_pdf_id": "128419",
+    "gold_page": 5,
+    "alignment_score": 1.0,
+    "alignment_method": "local_chunk_scan"
   }
 ]

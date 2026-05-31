@@ -13,10 +13,23 @@ def is_retrieval_hit(
     gold_context: str = "",
     gold_source_id: str = "",
     retrieved_id: str = "",
+    gold_pdf_id: str = "",
+    gold_page: int | None = None,
+    retrieved_metadata: dict | None = None,
     min_probe_len: int = 80,
 ) -> bool:
     if gold_source_id and retrieved_id and gold_source_id == retrieved_id:
         return True
+
+    metadata = retrieved_metadata or {}
+    if gold_pdf_id:
+        retrieved_pdf_id = str(metadata.get("pdf_id") or "")
+        retrieved_page = metadata.get("page")
+        if retrieved_pdf_id == str(gold_pdf_id):
+            if gold_page is None:
+                return True
+            if retrieved_page is not None and int(retrieved_page) == int(gold_page):
+                return True
 
     norm_gold = normalize_text(gold_context)
     norm_retrieved = normalize_text(retrieved_text)
@@ -39,17 +52,23 @@ def build_relevance_flags(
     *,
     gold_context: str = "",
     gold_source_id: str = "",
+    gold_pdf_id: str = "",
+    gold_page: int | None = None,
 ) -> list[bool]:
     flags = []
     for item in retrieved_items:
         text = item.get("text") or item.get("page_content") or ""
         retrieved_id = str(item.get("id") or "")
+        metadata = item.get("metadata") or {}
         flags.append(
             is_retrieval_hit(
                 text,
                 gold_context=gold_context,
                 gold_source_id=gold_source_id,
                 retrieved_id=retrieved_id,
+                gold_pdf_id=gold_pdf_id,
+                gold_page=gold_page,
+                retrieved_metadata=metadata,
             )
         )
     return flags
@@ -87,6 +106,8 @@ def evaluate_record(
         retrieved_items,
         gold_context=record.get("gold_context", ""),
         gold_source_id=record.get("gold_source_id", ""),
+        gold_pdf_id=record.get("gold_pdf_id", ""),
+        gold_page=record.get("gold_page"),
     )
 
     per_query = {
