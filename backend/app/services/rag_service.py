@@ -1,8 +1,17 @@
 from backend.app.services.pipeline_service import run_rag_pipeline
 
 
-def get_answer(query: str, collection_name="test") -> dict:
-    return run_rag_pipeline(query, config={"collection_name": collection_name})
+def get_answer(
+    query: str,
+    collection_name: str = "experiment_subset200_chunk600_overlap200",
+) -> dict:
+    return run_rag_pipeline(
+        query,
+        config={
+            "collection_name": collection_name,
+            "rerank_enabled": False,
+        },
+    )
 
 
 if __name__ == "__main__":

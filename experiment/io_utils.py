@@ -72,6 +72,11 @@ def build_registry_row(
     generation = run_config.get("generation") or {}
     pdf_subset = run_config.get("pdf_subset") or {}
 
+    retrieval_mode = str(retrieval.get("mode", ""))
+    rerank_enabled = bool(rerank.get("enabled", True))
+    if retrieval_mode == "embedding_only":
+        rerank_enabled = False
+
     evaluation = run_config.get("evaluation") or {}
     judge_model = evaluation.get("judge_model") or generation.get("model", "gpt-4o-mini")
 
@@ -94,7 +99,7 @@ def build_registry_row(
         "retrieval_mode": str(retrieval.get("mode", "")),
         "top_k_initial": str(retrieval.get("top_k_initial", "")),
         "top_k_final": str(retrieval.get("top_k_final", "")),
-        "rerank_enabled": str(bool(rerank.get("enabled", True))).lower(),
+        "rerank_enabled": str(rerank_enabled).lower(),
         "rerank_model": str(rerank.get("model", "")),
         "llm_model": str(generation.get("model", "")),
         "judge_model": str(judge_model),

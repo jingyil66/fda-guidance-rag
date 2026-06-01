@@ -72,10 +72,12 @@ def load_pdf_pages(
     docs = []
 
     for index, page in enumerate(pages):
+        page_number = index + 1
         metadata = {
             "title": resolved_title,
             "pdf_id": resolved_pdf_id,
-            "page": index + 1,
+            "page": page_number,
+            "section_title": f"Page {page_number}",
             **extra_metadata,
         }
         docs.append(Document(page_content=page.page_content, metadata=metadata))

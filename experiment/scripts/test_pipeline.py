@@ -3,8 +3,8 @@ Manual smoke test for pipeline_service.run_rag_pipeline.
 
 Usage (from project root):
     python experiment/scripts/test_pipeline.py
-    python experiment/scripts/test_pipeline.py --collection test
-    python experiment/scripts/test_pipeline.py --no-rerank
+    python experiment/scripts/test_pipeline.py --collection experiment_subset200_chunk600_overlap200
+    python experiment/scripts/test_pipeline.py --rerank
 """
 
 from __future__ import annotations
@@ -28,13 +28,17 @@ DEFAULT_QUERY = (
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Test full RAG pipeline.")
     parser.add_argument("--query", default=DEFAULT_QUERY, help="Query string")
-    parser.add_argument("--collection", default="test", help="Qdrant collection name")
+    parser.add_argument(
+        "--collection",
+        default="experiment_subset200_chunk600_overlap200",
+        help="Qdrant collection name",
+    )
     parser.add_argument("--top-k-initial", type=int, default=20)
     parser.add_argument("--top-k-final", type=int, default=5)
     parser.add_argument(
-        "--no-rerank",
+        "--rerank",
         action="store_true",
-        help="Skip rerank and use top retrieval results only",
+        help="Enable FlashRank rerank on top of embedding retrieval",
     )
     parser.add_argument("--answer-chars", type=int, default=500)
     return parser.parse_args()
@@ -55,7 +59,7 @@ def main() -> int:
             "collection_name": args.collection,
             "top_k_initial": args.top_k_initial,
             "top_k_final": args.top_k_final,
-            "rerank_enabled": not args.no_rerank,
+            "rerank_enabled": args.rerank,
         },
     )
 
@@ -64,7 +68,7 @@ def main() -> int:
     documents = result.get("documents") or []
 
     print(f"collection: {args.collection}")
-    print(f"rerank_enabled: {not args.no_rerank}")
+    print(f"rerank_enabled: {args.rerank}")
     print(f"sources_count: {len(sources)}")
     print(f"documents_count: {len(documents)}")
     print()

@@ -18,6 +18,10 @@ from backend.app.services.retrieval_service import (
     get_qdrant_client,
     retrieve_embedding,
 )
+from backend.app.services.passage_format import (
+    PASSAGE_FORMAT_LEGACY,
+    PASSAGE_FORMAT_RAW,
+)
 from backend.app.services.rerank_service import (
     DEFAULT_RERANK_MODEL,
     get_ranker,
@@ -26,13 +30,14 @@ from backend.app.services.rerank_service import (
 
 os.environ["OPENAI_API_KEY"] = settings.OPENAI_API_KEY or ""
 
-DEFAULT_COLLECTION_NAME = "test"
+DEFAULT_COLLECTION_NAME = "experiment_subset200_chunk600_overlap200"
 DEFAULT_TOP_K_INITIAL = 20
 DEFAULT_TOP_K_FINAL = 5
+DEFAULT_RERANK_ENABLED = False
 
 _client = get_qdrant_client(DEFAULT_QDRANT_URL)
 _embeddings = get_embeddings(DEFAULT_EMBEDDING_MODEL)
-_ranker = get_ranker()
+_ranker = None
 _prompt = get_prompt()
 _llm = get_llm(DEFAULT_LLM_MODEL)
 _parser = get_parser()
@@ -44,11 +49,13 @@ def _normalize_config(config: dict | None) -> dict:
         "collection_name": config.get("collection_name", DEFAULT_COLLECTION_NAME),
         "top_k_initial": config.get("top_k_initial", DEFAULT_TOP_K_INITIAL),
         "top_k_final": config.get("top_k_final", DEFAULT_TOP_K_FINAL),
-        "rerank_enabled": config.get("rerank_enabled", True),
+        "rerank_enabled": config.get("rerank_enabled", DEFAULT_RERANK_ENABLED),
         "qdrant_url": config.get("qdrant_url", DEFAULT_QDRANT_URL),
         "embedding_model": config.get("embedding_model", DEFAULT_EMBEDDING_MODEL),
         "llm_model": config.get("llm_model", DEFAULT_LLM_MODEL),
         "rerank_model": config.get("rerank_model", DEFAULT_RERANK_MODEL),
+        "rerank_passage_format": config.get("rerank_passage_format", PASSAGE_FORMAT_RAW),
+        "context_passage_format": config.get("context_passage_format", PASSAGE_FORMAT_LEGACY),
     }
 
 
@@ -67,9 +74,12 @@ def _resolve_runtime(config: dict) -> dict:
 
     rerank_model = config["rerank_model"]
     if config["rerank_enabled"]:
+        global _ranker
         if rerank_model != DEFAULT_RERANK_MODEL:
             ranker = get_ranker(model_name=rerank_model)
         else:
+            if _ranker is None:
+                _ranker = get_ranker()
             ranker = _ranker
     else:
         ranker = None
@@ -117,11 +127,15 @@ def run_rag_pipeline(query: str, config: dict | None = None) -> dict:
             top_k=cfg["top_k_final"],
             ranker=runtime["ranker"],
             model_name=cfg["rerank_model"],
+            passage_format=cfg["rerank_passage_format"],
         )
     else:
         ranked = passages[: cfg["top_k_final"]]
 
-    context = format_context(ranked)
+    context = format_context(
+        ranked,
+        passage_format=cfg["context_passage_format"],
+    )
     answer = generate_answer(
         query,
         context,

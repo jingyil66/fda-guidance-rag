@@ -1,7 +1,7 @@
 {
-  "run_id": "example_20260527_baseline",
-  "stage": "chunking|retrieval|generation|e2e",
-  "qa_dataset_path": "qa_dataset.json",
+  "run_id": "run_010_subset200_topk3_dev",
+  "stage": "retrieval",
+  "qa_dataset_path": "experiment/subsets/qa_gold_dev.json",
   "qa_dataset_fields": {
     "question_field": "question",
     "answer_field": "answer",
@@ -19,7 +19,7 @@
     "collection_name": "experiment_subset200_chunk600_overlap200"
   },
   "chunking": {
-    "strategy": "fixed|unstructured_section",
+    "strategy": "fixed",
     "fixed": {
       "chunk_size": 600,
       "chunk_overlap": 200
@@ -34,7 +34,7 @@
     "mode": "embedding_only",
     "embedding_model": "text-embedding-3-small",
     "top_k_initial": 20,
-    "top_k_final": 5,
+    "top_k_final": 3,
     "bm25": {
       "enabled": false
     },
@@ -44,22 +44,20 @@
     },
     "rerank": {
       "enabled": false,
-      "model": "ms-marco-MiniLM-L-12-v2",
-      "passage_format": "raw"
+      "model": "ms-marco-MiniLM-L-12-v2"
     }
   },
   "generation": {
     "model": "gpt-4o-mini",
     "temperature": 0,
-    "prompt_version": "strict_context_v1",
-    "passage_format": "legacy"
+    "prompt_version": "strict_context_v1"
   },
   "evaluation": {
-    "k_list": [5, 10, 20],
+    "k_list": [3, 5, 10, 20],
     "answer_metrics": ["correctness", "groundedness", "relevance"],
     "retrieval_metrics": ["recall_at_k", "mrr", "context_precision"],
     "retrieval_match_strategy": "pdf_id_page_with_text_fallback",
     "e2e_success_rule": "correctness_and_groundedness_pass"
   },
-  "notes": "Template aligned with qa_dataset.json fields: question, answer, context, source_id."
+  "notes": "Week 4 precision ablation: embedding-only top-3 (no rerank); compare to run_007 top-5 and run_002 baseline."
 }

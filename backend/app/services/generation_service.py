@@ -2,6 +2,11 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 
+from backend.app.services.passage_format import (
+    PASSAGE_FORMAT_LEGACY,
+    format_passage_for_context,
+)
+
 DEFAULT_LLM_MODEL = "gpt-4o-mini"
 
 DEFAULT_PROMPT_TEMPLATE = """
@@ -9,7 +14,7 @@ DEFAULT_PROMPT_TEMPLATE = """
     You are a precise and comprehensive Medical/Regulatory Affairs Assistant. Your goal is to answer questions based STRICTLY on the provided FDA guidance context.
 
     ### Context Information
-    Below are relevant segments retrieved from the database. Each segment is formatted as [Index] (Title | Page): Content.
+    Below are relevant segments retrieved from the database. Each segment includes Title, Section, and Content when available.
 
     {context}
 
@@ -40,15 +45,15 @@ def get_parser() -> StrOutputParser:
     return StrOutputParser()
 
 
-def format_context(passages: list[dict]) -> str:
-    blocks = []
-    for passage in passages:
-        metadata = passage.get("metadata") or {}
-        blocks.append(
-            f"Content: {passage.get('text', '')}\n"
-            f"Title: {metadata.get('title', 'Unknown')}\n"
-            f"Page: {metadata.get('page', '?')}"
-        )
+def format_context(
+    passages: list[dict],
+    *,
+    passage_format: str = PASSAGE_FORMAT_LEGACY,
+) -> str:
+    blocks = [
+        format_passage_for_context(passage, passage_format)
+        for passage in passages
+    ]
     return "\n\n".join(blocks)
 
 

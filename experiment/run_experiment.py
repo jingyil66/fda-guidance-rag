@@ -129,6 +129,8 @@ def build_pipeline_config(run_config: dict, collection_override: str | None = No
         "embedding_model": retrieval.get("embedding_model", "text-embedding-3-small"),
         "llm_model": generation.get("model", "gpt-4o-mini"),
         "rerank_model": rerank.get("model", "ms-marco-MiniLM-L-12-v2"),
+        "rerank_passage_format": rerank.get("passage_format", "raw"),
+        "context_passage_format": generation.get("passage_format", "legacy"),
     }
 
 

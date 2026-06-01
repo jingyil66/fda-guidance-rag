@@ -1,7 +1,7 @@
 {
-  "run_id": "example_20260527_baseline",
-  "stage": "chunking|retrieval|generation|e2e",
-  "qa_dataset_path": "qa_dataset.json",
+  "run_id": "run_012_subset200_rerank_title_section_dev",
+  "stage": "retrieval",
+  "qa_dataset_path": "experiment/subsets/qa_gold_dev.json",
   "qa_dataset_fields": {
     "question_field": "question",
     "answer_field": "answer",
@@ -19,7 +19,7 @@
     "collection_name": "experiment_subset200_chunk600_overlap200"
   },
   "chunking": {
-    "strategy": "fixed|unstructured_section",
+    "strategy": "fixed",
     "fixed": {
       "chunk_size": 600,
       "chunk_overlap": 200
@@ -31,7 +31,7 @@
     }
   },
   "retrieval": {
-    "mode": "embedding_only",
+    "mode": "embedding_plus_rerank",
     "embedding_model": "text-embedding-3-small",
     "top_k_initial": 20,
     "top_k_final": 5,
@@ -43,16 +43,16 @@
       "rrf_k": 60
     },
     "rerank": {
-      "enabled": false,
+      "enabled": true,
       "model": "ms-marco-MiniLM-L-12-v2",
-      "passage_format": "raw"
+      "passage_format": "title_section_chunk"
     }
   },
   "generation": {
     "model": "gpt-4o-mini",
     "temperature": 0,
     "prompt_version": "strict_context_v1",
-    "passage_format": "legacy"
+    "passage_format": "title_section_chunk"
   },
   "evaluation": {
     "k_list": [5, 10, 20],
@@ -61,5 +61,5 @@
     "retrieval_match_strategy": "pdf_id_page_with_text_fallback",
     "e2e_success_rule": "correctness_and_groundedness_pass"
   },
-  "notes": "Template aligned with qa_dataset.json fields: question, answer, context, source_id."
+  "notes": "Week 4 rerank input ablation: FlashRank MiniLM with Title+Section(Page)+chunk; compare to run_002 raw rerank and run_007 no rerank."
 }
