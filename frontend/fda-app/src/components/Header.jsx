@@ -1,14 +1,15 @@
 function Header() {
-    
-    return (
-        <div class="container">
-            <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-                    <span class="fs-4">FDA Guidance Document RAG Assistant</span>
-                </a>
-            </header>
+  return (
+    <div className="container">
+      <header className="d-flex flex-wrap justify-content-center py-3 mb-2 border-bottom">
+        <div className="d-flex flex-column mb-3 mb-md-0 me-md-auto text-start">
+          <span className="fs-4 fw-semibold">FDA Guidance RAG Assistant</span>
+          <small className="text-muted header-subtitle">
+            Search 2,000+ FDA medical guidance documents · answers grounded in retrieved sources
+          </small>
         </div>
-    
+      </header>
+    </div>
   );
 }
 

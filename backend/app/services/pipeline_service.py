@@ -134,6 +134,7 @@ def run_rag_pipeline(query: str, config: dict | None = None) -> dict:
     context = format_context(
         ranked,
         passage_format=cfg["context_passage_format"],
+        numbered=True,
     )
     answer = generate_answer(
         query,
