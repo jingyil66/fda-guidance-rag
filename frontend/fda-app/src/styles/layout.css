@@ -1,0 +1,27 @@
+/* App shell */
+#root {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 2rem;
+}
+
+.chat-container {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.header-subtitle {
+  line-height: 1.45;
+}
+
+@media (max-width: 575.98px) {
+  #root {
+    padding: 0.75rem 0.875rem 1.5rem;
+  }
+
+  .header-subtitle {
+    display: block;
+    margin-top: 0.35rem;
+  }
+}

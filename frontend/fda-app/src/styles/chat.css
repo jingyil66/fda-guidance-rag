@@ -1,0 +1,91 @@
+/* Query + answer + empty state */
+.example-btn {
+  max-width: 100%;
+  white-space: normal;
+  text-align: left;
+}
+
+.empty-state {
+  border: 1px solid #dee2e6;
+  background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.empty-state .example-btn {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.query-form {
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+}
+
+.query-form .query-input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.query-form .btn-send {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.answer-body {
+  min-height: 120px;
+}
+
+.answer-markdown {
+  line-height: 1.6;
+}
+
+.answer-markdown p:last-child {
+  margin-bottom: 0;
+}
+
+.answer-markdown ul,
+.answer-markdown ol {
+  padding-left: 1.25rem;
+}
+
+.answer-markdown code {
+  font-size: 0.9em;
+  background: #f6f8fa;
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+
+@media (max-width: 575.98px) {
+  .query-form {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .query-form .query-input,
+  .query-form .btn-send {
+    width: 100%;
+    border-radius: 0.375rem;
+  }
+
+  .empty-state .card-body,
+  .answer-card .card-body {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .answer-body {
+    min-height: 100px;
+  }
+}
+
+@media (min-width: 576px) {
+  .query-form .query-input {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .query-form .btn-send {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}

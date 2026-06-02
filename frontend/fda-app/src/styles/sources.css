@@ -1,0 +1,74 @@
+/* Citations + source list */
+.citation-link {
+  display: inline;
+  border: none;
+  background: #e7f1ff;
+  color: #0d6efd;
+  font-size: 0.85em;
+  font-weight: 600;
+  padding: 0.05em 0.35em;
+  margin: 0 0.1em;
+  border-radius: 4px;
+  cursor: pointer;
+  vertical-align: baseline;
+  line-height: 1.4;
+}
+
+.citation-link:hover {
+  background: #cfe2ff;
+}
+
+.list-group-item.source-highlight {
+  background-color: #fff8e1;
+  border-left: 4px solid #ffc107;
+}
+
+.source-snippet-toggle {
+  text-decoration: none;
+}
+
+.source-snippet {
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-align: left;
+}
+
+.sources-card .source-item {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+@media (max-width: 575.98px) {
+  .sources-card .card-header,
+  .sources-card .source-item {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .sources-card .list-group-flush > .source-item {
+    border-bottom-width: 1px;
+  }
+
+  .source-item-row {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+  }
+
+  .source-open-btn {
+    width: 100%;
+  }
+}
+
+@media (min-width: 576px) {
+  .sources-card .source-item + .source-item {
+    border-top: 1px solid #dee2e6;
+  }
+}
