@@ -19,6 +19,7 @@ Experiment work on a 200-PDF subset uses collection `experiment_subset200_chunk6
 
 ```
 backend/app/          API, RAG pipeline, ETL (S3 → Qdrant)
+backend/mcp/          MCP server (stdio) for IDE clients
 experiment/           run configs, evaluators, ingest/smoke scripts
 evaluation/           QA dataset tooling (`qa_dataset.json`)
 tests/                pytest (unit + integration)
@@ -86,6 +87,48 @@ cd frontend/fda-app && npm install && npm run dev
 ```
 
 http://localhost:5173 → `http://127.0.0.1:5000/ask` by default.
+
+## MCP server (stdio)
+
+Exposes the same tools as `/ask_agent` for Cursor, Claude Desktop, or other MCP clients:
+
+| Tool | Purpose |
+|------|---------|
+| `search_guidance` | Semantic search over Qdrant chunks |
+| `list_guidance` | Filter guidance catalog metadata |
+| `get_guidance_detail` | Summary for one document by `pdf_id` or title |
+
+**Run** (repo root; Qdrant + `.env` required for search):
+
+```bash
+python -m backend.mcp.fda_guidance_server
+```
+
+**Cursor** — add to MCP settings (use your absolute paths):
+
+```json
+{
+  "mcpServers": {
+    "fda-guidance-rag": {
+      "command": "D:/winter_2025/fda_guidance_rag/venv/Scripts/python.exe",
+      "args": ["-m", "backend.mcp.fda_guidance_server"],
+      "cwd": "D:/winter_2025/fda_guidance_rag",
+      "env": {
+        "OPENAI_API_KEY": "your-key",
+        "QDRANT_URL": "http://localhost:6333"
+      }
+    }
+  }
+}
+```
+
+**Demo prompts**
+
+1. *List guidances about adaptive design* → `list_guidance`
+2. *What does FDA say about Phase 2 trial design?* → `search_guidance`
+3. *Summarize guidance pdf_id=122971* → `get_guidance_detail` then optional `search_guidance` with `pdf_id`
+4. *CDER final guidances from 2024* → `list_guidance` with filters
+5. *Compare REMS requirements* → `list_guidance` then `search_guidance` on chosen `pdf_id`
 
 ## Ingest (optional)
 

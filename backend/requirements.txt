@@ -26,6 +26,9 @@ httpx==0.28.1
 openai==2.38.0
 langsmith==0.8.7
 
+# --- MCP (IDE / agent clients) ---
+mcp>=1.9.0
+
 # --- Utilities ---
 pydantic==2.13.4
 typing-extensions==4.15.0
