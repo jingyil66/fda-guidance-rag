@@ -49,6 +49,7 @@ pip-delete-this-directory.txt
 
 # Pytest
 .pytest_cache/
+pytest-cache-files-*/
 .coverage
 .coverage.*
 .cache

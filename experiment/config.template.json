@@ -1,7 +1,7 @@
 {
   "run_id": "example_20260527_baseline",
   "stage": "chunking|retrieval|generation|e2e",
-  "qa_dataset_path": "qa_dataset.json",
+  "qa_dataset_path": "evaluation/qa_dataset.json",
   "qa_dataset_fields": {
     "question_field": "question",
     "answer_field": "answer",

@@ -324,7 +324,7 @@ python experiment/scripts/smoke_production.py
 python experiment/scripts/smoke_production.py --api-url http://127.0.0.1:5000/ask
 ```
 
-Legacy CLI scripts under `experiment/scripts/test_*.py` remain for ad-hoc debugging; automated coverage lives under `tests/`.
+Automated tests live under `tests/unit/` and `tests/integration/`.
 
 - [ ] Scalable Cloud Hosting: Deploy the backend to AWS ECS (Fargate) and the frontend to AWS Amplify, utilizing AWS Secrets Manager for secure credential handling.
 
