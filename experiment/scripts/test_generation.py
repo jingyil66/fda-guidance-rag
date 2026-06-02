@@ -1,6 +1,8 @@
 """
 Manual smoke test for retrieval + rerank + generation_service.
 
+DEPRECATED for automation: pytest -m integration tests/integration/test_rag_stack.py
+
 Usage (from project root):
     python experiment/scripts/test_generation.py
     python experiment/scripts/test_generation.py --collection test

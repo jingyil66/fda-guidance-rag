@@ -1,6 +1,8 @@
 """
 Manual smoke test for retrieval_service.retrieve_embedding.
 
+DEPRECATED for automation: pytest -m integration tests/integration/test_rag_stack.py
+
 Usage (from project root):
     python experiment/scripts/test_retrieval.py
     python experiment/scripts/test_retrieval.py --collection test --top-k 5

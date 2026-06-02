@@ -77,6 +77,7 @@ backend/
 evaluation/                # LangSmith metrics & Golden Dataset
 experiment/                # Sandbox for testing new reranking models & splitters
 test/                      # Unit tests & Qdrant maintenance scripts
+tests/                     # Pytest suite (unit + integration)
 ```
 
 ## Technical Stack
@@ -300,6 +301,30 @@ The assistant will be available at http://localhost:5173.
 - [ ] VPC & Private Endpoints: Secure the S3-to-Qdrant data flow within an AWS VPC to simulate enterprise-grade security requirements for sensitive pharmaceutical data.
 
 - [x] Full-Stack Containerization: `docker-compose.yml` orchestrates Flask Backend, React UI (Nginx), and Qdrant (see [Production demo](#production-demo-docker-compose)).
+
+## Testing
+
+Unit tests run by default (no live Qdrant or OpenAI required):
+
+```bash
+pip install -r backend/requirements.txt -r requirements-dev.txt
+pytest
+```
+
+Integration tests (Qdrant at `QDRANT_URL`, `OPENAI_API_KEY` in `.env`):
+
+```bash
+pytest -m integration
+```
+
+Manual production smoke (Docker stack):
+
+```bash
+python experiment/scripts/smoke_production.py
+python experiment/scripts/smoke_production.py --api-url http://127.0.0.1:5000/ask
+```
+
+Legacy CLI scripts under `experiment/scripts/test_*.py` remain for ad-hoc debugging; automated coverage lives under `tests/`.
 
 - [ ] Scalable Cloud Hosting: Deploy the backend to AWS ECS (Fargate) and the frontend to AWS Amplify, utilizing AWS Secrets Manager for secure credential handling.
 

@@ -1,6 +1,8 @@
 """
 Manual smoke test for retrieval + rerank_service.rerank_passages.
 
+DEPRECATED for automation: pytest -m integration tests/integration/test_rag_stack.py
+
 Usage (from project root):
     python experiment/scripts/test_rerank.py
     python experiment/scripts/test_rerank.py --collection test --top-k-initial 20 --top-k-final 5

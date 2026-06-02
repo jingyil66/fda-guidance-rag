@@ -1,6 +1,8 @@
 """
 Manual smoke test for chunking_service.chunk_fixed.
 
+DEPRECATED for automation: pytest -m integration tests/integration/test_rag_stack.py
+
 Usage (from project root):
     python experiment/scripts/test_chunking.py
     python experiment/scripts/test_chunking.py --pdf data/122971.pdf

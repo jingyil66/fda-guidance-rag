@@ -1,6 +1,8 @@
 """
 Manual smoke test for pipeline_service.run_rag_pipeline.
 
+DEPRECATED for automation: pytest -m integration tests/integration/test_rag_stack.py
+
 Usage (from project root):
     python experiment/scripts/test_pipeline.py
     python experiment/scripts/test_pipeline.py --collection experiment_subset200_chunk600_overlap200
