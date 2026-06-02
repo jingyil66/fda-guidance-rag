@@ -75,3 +75,31 @@ def test_ask_success(client):
     assert data["answer"] == "Test answer."
     assert len(data["sources"]) == 1
     mock_get_answer.assert_called_once_with("What is required?")
+
+
+def test_ask_agent_empty_query(client):
+    response = client.post("/ask_agent", json={"query": ""})
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data["success"] is False
+    assert data["answer"] == "Query is empty"
+    assert data["sources"] == []
+    assert data["steps"] == []
+
+
+def test_ask_agent_success(client):
+    with patch("backend.app.api.routes.get_agent_answer") as mock_agent:
+        mock_agent.return_value = {
+            "answer": "Agent answer.",
+            "sources": [{"title": "Guidance", "pdf_id": "1"}],
+            "steps": [{"tool": "search_guidance", "args": {"query": "test"}}],
+        }
+        response = client.post("/ask_agent", json={"query": "List REMS guidances"})
+
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data["success"] is True
+    assert data["answer"] == "Agent answer."
+    assert len(data["sources"]) == 1
+    assert data["steps"][0]["tool"] == "search_guidance"
+    mock_agent.assert_called_once_with("List REMS guidances")

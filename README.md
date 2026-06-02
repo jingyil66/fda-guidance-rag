@@ -63,7 +63,9 @@ python experiment/scripts/smoke_production.py
 python experiment/scripts/smoke_production.py --api-url http://127.0.0.1:5000/ask
 ```
 
-`POST /ask` JSON: `{"query": "..."}`. `GET /health` checks Qdrant + collection.
+`POST /ask` JSON: `{"query": "..."}` — fixed RAG pipeline.  
+`POST /ask_agent` JSON: `{"query": "..."}` — tool-calling agent (`search_guidance`, `list_guidance`, `get_guidance_detail`); response includes `steps` trace.  
+`GET /health` checks Qdrant + collection.
 
 **5. Full stack (Docker Compose)**
 

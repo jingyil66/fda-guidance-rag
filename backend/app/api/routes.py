@@ -1,5 +1,6 @@
 from flask import request, jsonify
 from backend.app.core.config import settings
+from backend.app.services.agent_service import get_agent_answer
 from backend.app.services.rag_service import get_answer
 
 def register_routes(app):
@@ -46,6 +47,28 @@ def register_routes(app):
             "answer": result["answer"],
             "sources": result["sources"]
         })
+
+    @app.route("/ask_agent", methods=["POST"])
+    def ask_agent():
+        data = request.json or {}
+        query = data.get("query", "")
+
+        if not query:
+            return jsonify({
+                "success": False,
+                "answer": "Query is empty",
+                "sources": [],
+                "steps": [],
+            })
+
+        result = get_agent_answer(query)
+        return jsonify({
+            "success": True,
+            "answer": result["answer"],
+            "sources": result.get("sources", []),
+            "steps": result.get("steps", []),
+        })
+
     # --- Document Management---
     
     # get document metadata
