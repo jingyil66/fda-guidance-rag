@@ -143,11 +143,15 @@ QDRANT_URL=http://localhost:6333
 ```
 
 **3. Infrastructure (Qdrant Vector Database)**
-The system uses Qdrant for high-performance vector storage. The most reliable way to run it is via Docker:
+
+For local development only, you can run Qdrant alone:
+
 ```
 docker pull qdrant/qdrant
 docker run -p 6333:6333 -v qdrant_storage:/qdrant/storage qdrant/qdrant
 ```
+
+For the **production demo** (Qdrant + API together), use [Docker Compose](#production-demo-docker-compose) instead.
 
 **4. The ETL Pipeline (Data Ingestion)**
 This is a three-stage process to move data from the FDA's servers to your Cloud RAG engine.
@@ -169,11 +173,82 @@ python -m app.etl.download_to_s3
 **Stage C: Vector Indexing (Qdrant)**
 The core engine: utilizes a Producer-Consumer pattern to pull from S3, perform recursive chunking, and batch-upload embeddings to Qdrant.
 
+Production defaults (from `backend/app/core/config.py`):
+
+- Collection: `fda_guidance_chunk600_overlap200`
+- Chunking: fixed 600 / 200
+- Retrieval: embedding top-20 → top-5, **no rerank**
+
 ```
-python -m app.etl.initial_data_ingestion
+# From project root (Windows)
+set QDRANT_COLLECTION=fda_guidance_chunk600_overlap200
+venv\Scripts\python.exe backend\app\etl\initial_data_ingestion.py
+
+# Local PDFs only (data/ + data/subset_200/)
+venv\Scripts\python.exe experiment\scripts\ingest_local_pdfs.py
 ```
 
-**5. Application Launch**
+**5. Production smoke test & API (local dev)**
+
+```
+venv\Scripts\python.exe experiment\scripts\smoke_production.py
+venv\Scripts\python.exe -m backend.app.main
+# optional second terminal:
+venv\Scripts\python.exe experiment\scripts\smoke_production.py --api-url http://127.0.0.1:5000/ask
+```
+
+Experiment ablations use separate collections under `experiment/configs/` (e.g. `experiment_subset200_chunk600_overlap200`).
+
+### Production demo: Docker Compose
+
+After full-corpus ingest into Qdrant, run the production stack (Qdrant + Flask API) with one command. Data is read from the existing volume on `D:/qdrant/storage` (~252k chunks in `fda_guidance_chunk600_overlap200`).
+
+**Prerequisites**
+
+- Docker Desktop
+- Project-root `.env` with `OPENAI_API_KEY` (see step 2 above)
+- Qdrant storage already populated (see **Stage C**). Default bind mount: `D:/qdrant/storage`
+- Port **6333** and **5000** free (stop any standalone `docker run qdrant` container first)
+
+**Start**
+
+From the project root:
+
+```powershell
+docker compose up -d --build
+docker compose ps
+```
+
+- **Qdrant:** http://localhost:6333/dashboard  
+- **API:** http://127.0.0.1:5000/ask (`POST` JSON `{"query": "..."}`)  
+- Inside the backend container, `QDRANT_URL` is `http://qdrant:6333` (set in `docker-compose.yml`). Do **not** put that hostname in `.env` if you run smoke tests from the host.
+
+**Verify**
+
+Run smoke from the host with `localhost` for Qdrant:
+
+```powershell
+$env:QDRANT_URL='http://localhost:6333'
+venv\Scripts\python.exe experiment\scripts\smoke_production.py --min-points 250000 --api-url http://127.0.0.1:5000/ask
+```
+
+Optional UI (separate terminal):
+
+```powershell
+cd frontend\fda-app
+npm install
+npm run dev
+```
+
+Open http://localhost:5173 (frontend calls `http://127.0.0.1:5000/ask`).
+
+Stop the stack:
+
+```powershell
+docker compose down
+```
+
+**6. Application Launch (local dev, without Docker)**
 Backend (Flask API)
 Starts the RAG service, including the FlashRank re-ranker and LangChain orchestration.
 
@@ -220,7 +295,7 @@ The assistant will be available at http://localhost:5173.
 
 - [ ] VPC & Private Endpoints: Secure the S3-to-Qdrant data flow within an AWS VPC to simulate enterprise-grade security requirements for sensitive pharmaceutical data.
 
-- [ ] Full-Stack Containerization: Create a docker-compose.yml to orchestrate the Flask Backend, React Frontend, and Qdrant Vector DB as a unified microservices architecture.
+- [x] Full-Stack Containerization: `docker-compose.yml` orchestrates Flask Backend and Qdrant (see [Production demo](#production-demo-docker-compose)); React frontend still runs locally via Vite.
 
 - [ ] Scalable Cloud Hosting: Deploy the backend to AWS ECS (Fargate) and the frontend to AWS Amplify, utilizing AWS Secrets Manager for secure credential handling.
 

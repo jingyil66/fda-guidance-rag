@@ -13,7 +13,6 @@ from backend.app.services.generation_service import (
 )
 from backend.app.services.retrieval_service import (
     DEFAULT_EMBEDDING_MODEL,
-    DEFAULT_QDRANT_URL,
     get_embeddings,
     get_qdrant_client,
     retrieve_embedding,
@@ -30,12 +29,12 @@ from backend.app.services.rerank_service import (
 
 os.environ["OPENAI_API_KEY"] = settings.OPENAI_API_KEY or ""
 
-DEFAULT_COLLECTION_NAME = "experiment_subset200_chunk600_overlap200"
+DEFAULT_COLLECTION_NAME = settings.DEFAULT_QDRANT_COLLECTION
 DEFAULT_TOP_K_INITIAL = 20
 DEFAULT_TOP_K_FINAL = 5
 DEFAULT_RERANK_ENABLED = False
 
-_client = get_qdrant_client(DEFAULT_QDRANT_URL)
+_client = get_qdrant_client(settings.DEFAULT_QDRANT_URL)
 _embeddings = get_embeddings(DEFAULT_EMBEDDING_MODEL)
 _ranker = None
 _prompt = get_prompt()
@@ -50,7 +49,7 @@ def _normalize_config(config: dict | None) -> dict:
         "top_k_initial": config.get("top_k_initial", DEFAULT_TOP_K_INITIAL),
         "top_k_final": config.get("top_k_final", DEFAULT_TOP_K_FINAL),
         "rerank_enabled": config.get("rerank_enabled", DEFAULT_RERANK_ENABLED),
-        "qdrant_url": config.get("qdrant_url", DEFAULT_QDRANT_URL),
+        "qdrant_url": config.get("qdrant_url", settings.DEFAULT_QDRANT_URL),
         "embedding_model": config.get("embedding_model", DEFAULT_EMBEDDING_MODEL),
         "llm_model": config.get("llm_model", DEFAULT_LLM_MODEL),
         "rerank_model": config.get("rerank_model", DEFAULT_RERANK_MODEL),
@@ -61,7 +60,7 @@ def _normalize_config(config: dict | None) -> dict:
 
 def _resolve_runtime(config: dict) -> dict:
     qdrant_url = config["qdrant_url"]
-    if qdrant_url != DEFAULT_QDRANT_URL:
+    if qdrant_url != settings.DEFAULT_QDRANT_URL:
         client = get_qdrant_client(qdrant_url)
     else:
         client = _client

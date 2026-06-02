@@ -1,10 +1,12 @@
+from backend.app.core.config import settings
 from backend.app.services.pipeline_service import run_rag_pipeline
 
 
 def get_answer(
     query: str,
-    collection_name: str = "experiment_subset200_chunk600_overlap200",
+    collection_name: str | None = None,
 ) -> dict:
+    collection_name = collection_name or settings.DEFAULT_QDRANT_COLLECTION
     return run_rag_pipeline(
         query,
         config={

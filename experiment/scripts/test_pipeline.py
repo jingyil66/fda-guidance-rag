@@ -30,8 +30,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--query", default=DEFAULT_QUERY, help="Query string")
     parser.add_argument(
         "--collection",
-        default="experiment_subset200_chunk600_overlap200",
-        help="Qdrant collection name",
+        default=None,
+        help="Qdrant collection name (default: production collection from settings)",
     )
     parser.add_argument("--top-k-initial", type=int, default=20)
     parser.add_argument("--top-k-final", type=int, default=5)
@@ -53,10 +53,11 @@ def main() -> int:
     os.environ["OPENAI_API_KEY"] = settings.OPENAI_API_KEY or ""
     settings.validate()
 
+    collection_name = args.collection or settings.DEFAULT_QDRANT_COLLECTION
     result = run_rag_pipeline(
         args.query,
         config={
-            "collection_name": args.collection,
+            "collection_name": collection_name,
             "top_k_initial": args.top_k_initial,
             "top_k_final": args.top_k_final,
             "rerank_enabled": args.rerank,
@@ -67,7 +68,7 @@ def main() -> int:
     sources = result.get("sources") or []
     documents = result.get("documents") or []
 
-    print(f"collection: {args.collection}")
+    print(f"collection: {collection_name}")
     print(f"rerank_enabled: {args.rerank}")
     print(f"sources_count: {len(sources)}")
     print(f"documents_count: {len(documents)}")

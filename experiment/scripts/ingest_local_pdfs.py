@@ -3,7 +3,7 @@ Ingest local PDFs into Qdrant using chunking_service.
 
 Usage (from project root):
     python experiment/scripts/ingest_local_pdfs.py
-    python experiment/scripts/ingest_local_pdfs.py --data-dir data --collection experiment_chunk600_overlap200
+    python experiment/scripts/ingest_local_pdfs.py --data-dir data --collection fda_guidance_chunk600_overlap200
     python experiment/scripts/ingest_local_pdfs.py --limit 5
 """
 
@@ -21,13 +21,21 @@ if str(PROJECT_ROOT) not in sys.path:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Ingest local PDFs into Qdrant.")
-    parser.add_argument("--data-dir", type=Path, default=PROJECT_ROOT / "data")
+    from backend.app.core.config import settings
+
+    parser.add_argument(
+        "--data-dirs",
+        nargs="*",
+        type=Path,
+        default=None,
+        help="PDF directories to scan (default: data/ and data/subset_200/)",
+    )
     parser.add_argument(
         "--collection",
-        default="experiment_chunk600_overlap200",
+        default=settings.DEFAULT_QDRANT_COLLECTION,
         help="Target Qdrant collection name",
     )
-    parser.add_argument("--qdrant-url", default="http://localhost:6333")
+    parser.add_argument("--qdrant-url", default=settings.DEFAULT_QDRANT_URL)
     parser.add_argument("--chunk-size", type=int, default=600)
     parser.add_argument("--chunk-overlap", type=int, default=200)
     parser.add_argument("--batch-size", type=int, default=20)
@@ -54,6 +62,21 @@ def load_subset_pdf_ids(path: Path) -> set[str]:
     return {str(pdf_id) for pdf_id in pdf_ids}
 
 
+def collect_pdf_files(data_dirs: list[Path], subset_file: Path | None) -> list[Path]:
+    by_stem: dict[str, Path] = {}
+    for data_dir in data_dirs:
+        if not data_dir.exists():
+            continue
+        for pdf_path in sorted(data_dir.glob("*.pdf")):
+            by_stem.setdefault(pdf_path.stem, pdf_path)
+
+    pdf_files = sorted(by_stem.values(), key=lambda path: path.stem)
+    if subset_file:
+        allowed_ids = load_subset_pdf_ids(subset_file)
+        pdf_files = [path for path in pdf_files if path.stem in allowed_ids]
+    return pdf_files
+
+
 def main() -> int:
     args = parse_args()
 
@@ -66,19 +89,16 @@ def main() -> int:
     os.environ["OPENAI_API_KEY"] = settings.OPENAI_API_KEY or ""
     settings.validate()
 
-    if not args.data_dir.exists():
-        print(f"Data directory not found: {args.data_dir}")
-        return 1
-
-    pdf_files = sorted(args.data_dir.glob("*.pdf"))
-    if args.subset_file:
-        allowed_ids = load_subset_pdf_ids(args.subset_file)
-        pdf_files = [path for path in pdf_files if path.stem in allowed_ids]
+    data_dirs = args.data_dirs or [
+        PROJECT_ROOT / "data",
+        PROJECT_ROOT / "data" / "subset_200",
+    ]
+    pdf_files = collect_pdf_files(data_dirs, args.subset_file)
     if args.limit > 0:
         pdf_files = pdf_files[: args.limit]
 
     if not pdf_files:
-        print(f"No PDFs found in {args.data_dir}")
+        print(f"No PDFs found in {', '.join(str(path) for path in data_dirs)}")
         return 1
 
     vector_store = init_qdrant(args.collection, args.qdrant_url)

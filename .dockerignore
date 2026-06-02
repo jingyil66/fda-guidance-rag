@@ -1,0 +1,12 @@
+venv/
+.venv/
+.git/
+.cursor/
+ingest_state/
+experiment/runs/
+**/__pycache__/
+**/*.py[cod]
+frontend/
+data/
+*.md
+.env

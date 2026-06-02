@@ -8,7 +8,16 @@ load_dotenv(dotenv_path=BASE_DIR / ".env")
 class Settings:
     DATA_DIR = BASE_DIR / "data"
     PDF_SAVE_DIR = DATA_DIR / "pdfs"
-    
+
+    # Production Qdrant collection (full corpus, fixed 600/200 chunks).
+    DEFAULT_QDRANT_COLLECTION = os.getenv(
+        "QDRANT_COLLECTION", "fda_guidance_chunk600_overlap200"
+    )
+    DEFAULT_QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
+    INGEST_STATE_DIR = BASE_DIR / "ingest_state"
+    # Experiment-only collection for subset_200 ablations (see experiment/configs/).
+    EXPERIMENT_SUBSET200_COLLECTION = "experiment_subset200_chunk600_overlap200"
+
     PDF_SAVE_DIR.mkdir(parents=True, exist_ok=True)
 
     HEADERS = {

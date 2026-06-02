@@ -3,6 +3,8 @@ data/
 
 # Experiment run artifacts (results, metrics, failures)
 experiment/runs/
+# Local ingest progress (checkpoint JSON)
+ingest_state/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

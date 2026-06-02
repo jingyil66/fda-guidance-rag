@@ -8,7 +8,7 @@
 ### Input
 - `query` (str): user question, non-empty string
 - `config` (dict, optional): runtime knobs
-  - `collection_name` (str, default `experiment_subset200_chunk600_overlap200`)
+  - `collection_name` (str, default `fda_guidance_chunk600_overlap200`)
   - `top_k_initial` (int, default 20)
   - `top_k_final` (int, default 5)
   - `rerank_enabled` (bool, default false)

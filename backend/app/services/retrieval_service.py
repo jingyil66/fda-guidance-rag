@@ -2,7 +2,9 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient
 
-DEFAULT_QDRANT_URL = "http://localhost:6333"
+from backend.app.core.config import settings
+
+DEFAULT_QDRANT_URL = settings.DEFAULT_QDRANT_URL
 DEFAULT_EMBEDDING_MODEL = "text-embedding-3-small"
 DEFAULT_TOP_K = 20
 
