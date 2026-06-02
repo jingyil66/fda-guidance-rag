@@ -11,7 +11,7 @@ Question answering over [FDA medical guidance](https://www.fda.gov/regulatory-in
 | Retrieval | embedding top-20 → top-5, **rerank off** (`rag_service.get_answer`) |
 | Models | `text-embedding-3-small`, `gpt-4o-mini` |
 
-Experiment work on a 200-PDF subset uses collection `experiment_subset200_chunk600_overlap200` and configs under `experiment/configs/` (final: `run_014_subset200_final_dev.json`, sealed test: `run_013_subset200_no_rerank_test.json`). Ablations and numbers: `experiment/registry.csv`, `experiment/REPORT_OUTLINE.md`.
+Experiment work on a 200-PDF subset uses collection `experiment_subset200_chunk600_overlap200` and configs under `experiment/configs/` (final: `run_014_subset200_final_dev.json`, sealed test: `run_013_subset200_no_rerank_test.json`). Ablations and numbers: [`experiment/REPORT.md`](experiment/REPORT.md), [`experiment/registry.csv`](experiment/registry.csv).
 
 **Subset eval (GPT judge, embedding-only, 600/200):** dev 30 pairs — e2e 0.83; sealed test 20 pairs — recall@5 0.90, e2e 0.70 (`run_013` in registry). Not full-corpus metrics.
 
@@ -35,7 +35,8 @@ jobs/                 staged ingest / benchmarks (optional)
 ```env
 OPENAI_API_KEY=sk-...
 QDRANT_URL=http://localhost:6333
-# optional: QDRANT_COLLECTION, AWS for S3 ingest
+# optional: QDRANT_COLLECTION
+# ingest via S3 (see below): AWS credentials + BUCKET_NAME
 ```
 
 **2. Install & test**
@@ -86,17 +87,33 @@ http://localhost:5173 → `http://127.0.0.1:5000/ask` by default.
 
 ## Ingest (optional)
 
-Full pipeline (FDA metadata → S3 → Qdrant), from repo root:
+`data/` is gitignored. Full-corpus ingest expects:
+
+- **`data/metadata_with_summary.json`** — FDA guidance catalog + scraped summaries (see step 1).
+- **AWS credentials** in the environment and `BUCKET_NAME` (or `S3_BUCKET`) in `.env` for PDF upload / S3-backed stages.
+- **`OPENAI_API_KEY`** for embedding.
+
+**1. Metadata** (once; writes `data/metadata_with_summary.json`), from repo root:
 
 ```bash
-python -m backend.app.fetchers.fda_fetcher
-python -m backend.app.etl.download_to_s3
-python -m backend.app.etl.initial_data_ingestion.py
+python -c "import asyncio; from backend.app.core.config import settings; from backend.app.services.metadata_service import FDAWorkflow; w = FDAWorkflow(settings.HEADERS, settings.METADATA_URL, settings.OUTPUT_METADATA_JSON); asyncio.run(w.prepare_metadata(force_refresh=True))"
 ```
 
-Local PDFs only: `python experiment/scripts/ingest_local_pdfs.py` (e.g. `data/`, `data/subset_200/`).
+**2. Staged ingest (recommended)** — download → chunk → embed with checkpoints:
 
-Staged ingest with checkpoints: `jobs/ingest_stages.py`.
+```bash
+python jobs/ingest_stages.py --stage all
+# optional: --cache-pdfs (local PDF cache), --limit N, --collection NAME
+```
+
+**Alternative (monolithic S3 → Qdrant)** after metadata exists:
+
+```bash
+python -m backend.app.etl.download_to_s3
+python -m backend.app.etl.initial_data_ingestion
+```
+
+**Local PDFs only** (no S3): `python experiment/scripts/ingest_local_pdfs.py` (e.g. `data/`, `data/subset_200/`).
 
 ## Experiment runner
 
