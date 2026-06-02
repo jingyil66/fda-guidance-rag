@@ -201,14 +201,14 @@ Experiment ablations use separate collections under `experiment/configs/` (e.g. 
 
 ### Production demo: Docker Compose
 
-After full-corpus ingest into Qdrant, run the production stack (Qdrant + Flask API) with one command. Data is read from the existing volume on `D:/qdrant/storage` (~252k chunks in `fda_guidance_chunk600_overlap200`).
+After full-corpus ingest into Qdrant, run the production stack (Qdrant + Flask API + React UI) with one command. Data is read from the existing volume on `D:/qdrant/storage` (~252k chunks in `fda_guidance_chunk600_overlap200`).
 
 **Prerequisites**
 
 - Docker Desktop
 - Project-root `.env` with `OPENAI_API_KEY` (see step 2 above)
 - Qdrant storage already populated (see **Stage C**). Default bind mount: `D:/qdrant/storage`
-- Port **6333** and **5000** free (stop any standalone `docker run qdrant` container first)
+- Port **6333**, **5000**, and **8080** free (stop any standalone `docker run qdrant` container first)
 
 **Start**
 
@@ -219,8 +219,9 @@ docker compose up -d --build
 docker compose ps
 ```
 
+- **UI:** http://localhost:8080 (Nginx serves the React app; `/api/*` proxies to the backend)
 - **Qdrant:** http://localhost:6333/dashboard  
-- **API:** http://127.0.0.1:5000/ask (`POST` JSON `{"query": "..."}`)  
+- **API (direct):** http://127.0.0.1:5000/health and `POST` http://127.0.0.1:5000/ask with JSON `{"query": "..."}`  
 - Inside the backend container, `QDRANT_URL` is `http://qdrant:6333` (set in `docker-compose.yml`). Do **not** put that hostname in `.env` if you run smoke tests from the host.
 
 **Verify**
@@ -230,9 +231,12 @@ Run smoke from the host with `localhost` for Qdrant:
 ```powershell
 $env:QDRANT_URL='http://localhost:6333'
 venv\Scripts\python.exe experiment\scripts\smoke_production.py --min-points 250000 --api-url http://127.0.0.1:5000/ask
+curl.exe -s http://127.0.0.1:5000/health
 ```
 
-Optional UI (separate terminal):
+Open http://localhost:8080 and ask a question in the UI.
+
+For local frontend development without Docker (hot reload):
 
 ```powershell
 cd frontend\fda-app
@@ -240,7 +244,7 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173 (frontend calls `http://127.0.0.1:5000/ask`).
+Open http://localhost:5173 (calls `http://127.0.0.1:5000/ask` by default).
 
 Stop the stack:
 
@@ -295,7 +299,7 @@ The assistant will be available at http://localhost:5173.
 
 - [ ] VPC & Private Endpoints: Secure the S3-to-Qdrant data flow within an AWS VPC to simulate enterprise-grade security requirements for sensitive pharmaceutical data.
 
-- [x] Full-Stack Containerization: `docker-compose.yml` orchestrates Flask Backend and Qdrant (see [Production demo](#production-demo-docker-compose)); React frontend still runs locally via Vite.
+- [x] Full-Stack Containerization: `docker-compose.yml` orchestrates Flask Backend, React UI (Nginx), and Qdrant (see [Production demo](#production-demo-docker-compose)).
 
 - [ ] Scalable Cloud Hosting: Deploy the backend to AWS ECS (Fargate) and the frontend to AWS Amplify, utilizing AWS Secrets Manager for secure credential handling.
 

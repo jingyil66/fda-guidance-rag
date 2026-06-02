@@ -21,4 +21,30 @@ services:
       QDRANT_URL: http://qdrant:6333
     depends_on:
       - qdrant
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health')",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend/fda-app
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: /api/ask
+    container_name: fda-rag-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      backend:
+        condition: service_healthy
     restart: unless-stopped
