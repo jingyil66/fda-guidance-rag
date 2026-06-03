@@ -1,3 +1,13 @@
+function sourcePdfUrl(source) {
+  if (source.url) {
+    return source.url;
+  }
+  if (source.pdf_id) {
+    return `https://www.fda.gov/media/${source.pdf_id}/download`;
+  }
+  return "";
+}
+
 export default function SourceList({
   sources,
   highlightedSource,
@@ -14,6 +24,7 @@ export default function SourceList({
       <div className="list-group list-group-flush">
         {sources.map((source, idx) => {
           const sourceNum = idx + 1;
+          const pdfUrl = sourcePdfUrl(source);
           return (
             <div
               key={`${source.pdf_id || source.title}-${idx}`}
@@ -50,14 +61,14 @@ export default function SourceList({
                     </div>
                   )}
                 </div>
-                {source.url && (
+                {pdfUrl && (
                   <a
-                    href={source.url}
+                    href={pdfUrl}
                     className="btn btn-sm btn-outline-primary flex-shrink-0 source-open-btn"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Open FDA
+                    Open PDF
                   </a>
                 )}
               </div>

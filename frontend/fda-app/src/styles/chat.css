@@ -31,6 +31,42 @@
   white-space: nowrap;
 }
 
+.agent-steps-body {
+  min-height: 48px;
+}
+
+.agent-step + .agent-step {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.agent-step-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.agent-step-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #495057;
+  background: #e9ecef;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.agent-step-args {
+  margin-top: 0.35rem;
+  margin-left: 2rem;
+  word-break: break-word;
+}
+
 .answer-body {
   min-height: 120px;
 }

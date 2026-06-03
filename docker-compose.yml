@@ -40,7 +40,7 @@ services:
       context: ./frontend/fda-app
       dockerfile: Dockerfile
       args:
-        VITE_API_URL: /api/ask
+        VITE_API_BASE: /api
     container_name: fda-rag-frontend
     ports:
       - "8080:80"

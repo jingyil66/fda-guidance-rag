@@ -1,14 +1,32 @@
 import { useState } from "react";
-import { AskError, askQuestion } from "../api/ask";
+import { ASK_MODES, AskError, askQuestion } from "../api/ask";
+import AgentSteps from "./AgentSteps";
 import AnswerPanel from "./AnswerPanel";
 import EmptyStateWelcome from "./EmptyStateWelcome";
+import ModeToggle from "./ModeToggle";
 import QueryInput from "./QueryInput";
 import SourceList from "./SourceList";
 
+const MODE_STORAGE_KEY = "fda-ask-mode";
+
+function readStoredMode() {
+  try {
+    const stored = localStorage.getItem(MODE_STORAGE_KEY);
+    if (stored === ASK_MODES.rag || stored === ASK_MODES.agent) {
+      return stored;
+    }
+  } catch {
+    /* ignore */
+  }
+  return ASK_MODES.agent;
+}
+
 function Chatbot() {
+  const [mode, setMode] = useState(readStoredMode);
   const [query, setQuery] = useState("");
   const [answer, setAnswer] = useState("");
   const [sources, setSources] = useState([]);
+  const [steps, setSteps] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [highlightedSource, setHighlightedSource] = useState(null);
@@ -46,13 +64,15 @@ function Chatbot() {
     setError("");
     setAnswer("");
     setSources([]);
+    setSteps([]);
     setHighlightedSource(null);
     setExpandedSources(new Set());
 
     try {
-      const result = await askQuestion(trimmed);
+      const result = await askQuestion(trimmed, { mode });
       setAnswer(result.answer);
       setSources(result.sources);
+      setSteps(result.steps || []);
     } catch (err) {
       setError(err instanceof AskError ? err.message : "Something went wrong.");
     } finally {
@@ -60,8 +80,28 @@ function Chatbot() {
     }
   };
 
+  const handleModeChange = (nextMode) => {
+    if (nextMode === mode || loading) {
+      return;
+    }
+    setMode(nextMode);
+    try {
+      localStorage.setItem(MODE_STORAGE_KEY, nextMode);
+    } catch {
+      /* ignore */
+    }
+    setAnswer("");
+    setSources([]);
+    setSteps([]);
+    setError("");
+    setHighlightedSource(null);
+    setExpandedSources(new Set());
+  };
+
   return (
     <div className="container mb-4 chat-container">
+      <ModeToggle mode={mode} onChange={handleModeChange} disabled={loading} />
+
       {showEmptyState && (
         <EmptyStateWelcome onSelectExample={handleSend} disabled={loading} />
       )}
@@ -74,12 +114,18 @@ function Chatbot() {
       />
 
       {!showEmptyState && (
-        <AnswerPanel
-          loading={loading}
-          error={error}
-          answer={answer}
-          onCitationClick={handleCitationClick}
-        />
+        <>
+          {mode === ASK_MODES.agent && (
+            <AgentSteps steps={steps} loading={loading} />
+          )}
+          <AnswerPanel
+            mode={mode}
+            loading={loading}
+            error={error}
+            answer={answer}
+            onCitationClick={handleCitationClick}
+          />
+        </>
       )}
 
       {!loading && (
