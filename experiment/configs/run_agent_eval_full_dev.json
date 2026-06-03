@@ -1,0 +1,18 @@
+{
+  "run_id": "run_agent_eval_full_dev",
+  "stage": "agent_full_eval",
+  "agent_tool_dataset_path": "experiment/subsets/agent_tool_gold_dev.json",
+  "agent_task_dataset_path": "experiment/subsets/agent_task_gold_dev.json",
+  "generation": {
+    "model": "gpt-4o-mini"
+  },
+  "agent": {
+    "max_steps": 6
+  },
+  "evaluation": {
+    "judge_model": "gpt-4o-mini",
+    "judge_metrics": ["correctness", "groundedness", "relevance"],
+    "skip_judge": false
+  },
+  "notes": "P0 tool routing (32 dev) + P1 task E2E (20 dev) + P2 failure taxonomy + LangSmith (P3 env)."
+}

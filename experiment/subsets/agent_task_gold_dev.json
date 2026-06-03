@@ -1,0 +1,255 @@
+[
+  {
+    "id": "agent_task_001",
+    "level": "L2",
+    "question": "What documentation must sponsors include in an NDA when submitting human factors validation study results?",
+    "require_tools": [
+      "search_guidance"
+    ],
+    "min_sources": 1,
+    "must_include": [
+      "HF",
+      "NDA"
+    ],
+    "linked_tool_id": "agent_t_001",
+    "answer": "- HF validation study results reports must be submitted in NDA, BLA, or ANDA applications."
+  },
+  {
+    "id": "agent_task_002",
+    "level": "L2",
+    "question": "How do the eligibility criteria for requesting FDR under sections 505G(b)(2)(A)(iv)(III) ensure appropriate matters are addressed after a Final Order?",
+    "require_tools": [
+      "search_guidance"
+    ],
+    "min_sources": 1,
+    "must_include": [
+      "FDR",
+      "Final Order"
+    ],
+    "linked_tool_id": null,
+    "answer": "- Eligible requestors under 505G(b)(2)(A)(iv)(I) may request FDR."
+  },
+  {
+    "id": "agent_task_003",
+    "level": "L2",
+    "question": "What does FDA guidance say about Escherichia coli in crabmeat and alternative compliance approaches?",
+    "require_tools": [
+      "search_guidance"
+    ],
+    "min_sources": 1,
+    "must_include": [
+      "alternative",
+      "crabmeat"
+    ],
+    "linked_tool_id": "agent_t_002",
+    "answer": "- Alternative approaches may be used if they satisfy applicable statutes and regulations."
+  },
+  {
+    "id": "agent_task_004",
+    "level": "L1",
+    "question": "List guidances related to human factors validation studies.",
+    "require_tools": [
+      "list_guidance"
+    ],
+    "min_sources": 0,
+    "must_include": [],
+    "linked_tool_id": "agent_t_031"
+  },
+  {
+    "id": "agent_task_005",
+    "level": "L1",
+    "question": "Which guidances mention REMS programs? Limit 10.",
+    "require_tools": [
+      "list_guidance"
+    ],
+    "min_sources": 0,
+    "must_include": [],
+    "linked_tool_id": "agent_t_014"
+  },
+  {
+    "id": "agent_task_006",
+    "level": "L3",
+    "question": "List guidances on formal dispute resolution, then eligibility criteria under 505G.",
+    "require_tools": [
+      "list_guidance",
+      "search_guidance"
+    ],
+    "min_sources": 1,
+    "must_include": [
+      "505G",
+      "FDR"
+    ],
+    "linked_tool_id": "agent_t_024",
+    "answer": "- CDER accepts FDR from eligible persons; appropriate matters are scientific/medical disputes."
+  },
+  {
+    "id": "agent_task_007",
+    "level": "L2",
+    "question": "What are FDA recommendations for distinguishing 'undecided' survey responses from neutral responses in quantitative studies?",
+    "require_tools": [
+      "search_guidance"
+    ],
+    "min_sources": 1,
+    "must_include": [
+      "undecided",
+      "neutral"
+    ],
+    "linked_tool_id": "agent_t_009",
+    "answer": "- Place undecided or dont know options visually separate from the neutral scale."
+  },
+  {
+    "id": "agent_task_008",
+    "level": "L3",
+    "question": "Find gene therapy guidances, then summarize FDA expectations for CMC documentation.",
+    "require_tools": [
+      "list_guidance",
+      "search_guidance"
+    ],
+    "min_sources": 1,
+    "must_include": [],
+    "linked_tool_id": "agent_t_032"
+  },
+  {
+    "id": "agent_task_009",
+    "level": "L1",
+    "question": "Find CBER draft guidances about cell therapy.",
+    "require_tools": [
+      "list_guidance"
+    ],
+    "min_sources": 0,
+    "must_include": [],
+    "linked_tool_id": "agent_t_015"
+  },
+  {
+    "id": "agent_task_010",
+    "level": "L2",
+    "question": "Overview of guidance on crabmeat filth and E. coli.",
+    "require_tools": [
+      "get_guidance_detail"
+    ],
+    "min_sources": 0,
+    "must_include": [
+      "E. coli",
+      "crabmeat"
+    ],
+    "linked_tool_id": "agent_t_016",
+    "answer": "- Guidance addresses adulteration with filth involving E. coli in crabmeat."
+  },
+  {
+    "id": "agent_task_011",
+    "level": "L2",
+    "question": "What validation study reports should be submitted in a BLA?",
+    "require_tools": [
+      "search_guidance"
+    ],
+    "min_sources": 1,
+    "must_include": [
+      "BLA",
+      "validation"
+    ],
+    "linked_tool_id": "agent_t_020",
+    "answer": "- Submit validation study results reports in BLA applications as appropriate."
+  },
+  {
+    "id": "agent_task_012",
+    "level": "L1",
+    "question": "List final guidances on medical devices issued by CDRH.",
+    "require_tools": [
+      "list_guidance"
+    ],
+    "min_sources": 0,
+    "must_include": [],
+    "linked_tool_id": "agent_t_021"
+  },
+  {
+    "id": "agent_task_013",
+    "level": "L2",
+    "question": "What does guidance say about HLA-B*1502 and carbamazepine risk?",
+    "require_tools": [
+      "search_guidance"
+    ],
+    "min_sources": 1,
+    "must_include": [],
+    "linked_tool_id": "agent_t_025"
+  },
+  {
+    "id": "agent_task_014",
+    "level": "L3",
+    "question": "Find pediatric study plan guidances, then search requirements for pediatric assessments.",
+    "require_tools": [
+      "list_guidance",
+      "search_guidance"
+    ],
+    "min_sources": 1,
+    "must_include": [],
+    "linked_tool_id": "agent_t_019"
+  },
+  {
+    "id": "agent_task_015",
+    "level": "L2",
+    "question": "What are FDA points to consider for clinical electronic systems?",
+    "require_tools": [
+      "search_guidance"
+    ],
+    "min_sources": 1,
+    "must_include": [],
+    "linked_tool_id": "agent_t_028"
+  },
+  {
+    "id": "agent_task_016",
+    "level": "L1",
+    "question": "List guidances related to pharmacogenomics biomarkers.",
+    "require_tools": [
+      "list_guidance"
+    ],
+    "min_sources": 0,
+    "must_include": [],
+    "linked_tool_id": "agent_t_029"
+  },
+  {
+    "id": "agent_task_017",
+    "level": "L2",
+    "question": "What are requirements for comparative use human factors studies in ANDA submissions?",
+    "require_tools": [
+      "search_guidance"
+    ],
+    "min_sources": 1,
+    "must_include": [],
+    "linked_tool_id": "agent_t_011"
+  },
+  {
+    "id": "agent_task_018",
+    "level": "L3",
+    "question": "Detail pdf_id 169628 then search key compliance points in that document.",
+    "require_tools": [
+      "get_guidance_detail",
+      "search_guidance"
+    ],
+    "min_sources": 1,
+    "must_include": [],
+    "linked_tool_id": "agent_t_017"
+  },
+  {
+    "id": "agent_task_019",
+    "level": "L2",
+    "question": "How does FDA define appropriate matters for formal dispute resolution after a Final Order?",
+    "require_tools": [
+      "search_guidance"
+    ],
+    "min_sources": 1,
+    "must_include": [],
+    "linked_tool_id": "agent_t_012"
+  },
+  {
+    "id": "agent_task_020",
+    "level": "L3",
+    "question": "List OTC monograph guidances, then search 505G expedited procedure requirements.",
+    "require_tools": [
+      "list_guidance",
+      "search_guidance"
+    ],
+    "min_sources": 1,
+    "must_include": [],
+    "linked_tool_id": "agent_t_030"
+  }
+]

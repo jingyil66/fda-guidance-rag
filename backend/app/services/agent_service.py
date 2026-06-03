@@ -8,6 +8,7 @@ from typing import Any
 
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
 from langchain_core.tools import StructuredTool
+from langchain_openai import ChatOpenAI
 
 from backend.app.core.config import settings
 from backend.app.services.agent_tools import (
@@ -15,7 +16,7 @@ from backend.app.services.agent_tools import (
     list_guidance,
     search_guidance,
 )
-from backend.app.services.generation_service import get_llm
+from backend.app.services.generation_service import DEFAULT_LLM_MODEL
 
 os.environ["OPENAI_API_KEY"] = settings.OPENAI_API_KEY or ""
 
@@ -27,9 +28,14 @@ Rules:
 - For one document overview by name or pdf_id, call get_guidance_detail; then search_guidance with pdf_id if details are needed.
 - Base answers only on tool output. If tools return no relevant content, say you cannot answer from the corpus.
 - Cite passage numbers [1], [2] when using search_guidance results.
-- Prefer at most 3 tool calls before giving a final answer."""
+- Use only the tools needed; when you have enough evidence, reply without further tool calls."""
 
-MAX_AGENT_STEPS = 6
+MAX_AGENT_ROUNDS = 6
+MAX_AGENT_STEPS = MAX_AGENT_ROUNDS  # backward-compatible alias
+
+MAX_ROUNDS_MESSAGE = (
+    "I could not finish within the allowed number of agent turns. Please narrow your question."
+)
 
 
 @dataclass
@@ -39,6 +45,26 @@ class AgentRunResult:
     steps: list[dict[str, Any]] = field(default_factory=list)
 
 
+def _source_key(source: dict) -> tuple:
+    return (
+        str(source.get("pdf_id") or ""),
+        str(source.get("page") or ""),
+        (source.get("snippet") or source.get("text") or "")[:200],
+    )
+
+
+def _merge_sources(existing: list[dict], new: list[dict]) -> list[dict]:
+    seen: set[tuple] = set()
+    merged: list[dict] = []
+    for source in existing + new:
+        key = _source_key(source)
+        if key in seen:
+            continue
+        seen.add(key)
+        merged.append(source)
+    return merged
+
+
 def _build_tools(ctx: dict[str, Any]) -> list[StructuredTool]:
     def _search(query: str, top_k: int = 5, pdf_id: str = "") -> str:
         text, sources = search_guidance(
@@ -46,7 +72,7 @@ def _build_tools(ctx: dict[str, Any]) -> list[StructuredTool]:
             top_k=top_k,
             pdf_id=pdf_id.strip() or None,
         )
-        ctx["sources"] = sources
+        ctx["sources"] = _merge_sources(ctx.get("sources") or [], sources)
         return text
 
     def _list(
@@ -97,8 +123,18 @@ def _build_tools(ctx: dict[str, Any]) -> list[StructuredTool]:
     ]
 
 
-def get_agent_answer(query: str, *, max_steps: int = MAX_AGENT_STEPS) -> dict:
-    """Run the tool-calling agent loop. Returns answer, sources, and step trace."""
+def get_agent_answer(query: str, *, max_steps: int = MAX_AGENT_ROUNDS) -> dict:
+    """Run the tool-calling agent loop. Returns answer, sources, and step trace.
+
+    max_steps is the maximum number of LLM turns (each turn may invoke multiple tools).
+
+    LangSmith: set LANGCHAIN_TRACING_V2=true and LANGCHAIN_API_KEY; optional LANGCHAIN_PROJECT
+    (defaults to fda-guidance-agent).
+    """
+    import os
+
+    os.environ.setdefault("LANGCHAIN_PROJECT", os.getenv("LANGCHAIN_PROJECT", "fda-guidance-agent"))
+
     query = (query or "").strip()
     if not query:
         return AgentRunResult(answer="Query is empty.").__dict__
@@ -106,7 +142,7 @@ def get_agent_answer(query: str, *, max_steps: int = MAX_AGENT_STEPS) -> dict:
     ctx: dict[str, Any] = {"sources": []}
     tools = _build_tools(ctx)
     tool_map = {tool.name: tool for tool in tools}
-    llm = get_llm().bind_tools(tools)
+    llm = ChatOpenAI(model=DEFAULT_LLM_MODEL, temperature=0).bind_tools(tools)
 
     messages = [
         SystemMessage(content=AGENT_SYSTEM_PROMPT),
@@ -140,7 +176,7 @@ def get_agent_answer(query: str, *, max_steps: int = MAX_AGENT_STEPS) -> dict:
             )
 
     return AgentRunResult(
-        answer="I could not finish within the allowed number of tool steps. Please narrow your question.",
+        answer=MAX_ROUNDS_MESSAGE,
         sources=ctx["sources"],
         steps=steps,
     ).__dict__

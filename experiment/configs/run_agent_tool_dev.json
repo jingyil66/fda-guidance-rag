@@ -1,0 +1,13 @@
+{
+  "run_id": "run_agent_tool_dev_baseline",
+  "stage": "agent_tool_eval",
+  "agent_dataset_path": "experiment/subsets/agent_tool_gold_dev.json",
+  "generation": {
+    "model": "gpt-4o-mini"
+  },
+  "agent": {
+    "max_steps": 6
+  },
+  "agent_tool_dataset_path": "experiment/subsets/agent_tool_gold_dev.json",
+  "notes": "P0 tool-routing only (30 dev rows). Use run_agent_eval_full_dev.json for P1 task eval."
+}

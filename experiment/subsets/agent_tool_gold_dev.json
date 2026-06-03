@@ -1,0 +1,560 @@
+[
+  {
+    "id": "agent_t_001",
+    "category": "T1",
+    "question": "What documentation must sponsors include in an NDA when submitting human factors validation study results?",
+    "expected_steps": [
+      {
+        "tool": "search_guidance",
+        "args": {
+          "query": "human factors validation study NDA"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "Single-step semantic search for regulatory requirements."
+  },
+  {
+    "id": "agent_t_002",
+    "category": "T1",
+    "question": "What does FDA guidance say about Escherichia coli in crabmeat and alternative compliance approaches?",
+    "expected_steps": [
+      {
+        "tool": "search_guidance",
+        "args": {
+          "query": "Escherichia coli crabmeat"
+        }
+      }
+    ],
+    "forbidden_tools": [
+      "list_guidance"
+    ],
+    "notes": "Content question; should not use catalog list as first tool."
+  },
+  {
+    "id": "agent_t_003",
+    "category": "T2",
+    "question": "List FDA guidances related to adaptive design for clinical trials.",
+    "expected_steps": [
+      {
+        "tool": "list_guidance",
+        "args": {
+          "keyword": "adaptive design"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "Browse/filter intent; list before any deep search."
+  },
+  {
+    "id": "agent_t_004",
+    "category": "T2",
+    "question": "Which CDER final guidances were issued in 2024? Show up to 15 titles.",
+    "expected_steps": [
+      {
+        "tool": "list_guidance",
+        "args": {
+          "center": "CDER",
+          "communication_type": "Final",
+          "year": 2024
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "Metadata filters only."
+  },
+  {
+    "id": "agent_t_005",
+    "category": "T3",
+    "question": "Give an overview of the guidance on eligibility for formal dispute resolution after a Final Order (FDR).",
+    "expected_steps": [
+      {
+        "tool": "get_guidance_detail",
+        "args": {
+          "title_keyword": "formal dispute resolution"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "Single-document summary via metadata."
+  },
+  {
+    "id": "agent_t_006",
+    "category": "T3",
+    "question": "Summarize guidance document pdf_id 122971.",
+    "expected_steps": [
+      {
+        "tool": "get_guidance_detail",
+        "args": {
+          "pdf_id": "122971"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "Lookup by pdf_id from gold alignment."
+  },
+  {
+    "id": "agent_t_007",
+    "category": "T4",
+    "question": "Find guidances about REMS, pick one recent document, then what patient participation requirements does it describe?",
+    "expected_steps": [
+      {
+        "tool": "list_guidance",
+        "args": {
+          "keyword": "REMS"
+        }
+      },
+      {
+        "tool": "search_guidance",
+        "args": {
+          "query": "REMS patient participation requirements"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "Multi-hop: catalog then passage search (pdf_id optional in second step)."
+  },
+  {
+    "id": "agent_t_008",
+    "category": "T4",
+    "question": "List guidances on biosimilars, then explain interchangeability requirements from the most relevant one.",
+    "expected_steps": [
+      {
+        "tool": "list_guidance",
+        "args": {
+          "keyword": "biosimilar"
+        }
+      },
+      {
+        "tool": "search_guidance",
+        "args": {
+          "query": "interchangeability"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "Ordered list then search."
+  },
+  {
+    "id": "agent_t_009",
+    "category": "T1",
+    "question": "What are FDA recommendations for distinguishing 'undecided' survey responses from neutral responses in quantitative studies?",
+    "expected_steps": [
+      {
+        "tool": "search_guidance",
+        "args": {
+          "query": "undecided neutral survey responses"
+        }
+      }
+    ],
+    "forbidden_tools": [
+      "list_guidance"
+    ],
+    "notes": "Maps to qa_index 9 style content question."
+  },
+  {
+    "id": "agent_t_010",
+    "category": "T4",
+    "question": "Look up guidance on crabmeat filth (pdf_id 90349 if needed), then what does it say about alternative approaches?",
+    "expected_steps": [
+      {
+        "tool": "get_guidance_detail",
+        "args": {
+          "pdf_id": "90349"
+        }
+      },
+      {
+        "tool": "search_guidance",
+        "args": {
+          "query": "alternative approaches",
+          "pdf_id": "90349"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "Detail then scoped search; pdf_id required in second step for strict match."
+  },
+  {
+    "id": "agent_t_011",
+    "category": "T1",
+    "question": "What are requirements for comparative use human factors studies in ANDA submissions?",
+    "expected_steps": [
+      {
+        "tool": "search_guidance",
+        "args": {
+          "query": "comparative use human factors ANDA"
+        }
+      }
+    ],
+    "forbidden_tools": [
+      "list_guidance"
+    ],
+    "notes": "P0 expanded gold"
+  },
+  {
+    "id": "agent_t_012",
+    "category": "T1",
+    "question": "How does FDA define appropriate matters for formal dispute resolution after a Final Order?",
+    "expected_steps": [
+      {
+        "tool": "search_guidance",
+        "args": {
+          "query": "appropriate matters formal dispute resolution Final Order"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "P0 expanded gold"
+  },
+  {
+    "id": "agent_t_013",
+    "category": "T2",
+    "question": "Show guidances on gene therapy products.",
+    "expected_steps": [
+      {
+        "tool": "list_guidance",
+        "args": {
+          "keyword": "gene therapy"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "P0 expanded gold"
+  },
+  {
+    "id": "agent_t_014",
+    "category": "T2",
+    "question": "Which guidances mention REMS programs? Limit 10.",
+    "expected_steps": [
+      {
+        "tool": "list_guidance",
+        "args": {
+          "keyword": "REMS",
+          "limit": 10
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "P0 expanded gold"
+  },
+  {
+    "id": "agent_t_015",
+    "category": "T2",
+    "question": "Find CBER draft guidances about cell therapy.",
+    "expected_steps": [
+      {
+        "tool": "list_guidance",
+        "args": {
+          "keyword": "cell therapy",
+          "center": "CBER",
+          "communication_type": "Draft"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "P0 expanded gold"
+  },
+  {
+    "id": "agent_t_016",
+    "category": "T3",
+    "question": "Overview of guidance on crabmeat filth and E. coli.",
+    "expected_steps": [
+      {
+        "tool": "get_guidance_detail",
+        "args": {
+          "title_keyword": "crabmeat filth"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "P0 expanded gold"
+  },
+  {
+    "id": "agent_t_017",
+    "category": "T4",
+    "question": "Detail pdf_id 169628 then search key compliance points in that document.",
+    "expected_steps": [
+      {
+        "tool": "get_guidance_detail",
+        "args": {
+          "pdf_id": "169628"
+        }
+      },
+      {
+        "tool": "search_guidance",
+        "args": {
+          "query": "compliance",
+          "pdf_id": "169628"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "Aligned with agent_task_018"
+  },
+  {
+    "id": "agent_t_018",
+    "category": "T4",
+    "question": "List guidances on clinical trial design, then what does FDA say about adaptive designs?",
+    "expected_steps": [
+      {
+        "tool": "list_guidance",
+        "args": {
+          "keyword": "clinical trial design"
+        }
+      },
+      {
+        "tool": "search_guidance",
+        "args": {
+          "query": "adaptive designs"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "P0 expanded gold"
+  },
+  {
+    "id": "agent_t_019",
+    "category": "T4",
+    "question": "Find pediatric study plan guidances, then search requirements for pediatric assessments.",
+    "expected_steps": [
+      {
+        "tool": "list_guidance",
+        "args": {
+          "keyword": "pediatric study plan"
+        }
+      },
+      {
+        "tool": "search_guidance",
+        "args": {
+          "query": "pediatric assessments"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "P0 expanded gold"
+  },
+  {
+    "id": "agent_t_020",
+    "category": "T1",
+    "question": "What validation study reports should be submitted in a BLA?",
+    "expected_steps": [
+      {
+        "tool": "search_guidance",
+        "args": {
+          "query": "validation study reports BLA"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "P0 expanded gold"
+  },
+  {
+    "id": "agent_t_021",
+    "category": "T2",
+    "question": "List final guidances on medical devices issued by CDRH.",
+    "expected_steps": [
+      {
+        "tool": "list_guidance",
+        "args": {
+          "keyword": "medical device",
+          "center": "CDRH",
+          "communication_type": "Final"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "P0 expanded gold"
+  },
+  {
+    "id": "agent_t_022",
+    "category": "T1",
+    "question": "What are recommendations for survey design to avoid leading questions?",
+    "expected_steps": [
+      {
+        "tool": "search_guidance",
+        "args": {
+          "query": "leading questions survey design"
+        }
+      }
+    ],
+    "forbidden_tools": [
+      "list_guidance"
+    ],
+    "notes": "P0 expanded gold"
+  },
+  {
+    "id": "agent_t_023",
+    "category": "T3",
+    "question": "Give summary for guidance with title containing biosimilar interchangeability.",
+    "expected_steps": [
+      {
+        "tool": "get_guidance_detail",
+        "args": {
+          "title_keyword": "biosimilar interchangeability"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "P0 expanded gold"
+  },
+  {
+    "id": "agent_t_024",
+    "category": "T4",
+    "question": "List guidances on formal dispute resolution, then eligibility criteria under 505G.",
+    "expected_steps": [
+      {
+        "tool": "list_guidance",
+        "args": {
+          "keyword": "formal dispute resolution"
+        }
+      },
+      {
+        "tool": "search_guidance",
+        "args": {
+          "query": "505G eligibility criteria"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "P0 expanded gold"
+  },
+  {
+    "id": "agent_t_025",
+    "category": "T1",
+    "question": "What does guidance say about HLA-B*1502 and carbamazepine risk?",
+    "expected_steps": [
+      {
+        "tool": "search_guidance",
+        "args": {
+          "query": "HLA-B*1502 carbamazepine"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "P0 expanded gold"
+  },
+  {
+    "id": "agent_t_026",
+    "category": "T2",
+    "question": "Which guidances discuss infant formula nutrient requirements?",
+    "expected_steps": [
+      {
+        "tool": "list_guidance",
+        "args": {
+          "keyword": "infant formula"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "P0 expanded gold"
+  },
+  {
+    "id": "agent_t_027",
+    "category": "T4",
+    "question": "Detail pdf_id 90349 then search alternative approaches in that document.",
+    "expected_steps": [
+      {
+        "tool": "get_guidance_detail",
+        "args": {
+          "pdf_id": "90349"
+        }
+      },
+      {
+        "tool": "search_guidance",
+        "args": {
+          "query": "alternative approaches",
+          "pdf_id": "90349"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "P0 expanded gold"
+  },
+  {
+    "id": "agent_t_028",
+    "category": "T1",
+    "question": "What are FDA points to consider for clinical electronic systems?",
+    "expected_steps": [
+      {
+        "tool": "search_guidance",
+        "args": {
+          "query": "clinical electronic systems"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "P0 expanded gold"
+  },
+  {
+    "id": "agent_t_029",
+    "category": "T2",
+    "question": "List guidances related to pharmacogenomics biomarkers.",
+    "expected_steps": [
+      {
+        "tool": "list_guidance",
+        "args": {
+          "keyword": "pharmacogenomics"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "P0 expanded gold"
+  },
+  {
+    "id": "agent_t_030",
+    "category": "T4",
+    "question": "List OTC monograph guidances, then search 505G expedited procedure requirements.",
+    "expected_steps": [
+      {
+        "tool": "list_guidance",
+        "args": {
+          "keyword": "OTC monograph"
+        }
+      },
+      {
+        "tool": "search_guidance",
+        "args": {
+          "query": "505G expedited procedure"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "P0 expanded gold"
+  },
+  {
+    "id": "agent_t_031",
+    "category": "T2",
+    "question": "List guidances related to human factors validation studies.",
+    "expected_steps": [
+      {
+        "tool": "list_guidance",
+        "args": {
+          "keyword": "human factors"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "Aligned with agent_task_004"
+  },
+  {
+    "id": "agent_t_032",
+    "category": "T4",
+    "question": "Find gene therapy guidances, then summarize FDA expectations for CMC documentation.",
+    "expected_steps": [
+      {
+        "tool": "list_guidance",
+        "args": {
+          "keyword": "gene therapy"
+        }
+      },
+      {
+        "tool": "search_guidance",
+        "args": {
+          "query": "CMC documentation"
+        }
+      }
+    ],
+    "forbidden_tools": [],
+    "notes": "Aligned with agent_task_008"
+  }
+]
