@@ -34,12 +34,33 @@ DEFAULT_TOP_K_INITIAL = 20
 DEFAULT_TOP_K_FINAL = 5
 DEFAULT_RERANK_ENABLED = False
 
-_client = get_qdrant_client(settings.DEFAULT_QDRANT_URL)
-_embeddings = get_embeddings(DEFAULT_EMBEDDING_MODEL)
+_client = None
+_embeddings = None
 _ranker = None
 _prompt = get_prompt()
-_llm = get_llm(DEFAULT_LLM_MODEL)
+_llm = None
 _parser = get_parser()
+
+
+def _default_client():
+    global _client
+    if _client is None:
+        _client = get_qdrant_client(settings.DEFAULT_QDRANT_URL)
+    return _client
+
+
+def _default_embeddings():
+    global _embeddings
+    if _embeddings is None:
+        _embeddings = get_embeddings(DEFAULT_EMBEDDING_MODEL)
+    return _embeddings
+
+
+def _default_llm():
+    global _llm
+    if _llm is None:
+        _llm = get_llm(DEFAULT_LLM_MODEL)
+    return _llm
 
 
 def _normalize_config(config: dict | None) -> dict:
@@ -63,13 +84,13 @@ def _resolve_runtime(config: dict) -> dict:
     if qdrant_url != settings.DEFAULT_QDRANT_URL:
         client = get_qdrant_client(qdrant_url)
     else:
-        client = _client
+        client = _default_client()
 
     embedding_model = config["embedding_model"]
     if embedding_model != DEFAULT_EMBEDDING_MODEL:
         embeddings = get_embeddings(embedding_model)
     else:
-        embeddings = _embeddings
+        embeddings = _default_embeddings()
 
     rerank_model = config["rerank_model"]
     if config["rerank_enabled"]:
@@ -87,7 +108,7 @@ def _resolve_runtime(config: dict) -> dict:
     if llm_model != DEFAULT_LLM_MODEL:
         llm = get_llm(llm_model)
     else:
-        llm = _llm
+        llm = _default_llm()
 
     return {
         "client": client,
