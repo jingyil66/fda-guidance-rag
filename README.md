@@ -1,6 +1,6 @@
 # FDA Guidance RAG
 
-Question answering over [FDA medical guidance](https://www.fda.gov/regulatory-information/search-fda-guidance-documents) PDFs: dense retrieval (OpenAI embeddings + Qdrant) → `gpt-4o-mini` generation with a strict-context prompt. Flask API and React UI included.
+Question answering over [FDA medical guidance](https://www.fda.gov/regulatory-information/search-fda-guidance-documents) PDFs: **fixed RAG** (OpenAI embeddings + Qdrant → `gpt-4o-mini` with a strict-context prompt) and a **tool-calling agent** (`search_guidance`, `list_guidance`, `get_guidance_detail`). Flask API, React UI (toggle Fixed RAG vs Agent), and MCP stdio server included.
 
 ## Production defaults
 
@@ -10,6 +10,7 @@ Question answering over [FDA medical guidance](https://www.fda.gov/regulatory-in
 | Chunking | fixed 600 chars / 200 overlap |
 | Retrieval | embedding top-20 → top-5, **rerank off** (`rag_service.get_answer`) |
 | Models | `text-embedding-3-small`, `gpt-4o-mini` |
+| Agent | `gpt-4o-mini`, max 6 LLM turns (`get_agent_answer`) |
 
 Experiment work on a 200-PDF subset uses collection `experiment_subset200_chunk600_overlap200` and configs under `experiment/configs/` (final: `run_014_subset200_final_dev.json`, sealed test: `run_013_subset200_no_rerank_test.json`). Ablations and numbers: [`experiment/REPORT.md`](experiment/REPORT.md), [`experiment/registry.csv`](experiment/registry.csv).
 
@@ -18,12 +19,12 @@ Experiment work on a 200-PDF subset uses collection `experiment_subset200_chunk6
 ## Layout
 
 ```
-backend/app/          API, RAG pipeline, ETL (S3 → Qdrant)
-backend/mcp/          MCP server (stdio) for IDE clients
-experiment/           run configs, evaluators, ingest/smoke scripts
+backend/app/          API, RAG pipeline, agent, ETL (S3 → Qdrant)
+backend/mcp/          MCP server (stdio); same tools as /ask_agent
+experiment/           RAG/agent eval, compare_ask_vs_agent, configs, smoke scripts
 evaluation/           QA dataset tooling (`qa_dataset.json`)
-tests/                pytest (unit + integration)
-frontend/fda-app/     React + Vite UI
+tests/                pytest (unit + integration; agent evaluators, MCP)
+frontend/fda-app/     React + Vite UI (Fixed RAG / Agent mode toggle)
 jobs/                 staged ingest / benchmarks (optional)
 ```
 
@@ -68,13 +69,15 @@ python experiment/scripts/smoke_production.py --api-url http://127.0.0.1:5000/as
 `POST /ask_agent` JSON: `{"query": "..."}` — tool-calling agent (`search_guidance`, `list_guidance`, `get_guidance_detail`); response includes `steps` trace.  
 `GET /health` checks Qdrant + collection.
 
+**Agent note:** `search_guidance` needs ingested vectors in Qdrant. `list_guidance` and `get_guidance_detail` also need `data/metadata_with_summary.json` (see [Ingest → Metadata](#ingest-optional)).
+
 **5. Full stack (Docker Compose)**
 
 ```bash
 docker compose up -d --build
 ```
 
-- UI: http://localhost:8080  
+- UI: http://localhost:8080 — toggle **Fixed RAG** vs **Agent**; nginx proxies `/api/` → backend (`VITE_API_BASE=/api` at build)  
 - API: http://127.0.0.1:5000  
 - Qdrant dashboard: http://localhost:6333/dashboard  
 
@@ -86,7 +89,7 @@ Edit the Qdrant volume in `docker-compose.yml` if your data path differs. Host-s
 cd frontend/fda-app && npm install && npm run dev
 ```
 
-http://localhost:5173 → `http://127.0.0.1:5000/ask` by default.
+http://localhost:5173 → API base `http://127.0.0.1:5000` by default (`VITE_API_BASE` override). UI toggles **Fixed RAG** (`/ask`) vs **Agent** (`/ask_agent`); choice is saved in `localStorage`.
 
 ## MCP server (stdio)
 
@@ -98,7 +101,7 @@ Exposes the same tools as `/ask_agent` for Cursor, Claude Desktop, or other MCP 
 | `list_guidance` | Filter guidance catalog metadata |
 | `get_guidance_detail` | Summary for one document by `pdf_id` or title |
 
-**Run** (repo root; Qdrant + `.env` required for search):
+**Run** (repo root; Qdrant + `.env` required for search; **`data/metadata_with_summary.json`** required for `list_guidance` / `get_guidance_detail`):
 
 ```bash
 python -m backend.mcp.fda_guidance_server
@@ -168,11 +171,34 @@ python experiment/run_experiment.py --config experiment/configs/run_014_subset20
 
 Runs write under `experiment/runs/` (gitignored).
 
+**Agent eval (tool routing + task E2E, dev gold):**
+
+```bash
+# Full: 32 tool + 20 task rows, failure taxonomy A1–A5
+python experiment/run_agent_eval.py --config experiment/configs/run_agent_eval_full_dev.json --preview
+
+# Tool routing only
+python experiment/run_agent_eval.py --config experiment/configs/run_agent_tool_dev.json --limit 3 --skip-task-eval
+
+# Fixed RAG vs agent (same questions; 0 = all 20 task dev rows)
+python experiment/compare_ask_vs_agent.py --limit 0
+
+# LangSmith traces (optional)
+# set LANGCHAIN_TRACING_V2=true and LANGCHAIN_API_KEY
+```
+
+**Published dev metrics (full production Qdrant, 2026-06-03):**
+
+- **Agent eval** (`run_agent_eval_full_dev`): tool pass 59%, task success 65%, tool selection accuracy 91% (32 tool + 20 task).
+- **Fixed RAG vs agent** (`agent_task_gold_dev`, n=20): avg latency RAG 3.9s vs agent 4.2s (+9%); GPT judge on 14 gold rows — correctness/groundedness tied (0.71 / 0.86), agent relevance higher (0.86 vs 0.71). Agent wins on list/browse latency; fixed RAG wins on pure search Q&A reliability.
+
+Docs: [`experiment/AGENT_EVAL.md`](experiment/AGENT_EVAL.md) (metrics, datasets, failure codes), [`experiment/AGENT_FAILURE_POSTMORTEM.md`](experiment/AGENT_FAILURE_POSTMORTEM.md) (typical A1/A2/empty-retrieval cases).
+
 ## Tests
 
 | Command | Needs |
 |---------|--------|
-| `pytest` | unit only (default) |
+| `pytest` | unit only (default); includes `test_agent_evaluators`, `test_mcp_server` |
 | `pytest -m integration` | live Qdrant + `OPENAI_API_KEY` |
 
 CI: `.github/workflows/tests.yml` (unit on push/PR).

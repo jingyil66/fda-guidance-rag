@@ -1,6 +1,9 @@
 .cursor
 data/
 
+# Local docs (architecture notes, not for repo)
+docs/
+
 # Experiment run artifacts (results, metrics, failures)
 experiment/runs/
 # Local ingest progress (checkpoint JSON)
